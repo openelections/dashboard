@@ -1,0 +1,5 @@
+django
+django-extensions
+django-debug-toolbar
+django-test-utils
+south
