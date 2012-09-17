@@ -33,7 +33,7 @@ except ImportError:
 if 'test' in sys.argv:
     DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
     FIXTURE_DIRS = (
-        PROJECT_ROOT + '/apps/election_results/ap/tests/fixtures',
+        PROJECT_ROOT + '/apps/dashboard/tests/fixtures',
     )
     SOUTH_TESTS_MIGRATE = False
 """
