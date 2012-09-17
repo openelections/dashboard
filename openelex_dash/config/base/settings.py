@@ -30,16 +30,16 @@ MEDIA_ROOT = os.path.join(PUBLIC_DIR, 'media')
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-# Statics are collected out of /static/ directories in each apps
+# Statics are collected out of /static/ directories in each app
 # via management command. Below settings control where an app's static files 
 # are moved to, for example: /var/www/static/project/, which would then 
 # be served up at the STATIC_URL such as http://my.mediaserver.com/apps/static/project/
-STATIC_URL = 'http://127.0.0.1/openelex_dash/static/'
+STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, '/static/')
+STATIC_ROOT = os.path.join(PUBLIC_DIR, 'static')
 
 STATICFILES_DIRS = (
-    os.path.join(PUBLIC_DIR, 'static')
+    os.path.join(PROJECT_ROOT, 'static'),
 )
 
 STATICFILES_FINDERS = (

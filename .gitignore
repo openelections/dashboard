@@ -15,6 +15,9 @@ sdist
 develop-eggs
 .installed.cfg
 
+#Exclude sqlite by default
+*.db
+
 # Project
 /openelex_dash/public/static
 /openelex_dash/public/media
