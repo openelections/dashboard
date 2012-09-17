@@ -11,7 +11,6 @@ ADMINS = (
 )
 MANAGERS = ADMINS
 
-SECRET_KEY = 'o@!4&amp;%@k$xo*65b(c$)!-)yw72^!qean@wb&amp;$)vptmu26cfx%*'
 TIME_ZONE = 'America/New_York'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
@@ -82,6 +81,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    
+    # project apps
+    'dashboard',
 )
 
 # A sample logging configuration. The only tangible logging

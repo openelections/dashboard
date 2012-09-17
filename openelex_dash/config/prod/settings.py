@@ -19,9 +19,9 @@ DATABASES = {
 }
 
 # If we use anything other than sqlite, move database settings in 
-# 'db_settings.py' file outside of version control
+# 'local_settings.py' file outside of version control
 try:
-    from config.prod.db_settings import DATABASES
+    from config.prod.local_settings import *
 except ImportError:
     pass
 
