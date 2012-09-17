@@ -20,8 +20,7 @@ develop-eggs
 
 # Project
 */public
-*/config/dev/db_settings.py
-*/config/prod/db_settings.py
+db_settings.py
 
 # Installer logs
 pip-log.txt
