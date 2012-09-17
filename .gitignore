@@ -19,8 +19,7 @@ develop-eggs
 *.db
 
 # Project
-*/public/static
-*/public/media
+*/public
 */config/dev/db_settings.py
 */config/prod/db_settings.py
 
