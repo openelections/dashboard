@@ -19,10 +19,10 @@ develop-eggs
 *.db
 
 # Project
-/openelex_dash/public/static
-/openelex_dash/public/media
-/openelex_dash/config/dev/db_settings.py
-/openelex_dash/config/prod/db_settings.py
+*/public/static
+*/public/media
+*/config/dev/db_settings.py
+*/config/prod/db_settings.py
 
 # Installer logs
 pip-log.txt
