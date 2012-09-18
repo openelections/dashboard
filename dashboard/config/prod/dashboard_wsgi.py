@@ -1,5 +1,5 @@
 """
-WSGI config for openelex_dash project.
+WSGI config for dashboard project.
 
 This module contains the WSGI application used by Django's development server
 and any production WSGI deployments. It should expose a module-level variable
@@ -15,10 +15,9 @@ framework.
 """
 import os
 import sys
-
 from django.conf import settings
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.dev.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.prod.settings")
 sys.path.append(settings.PROJECT_ROOT)
 sys.path.append(os.path.join(settings.PROJECT_ROOT,'apps'))
 

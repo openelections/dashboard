@@ -4,7 +4,7 @@ INTERNAL_IPS=('127.0.0.1')
 
 ROOT_URLCONF = 'config.prod.urls'
 
-WSGI_APPLICATION = 'config.prod.openelex_dash_wsgi.application'
+WSGI_APPLICATION = 'config.prod.dashboard_wsgi.application'
 
 # Default to sqlite
 DATABASES = {

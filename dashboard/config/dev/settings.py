@@ -7,7 +7,7 @@ INTERNAL_IPS=('127.0.0.1')
 
 ROOT_URLCONF = 'config.dev.urls'
 
-WSGI_APPLICATION = 'config.dev.openelex_dash_wsgi.application'
+WSGI_APPLICATION = 'config.dev.dashboard_wsgi.application'
 
 # Default to sqlite
 DATABASES = {
@@ -33,7 +33,7 @@ except ImportError:
 if 'test' in sys.argv:
     DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
     FIXTURE_DIRS = (
-        PROJECT_ROOT + '/apps/dashboard/tests/fixtures',
+        PROJECT_ROOT + '/foo/bar/fixtures',
     )
     SOUTH_TESTS_MIGRATE = False
 """
