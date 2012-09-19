@@ -80,8 +80,14 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'grappelli',
     'django.contrib.admin',
+
+    # Project apps
+    'agencies',
 )
+
+GRAPPELLI_ADMIN_TITLE = 'The OpenElections Project'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

@@ -3,4 +3,8 @@ django-extensions
 django-debug-toolbar
 django-test-utils
 ipython
+psycopg2
 south
+# TODO: hunt down grappelli version with list_filter fix
+#django-grappelli
+#-e git://github.com/sehmaschine/django-grappelli.git@stable/2.4.x#egg=django-grappelli

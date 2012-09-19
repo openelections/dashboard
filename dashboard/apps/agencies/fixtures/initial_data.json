@@ -1,0 +1,51 @@
+[
+  {
+    "pk": "csv", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "csv"
+    }
+  }, 
+  {
+    "pk": "json", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "json"
+    }
+  }, 
+  {
+    "pk": "paper", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "paper"
+    }
+  }, 
+  {
+    "pk": "pdf", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "pdf"
+    }
+  }, 
+  {
+    "pk": "pdf-image", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "pdf-image"
+    }
+  }, 
+  {
+    "pk": "xls", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "xls"
+    }
+  }, 
+  {
+    "pk": "xml", 
+    "model": "agencies.dataformat", 
+    "fields": {
+      "name": "xml"
+    }
+  }
+]
