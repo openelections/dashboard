@@ -84,7 +84,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # Project apps
-    'agencies',
+    'hub',
 )
 
 GRAPPELLI_ADMIN_TITLE = 'The OpenElections Project'

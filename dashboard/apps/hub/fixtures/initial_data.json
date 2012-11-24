@@ -1,0 +1,530 @@
+[
+  {
+    "pk": 1, 
+    "model": "hub.organization", 
+    "fields": {
+      "city": "", 
+      "name": "DC Board of Ethics and Elections", 
+      "gov_level": "state", 
+      "url": "", 
+      "fec_page": "", 
+      "state": "DC", 
+      "street": "", 
+      "gov_agency": true, 
+      "slug": "dc-board-ethics-and-elections", 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": "AL", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Alabama"
+    }
+  }, 
+  {
+    "pk": "AK", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Alaska"
+    }
+  }, 
+  {
+    "pk": "AZ", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Arizona"
+    }
+  }, 
+  {
+    "pk": "AR", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Arkansas"
+    }
+  }, 
+  {
+    "pk": "CA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "California"
+    }
+  }, 
+  {
+    "pk": "CO", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Colorado"
+    }
+  }, 
+  {
+    "pk": "CT", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Connecticut"
+    }
+  }, 
+  {
+    "pk": "DE", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Delaware"
+    }
+  }, 
+  {
+    "pk": "DC", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "District of Columbia"
+    }
+  }, 
+  {
+    "pk": "FL", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Florida"
+    }
+  }, 
+  {
+    "pk": "GA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Georgia"
+    }
+  }, 
+  {
+    "pk": "HI", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Hawaii"
+    }
+  }, 
+  {
+    "pk": "ID", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Idaho"
+    }
+  }, 
+  {
+    "pk": "IL", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Illinois"
+    }
+  }, 
+  {
+    "pk": "IN", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Indiana"
+    }
+  }, 
+  {
+    "pk": "IA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Iowa"
+    }
+  }, 
+  {
+    "pk": "KS", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Kansas"
+    }
+  }, 
+  {
+    "pk": "KY", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Kentucky"
+    }
+  }, 
+  {
+    "pk": "LA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Louisiana"
+    }
+  }, 
+  {
+    "pk": "ME", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Maine"
+    }
+  }, 
+  {
+    "pk": "MD", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Maryland"
+    }
+  }, 
+  {
+    "pk": "MA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Massachusetts"
+    }
+  }, 
+  {
+    "pk": "MI", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Michigan"
+    }
+  }, 
+  {
+    "pk": "MN", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Minnesota"
+    }
+  }, 
+  {
+    "pk": "MS", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Mississippi"
+    }
+  }, 
+  {
+    "pk": "MO", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Missouri"
+    }
+  }, 
+  {
+    "pk": "MT", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Montana"
+    }
+  }, 
+  {
+    "pk": "NE", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Nebraska"
+    }
+  }, 
+  {
+    "pk": "NV", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Nevada"
+    }
+  }, 
+  {
+    "pk": "NH", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "New Hampshire"
+    }
+  }, 
+  {
+    "pk": "NJ", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "New Jersey"
+    }
+  }, 
+  {
+    "pk": "NM", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "New Mexico"
+    }
+  }, 
+  {
+    "pk": "NY", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "New York"
+    }
+  }, 
+  {
+    "pk": "NC", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "North Carolina"
+    }
+  }, 
+  {
+    "pk": "ND", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "North Dakota"
+    }
+  }, 
+  {
+    "pk": "OH", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Ohio"
+    }
+  }, 
+  {
+    "pk": "OK", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Oklahoma"
+    }
+  }, 
+  {
+    "pk": "OR", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Oregon"
+    }
+  }, 
+  {
+    "pk": "PA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Pennsylvania"
+    }
+  }, 
+  {
+    "pk": "RI", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Rhode Island"
+    }
+  }, 
+  {
+    "pk": "SC", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "South Carolina"
+    }
+  }, 
+  {
+    "pk": "SD", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "South Dakota"
+    }
+  }, 
+  {
+    "pk": "TN", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Tennessee"
+    }
+  }, 
+  {
+    "pk": "TX", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Texas"
+    }
+  }, 
+  {
+    "pk": "UT", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Utah"
+    }
+  }, 
+  {
+    "pk": "VT", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Vermont"
+    }
+  }, 
+  {
+    "pk": "VA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Virginia"
+    }
+  }, 
+  {
+    "pk": "WA", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Washington"
+    }
+  }, 
+  {
+    "pk": "WV", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "West Virginia"
+    }
+  }, 
+  {
+    "pk": "WI", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Wisconsin"
+    }
+  }, 
+  {
+    "pk": "WY", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Wyoming"
+    }
+  }, 
+  {
+    "pk": "csv", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "csv"
+    }
+  }, 
+  {
+    "pk": "json", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "json"
+    }
+  }, 
+  {
+    "pk": "paper", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "paper"
+    }
+  }, 
+  {
+    "pk": "pdf", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "pdf"
+    }
+  }, 
+  {
+    "pk": "pdf-image", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "pdf-image"
+    }
+  }, 
+  {
+    "pk": "xls", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "xls"
+    }
+  }, 
+  {
+    "pk": "xml", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "xml"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "hub.elecdata", 
+    "fields": {
+      "office": null, 
+      "senate": true, 
+      "house": true, 
+      "race_type": "general", 
+      "special": false, 
+      "unexpired_term": false, 
+      "runoff_for": null, 
+      "district": null, 
+      "state_officers": false, 
+      "note": "", 
+      "state": "DC", 
+      "prez": true, 
+      "gov": false, 
+      "local": true, 
+      "start_date": "2012-11-06", 
+      "end_date": "2012-11-06", 
+      "state_leg": false, 
+      "state_level": true, 
+      "county_level": false, 
+      "precinct_level": false, 
+      "portal_link": "", 
+      "direct_link": "", 
+      "formats": [
+        "csv", 
+        "xml"
+      ], 
+      "organization": 1, 
+      "result_type": "certified"
+    }
+  }, 
+  {
+    "pk": "governor", 
+    "model": "hub.office", 
+    "fields": {
+      "name": "Governor"
+    }
+  }, 
+  {
+    "pk": "us-house", 
+    "model": "hub.office", 
+    "fields": {
+      "name": "U.S. House"
+    }
+  }, 
+  {
+    "pk": "us-senate", 
+    "model": "hub.office", 
+    "fields": {
+      "name": "U.S. Senate"
+    }
+  }
+]
