@@ -88,7 +88,7 @@ class State(models.Model):
         return '%s' % self.name
 
     def __repr__(self):
-        return '<%s - %s>' % (self.__class__, self.name)
+        return '<%s - %s>' % (self.__class__.__name__, self.postal)
 
 class ElecData(models.Model):
     """Metadata about source of election results from a single state.
@@ -174,7 +174,7 @@ class ElecData(models.Model):
         return self.elec_key(as_string=True)
 
     def __repr__(self):
-        return '<%s - %s>' % (self.__class__, self.elec_key(as_string=True))
+        return '<%s - %s>' % (self.__class__.__name__, self.elec_key(as_string=True))
 
     def elec_key(self, as_string=False):
         key = (
@@ -200,12 +200,15 @@ class Log(models.Model):
     contact = models.ForeignKey(Contact, blank=True, null=True)
     formal_request = models.BooleanField(default=False, help_text="True if this represents a formal FOIA request")
     gdoc_link = models.URLField(blank=True, help_text="Link to GDoc for extended notes on conversation")
-    follow_up = models.DateField(blank=True, help_text="Date for follow up conversation (e.g. FOIA deadline)")
+    follow_up = models.DateField(blank=True, null=True, help_text="Date for follow up conversation (e.g. FOIA deadline)")
     notes = models.TextField(blank=True)
 
     class Meta:
         verbose_name_plural = 'FOIA Logs'
 
     def __unicode__(self):
-        return '%s - %s' % (self.date, self.contact, self.subject)
+        return '%s - %s -%s' % (self.date, self.contact, self.subject)
+
+    def __repr__(self):
+        return '<%s: %s - %s -%s' % (self.__class__.__name__, self.date, self.contact, self.subject)
 
