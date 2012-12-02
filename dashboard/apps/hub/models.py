@@ -207,8 +207,16 @@ class Log(models.Model):
         verbose_name_plural = 'FOIA Logs'
 
     def __unicode__(self):
-        return '%s - %s -%s' % (self.date, self.contact, self.subject)
+        return self.log_key(as_string=True)
 
     def __repr__(self):
-        return '<%s: %s - %s -%s' % (self.__class__.__name__, self.date, self.contact, self.subject)
+        return "<%s: %s>" % (self.__class__.__name__, self.log_key(as_string=True))
 
+    def log_key(self, as_string=False):
+        key = (self.state_id, self.date.strftime('%Y-%m-%d'),)
+        if self.contact:
+            key += (self.contact,)
+        key += (self.subject,)
+        if as_string:
+            key = ' - '.join(key)
+        return key
