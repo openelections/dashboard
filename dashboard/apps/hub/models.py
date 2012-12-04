@@ -121,6 +121,7 @@ class ElecData(models.Model):
     RESULT_CHOICES = (
         ('live', 'Live'),
         ('certified', 'Certified'),
+        ('unofficial', 'Unofficial'),
     )
     
     # User meta
