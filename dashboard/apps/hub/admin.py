@@ -88,8 +88,18 @@ class StateAdmin(admin.ModelAdmin):
             '/static/grappelli/tinymce_setup/tinymce_setup.js'
         ]
 
+    def save_formset(self, request, form, formset, change):
+        if formset.model in (ElecData, Log):
+            instances = formset.save(commit=False)
+            for instance in instances:
+                instance.user = request.user
+                instance.save()
+            formset.save_m2m()
+        else:
+            formset.save()
+
 class ElecDataAdmin(admin.ModelAdmin):
-    #TODO: dynamic filter filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
+    #TODO: dynamic attribute filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
     #TODO: fieldsets - create fieldset that includes grouped booleans for reporting level and offices covered
     model = ElecData
     filter_horizontal = ['formats']
@@ -114,6 +124,10 @@ class ElecDataAdmin(admin.ModelAdmin):
         'state_leg',
         'local',
     ]
+
+    def save_model(self, request, obj, form, change):
+        gtobj.user = request.user
+        obj.save()
 
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)

@@ -495,6 +495,7 @@
       "state_leg": false, 
       "state_level": true, 
       "county_level": false, 
+      "user": 1, 
       "precinct_level": false, 
       "portal_link": "", 
       "direct_link": "", 
@@ -507,24 +508,19 @@
     }
   }, 
   {
-    "pk": "governor", 
-    "model": "hub.office", 
+    "pk": 5, 
+    "model": "hub.log", 
     "fields": {
-      "name": "Governor"
-    }
-  }, 
-  {
-    "pk": "us-house", 
-    "model": "hub.office", 
-    "fields": {
-      "name": "U.S. House"
-    }
-  }, 
-  {
-    "pk": "us-senate", 
-    "model": "hub.office", 
-    "fields": {
-      "name": "U.S. Senate"
+      "follow_up": null, 
+      "notes": "", 
+      "gdoc_link": "", 
+      "state": "DC", 
+      "contact": null, 
+      "user": 1, 
+      "formal_request": false, 
+      "date": "2012-12-02", 
+      "org": 1, 
+      "subject": "Testing"
     }
   }
 ]
