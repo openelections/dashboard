@@ -1,4 +1,5 @@
 from django.contrib.localflavor.us.models import PhoneNumberField
+from django.contrib.auth.models import User
 from django.contrib.localflavor.us.us_states import US_STATES
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -121,6 +122,9 @@ class ElecData(models.Model):
         ('live', 'Live'),
         ('certified', 'Certified'),
     )
+    
+    # User meta
+    user = models.ForeignKey(User, null=True)
 
     # Election meta
     race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
@@ -193,6 +197,7 @@ class ElecData(models.Model):
 
 class Log(models.Model):
     """Notes, docs and other bits from conversations with election contacts"""
+    user = models.ForeignKey(User, null=True)
     state = models.ForeignKey(State)
     date = models.DateField()
     subject = models.CharField(max_length=100)
