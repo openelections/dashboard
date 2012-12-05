@@ -126,7 +126,7 @@ class ElecDataAdmin(admin.ModelAdmin):
     ]
 
     def save_model(self, request, obj, form, change):
-        gtobj.user = request.user
+        obj.user = request.user
         obj.save()
 
 admin.site.register(Contact, ContactAdmin)
