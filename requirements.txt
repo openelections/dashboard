@@ -2,10 +2,8 @@ BeautifulSoup==3.2.1
 Django==1.4.1
 South==0.7.6
 argparse==1.2.1
-django-debug-toolbar==0.9.4
 django-extensions==0.9
 django-grappelli==2.4.2
-django-test-utils==0.3
 ipython==0.13
 psycopg2==2.4.5
 wsgiref==0.1.2
