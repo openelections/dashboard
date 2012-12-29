@@ -1,18 +1,18 @@
-from config.base.settings import *
+from dashboard.config.base.settings import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 INTERNAL_IPS=('127.0.0.1')
 
-ROOT_URLCONF = 'config.dev.urls'
+ROOT_URLCONF = 'dashboard.config.dev.urls'
 
-WSGI_APPLICATION = 'config.dev.dashboard_wsgi.application'
+WSGI_APPLICATION = 'dashboard.config.dev.wsgi.application'
 
 # If we use anything other than sqlite, move database settings in 
 # 'local_settings.py' file outside of version control
 try:
-    from config.dev.local_settings import *
+    from dashboard.config.dev.local_settings import *
 except ImportError:
     pass
 
