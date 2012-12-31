@@ -103,7 +103,7 @@ class ElecData(models.Model):
     Business rules:
         * On all entries, indicate:
             * if it's certified or live results
-            * if data available at precint, county, state levels
+            * if data available at precinct, county, state levels
             * which data formats that are available
         * General elections are common case, and assumes Prez/Sen/House/Gov
             * Indicate which (if any) non-core data sets are available (state officers, legislative, local)
@@ -117,6 +117,7 @@ class ElecData(models.Model):
         ('general', 'General'),
         ('runoff', 'Runoff'),
         ('recall', 'Recall'),
+        ('special', 'Special'),
     )
     RESULT_CHOICES = (
         ('live', 'Live'),
