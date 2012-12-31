@@ -18,8 +18,8 @@ DATABASES = {
     }
 }
 
-# If we use anything other than sqlite, move database settings in 
-# 'local_settings.py' file outside of version control
+# If not using sqlite, move database settings to 
+# 'local_settings.py' outside of version control
 try:
     from dashboard.config.prod.local_settings import *
 except ImportError:

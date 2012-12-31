@@ -1,7 +1,6 @@
 import os
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
-PUBLIC_DIR = os.path.join(PROJECT_ROOT, 'public')
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -18,11 +17,11 @@ USE_I18N = True
 USE_L10N = True
 
 # Below requires PROJECT_ROOT to be on PYTHONPATH
-ROOT_URLCONF = 'config.base.urls'
+ROOT_URLCONF = 'dashboard.config.base.urls'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PUBLIC_DIR, 'media')
+MEDIA_ROOT = '/var/www/dashboard/media'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -35,7 +34,7 @@ MEDIA_URL = '/media/'
 # be served up at the STATIC_URL such as http://my.mediaserver.com/apps/static/project/
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(PUBLIC_DIR, 'static')
+STATIC_ROOT = '/var/www/dashboard/static'
 
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
@@ -84,7 +83,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 
     # Project apps
-    'hub',
+    'dashboard.apps.hub',
 )
 
 GRAPPELLI_ADMIN_TITLE = 'The OpenElections Project'
@@ -99,14 +98,14 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
         'mail_admins': {
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'class': 'django.utils.log.AdminEmailHandler'
         }
     },
     'loggers': {
         'django.request': {
             'handlers': ['mail_admins'],
-            'level': 'ERROR',
+            'level': 'DEBUG',
             'propagate': True,
         },
     }
