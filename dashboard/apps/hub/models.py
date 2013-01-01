@@ -103,8 +103,8 @@ class ElecData(models.Model):
     Business rules:
         * On all entries, indicate:
             * if it's certified or live results
-            * if data available at precinct, county, state levels
-            * which data formats that are available
+            * levels of aggregation for results (precinct, county, state)
+            * available data formats
         * General elections are common case, and assumes Prez/Sen/House/Gov
             * Indicate which (if any) non-core data sets are available (state officers, legislative, local)
             * Do NOT fill in Office if it's a general race
@@ -147,16 +147,16 @@ class ElecData(models.Model):
     result_type = models.CharField(max_length=10, choices=RESULT_CHOICES)
     formats = models.ManyToManyField(DataFormat, help_text="Formats that data is available in")
 
-    # Reporting levels
-    state_level = models.BooleanField(default=False, db_index=True, help_text="True if state-level data is available")
-    county_level = models.BooleanField(default=False, db_index=True, help_text="True if county-level data is available")
-    precinct_level = models.BooleanField(default=False, db_index=True, help_text="True if precinct-level data is available")
+    # Reporting levels (aggregation levels(s) at which data is available)
+    state_level = models.BooleanField(default=False, db_index=True)
+    county_level = models.BooleanField(default=False, db_index=True)
+    precinct_level = models.BooleanField(default=False, db_index=True)
 
-    # Offices covered
-    prez = models.BooleanField(default=False, db_index=True, help_text="True if presidential results covered")
-    senate = models.BooleanField(default=False, db_index=True, help_text="True if senate covered")
-    house = models.BooleanField(default=False, db_index=True, help_text="True if house results covered")
-    gov = models.BooleanField(default=False, db_index=True, help_text="True if gubernatorial results")
+    # Offices covered (results include data for these offices)
+    prez = models.BooleanField(default=False, db_index=True)
+    senate = models.BooleanField(default=False, db_index=True)
+    house = models.BooleanField(default=False, db_index=True)
+    gov = models.BooleanField(default=False, db_index=True)
     state_officers = models.BooleanField(default=False, db_index=True, help_text="True if state officials besides Governor are available (e.g. Attorney General)")
     state_leg = models.BooleanField(default=False, db_index=True, help_text="True if state legislative data is available")
     local = models.BooleanField(default=False, db_index=True, help_text="True if Local election data is available")

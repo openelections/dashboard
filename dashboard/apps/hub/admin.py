@@ -15,10 +15,14 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
+        'description': """Special elections are edge cases that we itemize. <br>If this is a special,
+                          check the box and fill in the office. If it's a House race, include the District number 
+                          as an integer or 'AL' for At-Large.""",
         'fields':(('special', 'office', 'district'),),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Office(s) Covered', {
+        'description':'Data for this source includes results for:',
         'fields':(
             ('prez', 'senate', 'house', 'gov',),
             ('state_officers','state_leg','local'),
@@ -26,6 +30,7 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Reporting Level(s)', {
+        'description':'Data for this source is available at the following levels of aggregation:',
         'fields':(('state_level', 'county_level', 'precinct_level'),),
         'classes': ('grp-collapse grp-closed',),
     }),
