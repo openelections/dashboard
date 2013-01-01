@@ -159,7 +159,6 @@ class ElecData(models.Model):
     gov = models.BooleanField(default=False, db_index=True)
     state_officers = models.BooleanField(default=False, db_index=True, help_text="True if state officials besides Governor are available (e.g. Attorney General)")
     state_leg = models.BooleanField(default=False, db_index=True, help_text="True if state legislative data is available")
-    local = models.BooleanField(default=False, db_index=True, help_text="True if Local election data is available")
 
     # General note about data
     note = models.TextField(blank=True, help_text="Data quirks such as details about live results or reason for special election")

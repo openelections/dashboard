@@ -25,7 +25,7 @@ ELEC_DATA_FIELDSET = (
         'description':'Data for this source includes results for:',
         'fields':(
             ('prez', 'senate', 'house', 'gov',),
-            ('state_officers','state_leg','local'),
+            ('state_officers','state_leg',),
         ),
         'classes': ('grp-collapse grp-closed',),
     }),
@@ -159,7 +159,6 @@ class ElecDataAdmin(admin.ModelAdmin):
         'gov',
         'state_officers',
         'state_leg',
-        'local',
     ]
     fieldsets = ELEC_DATA_FIELDSET
 
