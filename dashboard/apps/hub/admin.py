@@ -4,6 +4,39 @@ from django.conf import settings
 
 from models import Contact, DataFormat, ElecData, Log, Office, Organization, State
 
+### FIELDSET ###
+ELEC_DATA_FIELDSET = (
+    ('Data Source', {
+        'fields':('organization','portal_link','direct_link', 'result_type', 'formats'),
+        'classes': ('grp-collapse grp-closed',),
+    }),
+    ('Race Meta', {
+        'fields':('state', ('start_date', 'end_date'), ('unexpired_term', 'runoff_for')),
+        'classes': ('grp-collapse grp-closed',),
+    }),
+    ('Special Election', {
+        'fields':(('special', 'office', 'district'),),
+        'classes': ('grp-collapse grp-closed',),
+    }),
+    ('Office(s) Covered', {
+        'fields':(
+            ('prez', 'senate', 'house', 'gov',),
+            ('state_officers','state_leg','local'),
+        ),
+        'classes': ('grp-collapse grp-closed',),
+    }),
+    ('Reporting Level(s)', {
+        'fields':(('state_level', 'county_level', 'precinct_level'),),
+        'classes': ('grp-collapse grp-closed',),
+    }),
+    ('Notes', {
+        'fields':('note',),
+        'classes': ('grp-collapse grp-closed',),
+    }),
+)
+
+### ADMIN CLASSES ###
+
 class DataFormatAdmin(admin.ModelAdmin):
     list_display = ('name',)
     prepopulated_fields = {'slug':('name',)}
@@ -22,7 +55,7 @@ class ContactInline(admin.StackedInline):
 
 class OrganizationAdmin(admin.ModelAdmin):
     #TODO: Add check to ensure that if gov agency is checked, 
-    #gov_level must also be selected and vice versa 
+    # gov_level must also be selected and vice versa 
     list_display = ('name', 'state',)
     list_display_link = ('url',)
     list_filter = ('gov_level', 'gov_agency',)
@@ -56,14 +89,14 @@ class OrganizationAdmin(admin.ModelAdmin):
         ]
 
 class ElecDataInline(admin.StackedInline):
-    #TODO:validation rule - to ensure district only filled out for special elections
+    #TODO: validation rule - to ensure district only filled out for special elections
     #TODO: validation rule -  If special election, enforce that Offices covered only checked for appropriate office and no others
     #TODO: js helper - Create JS copy button that lets you populate values of new inline using values of a previous inline
-    #TODO: fieldsets - create fieldset that includes grouped booleans for reporting level and offices covered
     model = ElecData
     extra = 0
     filter_horizontal = ['formats']
     prepopulated_fields = {'end_date':('start_date',)}
+    fieldsets = ELEC_DATA_FIELDSET
 
 class LogInline(admin.StackedInline):
     model = Log
@@ -100,7 +133,6 @@ class StateAdmin(admin.ModelAdmin):
 
 class ElecDataAdmin(admin.ModelAdmin):
     #TODO: dynamic attribute filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
-    #TODO: fieldsets - create fieldset that includes grouped booleans for reporting level and offices covered
     model = ElecData
     filter_horizontal = ['formats']
     list_display = ['__unicode__', 'end_date']
@@ -124,6 +156,7 @@ class ElecDataAdmin(admin.ModelAdmin):
         'state_leg',
         'local',
     ]
+    fieldsets = ELEC_DATA_FIELDSET
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
