@@ -11,7 +11,7 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Race Meta', {
-        'fields':('state', ('start_date', 'end_date'), ('unexpired_term', 'runoff_for')),
+        'fields':('state', ('start_date', 'end_date'), ('race_type', 'unexpired_term', 'runoff_for')),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
