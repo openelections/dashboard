@@ -140,7 +140,10 @@ class ElecDataAdmin(admin.ModelAdmin):
     #TODO: dynamic attribute filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
     model = ElecData
     filter_horizontal = ['formats']
-    list_display = ['__unicode__', 'end_date']
+    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'unexpired_term', 'special','office', 'district']
+    list_display_links = ['id']
+    list_editable = list_display[2:]
+    save_on_top = True
     list_filter = [
         'start_date',
         'race_type',
