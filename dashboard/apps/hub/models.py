@@ -167,7 +167,6 @@ class ElecData(models.Model):
             'race_type',
             'end_date',
             'special',
-            'unexpired_term',
             'office',
             'state',
             'district',
@@ -185,7 +184,6 @@ class ElecData(models.Model):
             self.state_id,
             self.race_type,
             'special' if self.special else '',
-            'unexpired term' if self.unexpired_term else '',
         )
         if self.start_date < self.end_date:
             key += (self.end_date.strftime('%Y-%m-%d'),)
