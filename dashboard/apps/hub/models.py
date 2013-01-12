@@ -106,7 +106,7 @@ class ElecData(models.Model):
             * levels of aggregation for results (precinct, county, state)
             * available data formats
         * General elections are common case, and assumes Prez/Sen/House/Gov
-            * Indicate which (if any) non-core data sets are available (state officers, legislative, local)
+            * Indicate which (if any) non-core races are available (state officers, legislative, local)
             * Do NOT fill in Office if it's a general race
         * Special/runoff/recall elections for federal or gov seats are edge case that should be itemized
             * Requires Office foreign key
@@ -117,7 +117,6 @@ class ElecData(models.Model):
         ('general', 'General'),
         ('runoff', 'Runoff'),
         ('recall', 'Recall'),
-        ('special', 'Special'),
     )
     RESULT_CHOICES = (
         ('live', 'Live'),
@@ -133,9 +132,8 @@ class ElecData(models.Model):
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True)
     runoff_for = models.DateField(blank=True, null=True, help_text="If runoff, date this election is a run-off for.")
-    special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election?")
-    unexpired_term = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this race for an unexpired term? (e.g. NY Senate for Clinton's seat in 2010)")
-    #TODO:open_primary = models.BooleanField(blank=True, default=False, help_text="Can members of multiple parties run in the same primary?")
+    special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
+    #TODO: open_primary = models.BooleanField(blank=True, default=False, help_text="Are partisan candidates on a single ballot?")
     state = models.ForeignKey(State)
     office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
     district = models.IntegerField(blank=True, null=True, db_index=True, help_text="Only fill out for special Congressional Races")
