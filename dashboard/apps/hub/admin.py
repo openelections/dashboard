@@ -105,42 +105,14 @@ class ElecDataInline(admin.StackedInline):
     fieldsets = ELEC_DATA_FIELDSET
 
     def queryset(self, request):
-        qset = cache.get('elecdata_qset')
-        if not qset:
-            qset = super(ElecDataInline, self)\
-                        .queryset(request)\
-                        .select_related('user', 'state', 'state__user', 'office','organization')\
-                        .prefetch_related('formats')
-            cache.set('elecdata_oh_qset', qset, 30)
-        return qset
+        return super(ElecDataInline, self).queryset(request).prefetch_related('formats')
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        #import pdb;pdb.set_trace()
-        fk_fields = (
-            'state',
-            'office',
-            'district',
-            'organization',
-        )
-        if 'queryset' in kwargs:
-            kwargs['queryset'] = kwargs['queryset'].select_related(*fk_fields)
-        else:
-            db = kwargs.pop('using', None)
-            kwargs['queryset'] = db_field.rel.to._default_manager.using(db).complex_filter(db_field.rel.limit_choices_to).select_related(*fk_fields)
-        return super(ElecDataInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
-
-    """
-    def formfield_for_manytomany(self, db_field, request, **kwargs):
-        #import pdb;pdb.set_trace()
-        if db_field.name == "formats":
-            cache_key = 'dataformat_%s' #% 
-            qset = cache.get(cache_key)
-            if not qset:
-                qset = DataFormat.objects.get()
-                cache.set(cache_key, qset, 300)
-            kwargs['queryset'] = qset
-        return super(ElecDataInline, self).formfield_for_manytomany(db_field, request, **kwargs)
-    """
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super(ElecDataInline, self).formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name in set(['office', 'organization', 'formats']):
+            # Force queryset evaluation and cache in .choices
+            formfield.choices = formfield.choices
+        return formfield
 
 class LogInline(admin.StackedInline):
     model = Log
