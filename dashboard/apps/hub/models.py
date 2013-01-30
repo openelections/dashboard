@@ -27,7 +27,8 @@ class Organization(models.Model):
     GOV_LEVELS = (
         ('county', 'County'),
         ('state','State'),
-        ('federal','Federal')
+        ('federal','Federal'),
+        ('local', 'Local')
     )
     name = models.CharField(max_length=150, unique=True)
     slug = models.SlugField()
