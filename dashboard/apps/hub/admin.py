@@ -12,7 +12,7 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Race Meta', {
-        'fields':('state', ('start_date', 'end_date'), ('race_type', 'runoff_for')),
+        'fields':('state', ('start_date', 'end_date'), ('race_type', 'runoff_for'), 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
@@ -31,8 +31,9 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Reporting Level(s)', {
-        'description':'Data for this source is available at the following levels of aggregation:',
-        'fields':(('state_level', 'county_level', 'precinct_level'),),
+        'description':'Reporting levels at which data is available. Only check Congress and State Leg levels if presidential '
+                      'or other statewide offices are available at those levels.',
+        'fields':(('state_level', 'cong_dist_level', 'state_leg_level', 'county_level', 'precinct_level'),'level_note'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Notes', {

@@ -145,11 +145,16 @@ class ElecData(models.Model):
     direct_link = models.URLField(blank=True, help_text="Direct link to data, if available")
     result_type = models.CharField(max_length=10, choices=RESULT_CHOICES)
     formats = models.ManyToManyField(DataFormat, help_text="Formats that data is available in")
+    absentee_and_provisional = models.BooleanField(default=False, db_index=True, help_text="True if absentee and provisional data available")
 
     # Reporting levels (aggregation levels(s) at which data is available)
     state_level = models.BooleanField(default=False, db_index=True)
     county_level = models.BooleanField(default=False, db_index=True)
     precinct_level = models.BooleanField(default=False, db_index=True)
+    # Congress and state leg are only used when statewide offices are broken down by those units
+    cong_dist_level = models.BooleanField(default=False, db_index=True)
+    state_leg_level = models.BooleanField(default=False, db_index=True)
+    level_note = models.TextField(blank=True)
 
     # Offices covered (results include data for these offices)
     prez = models.BooleanField(default=False, db_index=True)
