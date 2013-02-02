@@ -89,12 +89,6 @@ class OrganizationAdmin(admin.ModelAdmin):
         }),
     )
 
-    class Media:
-        js = [
-            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-            '/static/grappelli/tinymce_setup/tinymce_setup.js'
-        ]
-
 class ElecDataInline(admin.StackedInline):
     #TODO: validation rule - to ensure district only filled out for special elections
     #TODO: validation rule -  If special election, enforce that Offices covered only checked for appropriate office and no others
@@ -131,12 +125,6 @@ class StateAdmin(admin.ModelAdmin):
             'fields':('name', 'note',)
         }),
     )
-
-    class Media:
-        js = [
-            '/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-            '/static/grappelli/tinymce_setup/tinymce_setup.js'
-        ]
 
     def save_formset(self, request, form, formset, change):
         if formset.model in (ElecData, Log):
