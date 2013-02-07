@@ -1,0 +1,213 @@
+[
+  {
+    "pk": 4, 
+    "model": "hub.elecdata", 
+    "fields": {
+      "office": null, 
+      "absentee_and_provisional": false, 
+      "house": true, 
+      "race_type": "general", 
+      "special": false, 
+      "runoff_for": null, 
+      "district": null, 
+      "state_officers": true, 
+      "note": "", 
+      "senate": true, 
+      "state": "FL", 
+      "prez": true, 
+      "gov": false, 
+      "start_date": "2012-11-06", 
+      "end_date": "2012-11-06", 
+      "state_leg": true, 
+      "state_leg_level": false, 
+      "state_level": true, 
+      "county_level": true, 
+      "user": 2, 
+      "precinct_level": false, 
+      "portal_link": "http://doe.dos.state.fl.us/elections/resultsarchive/Index.asp?ElectionDate=11/6/2012&DATAMODE=", 
+      "cong_dist_level": false, 
+      "direct_link": "https://doe.dos.state.fl.us/elections/resultsarchive/downloadresults.asp?ElectionDate=11/6/2012&DATAMODE=", 
+      "level_note": "", 
+      "formats": [
+        "tsv", 
+        "html"
+      ], 
+      "organization": 3, 
+      "result_type": "certified"
+    }
+  }, 
+  {
+    "pk": 30, 
+    "model": "hub.elecdata", 
+    "fields": {
+      "office": null, 
+      "absentee_and_provisional": false, 
+      "house": true, 
+      "race_type": "primary", 
+      "special": false, 
+      "runoff_for": null, 
+      "district": null, 
+      "state_officers": false, 
+      "note": "", 
+      "senate": true, 
+      "state": "FL", 
+      "prez": false, 
+      "gov": false, 
+      "start_date": "2012-08-14", 
+      "end_date": "2012-08-14", 
+      "state_leg": true, 
+      "state_leg_level": false, 
+      "state_level": true, 
+      "county_level": true, 
+      "user": 2, 
+      "precinct_level": false, 
+      "portal_link": "https://doe.dos.state.fl.us/elections/resultsarchive/Index.asp?ElectionDate=8/14/2012&DATAMODE=", 
+      "cong_dist_level": false, 
+      "direct_link": "https://doe.dos.state.fl.us/elections/resultsarchive/downloadresults.asp?ElectionDate=8/14/2012&DATAMODE=", 
+      "level_note": "", 
+      "formats": [
+        "tsv", 
+        "html"
+      ], 
+      "organization": 3, 
+      "result_type": "certified"
+    }
+  }, 
+  {
+    "pk": 31, 
+    "model": "hub.elecdata", 
+    "fields": {
+      "office": null, 
+      "absentee_and_provisional": false, 
+      "house": false, 
+      "race_type": "primary", 
+      "special": false, 
+      "runoff_for": null, 
+      "district": null, 
+      "state_officers": false, 
+      "note": "", 
+      "senate": false, 
+      "state": "FL", 
+      "prez": true, 
+      "gov": false, 
+      "start_date": "2012-01-31", 
+      "end_date": "2012-01-31", 
+      "state_leg": false, 
+      "state_leg_level": false, 
+      "state_level": true, 
+      "county_level": true, 
+      "user": 2, 
+      "precinct_level": false, 
+      "portal_link": "https://doe.dos.state.fl.us/elections/resultsarchive/Index.asp?ElectionDate=1/31/2012&DATAMODE=", 
+      "cong_dist_level": false, 
+      "direct_link": "https://doe.dos.state.fl.us/elections/resultsarchive/downloadresults.asp?ElectionDate=1/31/2012&DATAMODE=", 
+      "level_note": "", 
+      "formats": [
+        "tsv", 
+        "html"
+      ], 
+      "organization": 3, 
+      "result_type": "certified"
+    }
+  }, 
+  {
+    "pk": 35, 
+    "model": "hub.elecdata", 
+    "fields": {
+      "office": "state-senate", 
+      "absentee_and_provisional": false, 
+      "house": false, 
+      "race_type": "primary", 
+      "special": true, 
+      "runoff_for": null, 
+      "district": 1, 
+      "state_officers": false, 
+      "note": "<p>Democratic primary only.</p>", 
+      "senate": false, 
+      "state": "FL", 
+      "prez": false, 
+      "gov": false, 
+      "start_date": "2011-09-20", 
+      "end_date": "2011-09-20", 
+      "state_leg": true, 
+      "state_leg_level": false, 
+      "state_level": true, 
+      "county_level": false, 
+      "user": 2, 
+      "precinct_level": false, 
+      "portal_link": "https://doe.dos.state.fl.us/elections/resultsarchive/Specials.asp?ElectionDate=9/20/2011&DATAMODE=", 
+      "cong_dist_level": false, 
+      "direct_link": "https://doe.dos.state.fl.us/elections/resultsarchive/downloadresults.asp?ElectionDate=9/20/2011&DATAMODE=", 
+      "level_note": "", 
+      "formats": [
+        "tsv", 
+        "html"
+      ], 
+      "organization": 3, 
+      "result_type": "certified"
+    }
+  }, 
+  {
+    "pk": 2, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "dwillis", 
+      "first_name": "Derek", 
+      "last_name": "Willis", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2013-02-01T10:15:51.244", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "pbkdf2_sha256$10000$94iLaKTi7ilg$PLCfKl4pQ3b/GOg3Jnc856wKm77fBLG03FcLSj+J7bU=", 
+      "email": "dwillis@gmail.com", 
+      "date_joined": "2012-12-30T23:54:49"
+    }
+  }, 
+  {
+    "pk": "FL", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Florida"
+    }
+  }, 
+  {
+    "pk": 3, 
+    "model": "hub.organization", 
+    "fields": {
+      "city": "Tallahassee", 
+      "name": "Florida Division of Elections", 
+      "gov_level": "state", 
+      "url": "http://election.dos.state.fl.us/index.shtml", 
+      "fec_page": "http://www.fec.gov/pubrec/cfsdd/fldir.htm", 
+      "state": "FL", 
+      "street": "500 South Bronough Street", 
+      "gov_agency": true, 
+      "slug": "florida-division-elections", 
+      "description": ""
+    }
+  }, 
+  {
+    "pk": "tsv", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "tsv"
+    }
+  }, 
+  {
+    "pk": "html", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "html"
+    }
+  }, 
+  {
+    "pk": "state-senate", 
+    "model": "hub.office", 
+    "fields": {
+      "name": "state-senate"
+    }
+  }
+]

@@ -168,6 +168,7 @@ class ElecData(models.Model):
     note = models.TextField(blank=True, help_text="Data quirks such as details about live results or reason for special election")
 
     class Meta:
+        ordering = ['state', '-end_date']
         verbose_name_plural = 'Election Data Sources'
         unique_together = (
             'race_type',
@@ -184,18 +185,40 @@ class ElecData(models.Model):
     def __repr__(self):
         return '<%s - %s>' % (self.__class__.__name__, self.elec_key(as_string=True))
 
+    @property
+    def offices(self):
+        office_map = (
+            'prez',
+            'senate',
+            'house',
+            'gov',
+            'state_officers',
+            'state_leg',
+        )
+        return tuple(attr for attr in office_map if getattr(self, attr))
+
+    def special_key(self, as_string=False):
+        if self.special:
+            bits = filter(lambda bit: bit, ('special', self.office_id, str(self.district)))
+        else:
+            bits = ()
+        if as_string:
+            return ', '.join(bits)
+        return bits
+
     def elec_key(self, as_string=False):
-        key = (
+        meta = (
             self.start_date.strftime('%Y-%m-%d'),
             self.state_id,
             self.race_type,
-            'special' if self.special else '',
         )
-        if self.start_date < self.end_date:
-            key += (self.end_date.strftime('%Y-%m-%d'),)
+        # Race meta: Itemized special election or list of offices
+        race_info = self.special_key() or self.offices
 
         if as_string:
-            key = ' - '.join([k for k in key if k])
+            key = " - ".join(meta) + ' (' + ', '.join([k for k in race_info if k]) + ')'
+        else:
+            key = meta + race_info
         return key
 
 class Log(models.Model):

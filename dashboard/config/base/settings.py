@@ -1,6 +1,6 @@
-import os
+from os.path import abspath, dirname, join
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__),"..",".."))
+PROJECT_ROOT = abspath(join(dirname(__file__),"..",".."))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -37,7 +37,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/var/www/dashboard/static'
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
+    join(PROJECT_ROOT, 'static'),
 )
 
 STATICFILES_FINDERS = (
@@ -62,7 +62,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_DIRS = (
-     os.path.join(PROJECT_ROOT, 'templates'),
+     join(PROJECT_ROOT, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

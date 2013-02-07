@@ -140,9 +140,8 @@ class ElecDataAdmin(admin.ModelAdmin):
     #TODO: dynamic attribute filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
     model = ElecData
     filter_horizontal = ['formats']
-    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'special','office', 'district']
+    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'special', 'offices']
     list_display_links = ['id']
-    list_editable = list_display[2:]
     save_on_top = True
     list_filter = [
         'start_date',
@@ -167,6 +166,12 @@ class ElecDataAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.user = request.user
         obj.save()
+
+    def offices(self, obj):
+        if obj.special:
+            return obj.special_key(as_string=True)
+        return ', '.join(obj.offices)
+    offices.short_description = "Office(s) up for election"
 
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
