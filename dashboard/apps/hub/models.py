@@ -187,7 +187,7 @@ class ElecData(models.Model):
 
     @property
     def offices(self):
-        office_map = (
+        office_fields = (
             'prez',
             'senate',
             'house',
@@ -195,11 +195,11 @@ class ElecData(models.Model):
             'state_officers',
             'state_leg',
         )
-        return tuple(attr for attr in office_map if getattr(self, attr))
+        return tuple(attr for attr in office_fields if getattr(self, attr))
 
     def special_key(self, as_string=False):
         if self.special:
-            bits = filter(lambda bit: bit, ('special', self.office_id, str(self.district)))
+            bits = filter(lambda bit: bit not in ('None', None), ('special', self.office_id, str(self.district)))
         else:
             bits = ()
         if as_string:
@@ -216,7 +216,7 @@ class ElecData(models.Model):
         race_info = self.special_key() or self.offices
 
         if as_string:
-            key = " - ".join(meta) + ' (' + ', '.join([k for k in race_info if k]) + ')'
+            key = " - ".join(meta) + ' (%s)' %  ', '.join(race_info)
         else:
             key = meta + race_info
         return key

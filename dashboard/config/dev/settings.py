@@ -41,10 +41,8 @@ except ImportError:
 
 # Test config tweaks/customizations
 if 'test' in sys.argv:
-    """
-    #DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
+    DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
     #FIXTURE_DIRS = (
     #    PROJECT_ROOT + '/foo/bar/fixtures',
     #)
-    """
     SOUTH_TESTS_MIGRATE = False

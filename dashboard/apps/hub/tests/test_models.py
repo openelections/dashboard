@@ -43,3 +43,12 @@ class ElecDataTest(TestCase):
         # Florida 2012 general
         general = ElecData.objects.get(pk=4)
         self.assertEqual(general.special_key(),())
+
+    def test_special_no_district(self):
+        """Special without a district should return a two-tuple without a district num, and elec_key should not have num"""
+        # Florida 2011 special
+        special = ElecData.objects.get(pk=35)
+        special.district = None
+        special.save()
+        self.assertEqual(special.special_key(), ('special', u'state-senate'))
+        self.assertEqual(special.elec_key(), ('2011-09-20', u'FL', u'primary', 'special', 'state-senate'))
