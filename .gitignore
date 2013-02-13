@@ -1,6 +1,7 @@
 *.py[co]
 *.vim
 *.sw[op]
+*~
 
 # Packages
 *.egg
