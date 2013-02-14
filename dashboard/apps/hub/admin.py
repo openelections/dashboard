@@ -48,6 +48,12 @@ ELEC_DATA_FIELDSET = (
     }),
 )
 
+VOLUNTEER_FIELDSET = (
+    (None, {
+        'fields':('user', 'volunteer', 'date', 'subject', 'follow_up', 'gdoc_link', 'notes'),
+    }),
+)
+
 ### ADMIN CLASSES ###
 
 class DataFormatAdmin(admin.ModelAdmin):
@@ -183,6 +189,7 @@ class ElecDataAdmin(admin.ModelAdmin):
 class VolunteerLogInline(admin.StackedInline):
     model = VolunteerLog
     extra = 0
+    fieldsets = VOLUNTEER_FIELDSET 
 
 #TODO: Create data_admin dynamic filter based on presence of value in User field (to indicate if volunteer has admin privs)
 #TODO: Create num_states adopted filter for change list page
@@ -202,8 +209,8 @@ class VolunteerAdmin(admin.ModelAdmin):
     )
     
 class VolunteerLogAdmin(admin.ModelAdmin):
-    pass
-
+    fieldsets = VOLUNTEER_FIELDSET 
+    
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
 admin.site.register(ElecData, ElecDataAdmin)
