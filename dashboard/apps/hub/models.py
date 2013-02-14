@@ -51,19 +51,6 @@ class Organization(models.Model):
             self.slug = slugify(self.name)
         super(Organization, self).save(*args, **kwargs)
 
-class Contact(models.Model):
-    org = models.ForeignKey(Organization)
-    first_name = models.CharField(max_length=30)
-    middle_name = models.CharField(max_length=30, blank=True)
-    last_name = models.CharField(max_length=70)
-    title = models.CharField(max_length=70, blank=True)
-    phone =  PhoneNumberField(blank=True)
-    mobile = PhoneNumberField(blank=True)
-    email = models.EmailField(max_length=254, blank=True)
-    note = models.TextField(blank=True)
-
-    def __unicode__(self):
-        return '%s (%s)' % (self.last_name, self.org)
 
 class DataFormat(models.Model):
     name = models.CharField(max_length=10)
@@ -221,18 +208,52 @@ class ElecData(models.Model):
             key = meta + race_info
         return key
 
-class Log(models.Model):
-    """Notes, docs and other bits from conversations with election contacts"""
-    user = models.ForeignKey(User)
-    state = models.ForeignKey(State)
+class BaseContact(models.Model):
+    first_name = models.CharField(max_length=30)
+    middle_name = models.CharField(max_length=30, blank=True)
+    last_name = models.CharField(max_length=70)
+    title = models.CharField(max_length=70, blank=True)
+    phone =  PhoneNumberField(blank=True)
+    mobile = PhoneNumberField(blank=True)
+    email = models.EmailField(max_length=254, blank=True)
+    note = models.TextField(blank=True)
+
+    class Meta:
+        abstract = True
+
+class Contact(BaseContact):
+    org = models.ForeignKey("Organization")
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.last_name, self.org)
+
+class Volunteer(BaseContact):
+    user = models.OneToOneField(User, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
+    affil = models.CharField("Affiliation", max_length=254, blank=True)
+    twitter = models.CharField(max_length=254, blank=True)
+    skype = models.CharField(max_length=254, blank=True)
+    states = models.ManyToManyField('State', blank=True)
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.last_name, self.org)
+
+class BaseLog(models.Model):
+    user = models.ForeignKey(User, help_text="User who entered data for the log")
     date = models.DateField()
     subject = models.CharField(max_length=100)
-    org = models.ForeignKey(Organization, blank=True, null=True, help_text="If conversation took place with more than one person at an org")
-    contact = models.ForeignKey(Contact, blank=True, null=True)
-    formal_request = models.BooleanField(default=False, help_text="True if this represents a formal FOIA request")
     gdoc_link = models.URLField(blank=True, help_text="Link to GDoc for extended notes on conversation")
     follow_up = models.DateField(blank=True, null=True, help_text="Date for follow up conversation (e.g. FOIA deadline)")
     notes = models.TextField(blank=True)
+
+    class Meta:
+        abstract = True
+
+class Log(BaseLog):
+    """Notes, docs and other bits from conversations with election contacts"""
+    state = models.ForeignKey(State)
+    org = models.ForeignKey(Organization, blank=True, null=True, help_text="If conversation took place with more than one person at an org")
+    contact = models.ForeignKey(Contact, blank=True, null=True)
+    formal_request = models.BooleanField(default=False, help_text="True if this represents a formal FOIA request")
 
     class Meta:
         verbose_name_plural = 'FOIA Logs'
@@ -247,6 +268,23 @@ class Log(models.Model):
         key = (self.state_id, self.date.strftime('%Y-%m-%d'),)
         if self.contact:
             key += (self.contact,)
+        key += (self.subject,)
+        if as_string:
+            key = ' - '.join(key)
+        return key
+
+class VolunteerLog(BaseLog):
+    """Track correspondence with Volunteers"""
+    volunteer = models.ForeignKey(Volunteer)
+
+    def __unicode__(self):
+        return self.log_key(as_string=True)
+
+    def __repr__(self):
+        return "<%s: %s>" % (self.__class__.__name__, self.log_key(as_string=True))
+
+    def log_key(self, as_string=False):
+        key = (self.user, self.date.strftime('%Y-%m-%d'),)
         key += (self.subject,)
         if as_string:
             key = ' - '.join(key)

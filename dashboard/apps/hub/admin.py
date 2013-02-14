@@ -1,9 +1,6 @@
-import os
 from django.contrib import admin
-from django.conf import settings
-from django.core.cache import cache
 
-from models import Contact, DataFormat, ElecData, Log, Office, Organization, State
+from models import Contact, DataFormat, ElecData, Log, Office, Organization, State, Volunteer, VolunteerLog
 
 ### FIELDSET ###
 ELEC_DATA_FIELDSET = (
@@ -182,9 +179,36 @@ class ElecDataAdmin(admin.ModelAdmin):
         return ', '.join(obj.offices)
     offices.short_description = "Office(s) up for election"
 
+
+class VolunteerLogInline(admin.StackedInline):
+    model = VolunteerLog
+    extra = 0
+
+#TODO: Create data_admin dynamic filter based on presence of value in User field (to indicate if volunteer has admin privs)
+#TODO: Create num_states adopted filter for change list page
+#TODO: Create states_adopted field for changelist page
+class VolunteerAdmin(admin.ModelAdmin):
+    inlines = [VolunteerLogInline]
+    fieldsets = (
+        (None, {
+            'fields':('user', 'first_name', 'middle_name', 'last_name', 'affil', 'title'),
+        }),
+        ('Contact Info', {
+            'fields':('phone', 'mobile', 'twitter', 'skype'),
+        }),
+        (None, {
+            'fields': ('states', 'note',),
+        }),
+    )
+    
+class VolunteerLogAdmin(admin.ModelAdmin):
+    pass
+
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
 admin.site.register(ElecData, ElecDataAdmin)
 admin.site.register(Office, OfficeAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(State, StateAdmin)
+admin.site.register(Volunteer, VolunteerAdmin)
+admin.site.register(VolunteerLog, VolunteerLogAdmin)
