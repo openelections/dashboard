@@ -31,9 +31,18 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Reporting Level(s)', {
-        'description':'Reporting levels at which data is available. Only check Congress and State Leg levels if presidential '
-                      'or other statewide offices are available at those levels.',
-        'fields':(('state_level', 'cong_dist_level', 'state_leg_level', 'county_level', 'precinct_level'),'level_note'),
+        'description':'Reporting levels at which results data are broken down. Racewide is the common case and denotes the widest jurisdiction '
+                      'or reporting level at which data are available. In the case of presidential, senate or gubernatorial races, '
+                      '"Racewide" implies statewide; in the case of U.S. House races, "Racewide" implies district-wide results.<br><br>' 
+                      'The Congressional District and State Legislative boxes should only be flagged when there are result breakdowns ' 
+                      'at those levels for unrelated offices. In other words, flag the Congressional District box if there are results for the '
+                      'presidential race at the congressional district level. Do NOT check the box to denote results for a U.S. House race '
+                      '(these should be denoted with the "Racewide" checkbox).',
+        'fields':(
+            ('state_level', 'county_level', 'precinct_level'),
+            ('cong_dist_level', 'state_leg_level',),
+            'level_note'
+        ),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Notes', {

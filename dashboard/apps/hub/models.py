@@ -148,21 +148,21 @@ class ElecData(models.Model):
     absentee_and_provisional = models.BooleanField(default=False, db_index=True, help_text="True if absentee and provisional data available")
 
     # Reporting levels (aggregation levels(s) at which data is available)
-    state_level = models.BooleanField(default=False, db_index=True)
-    county_level = models.BooleanField(default=False, db_index=True)
-    precinct_level = models.BooleanField(default=False, db_index=True)
+    state_level = models.BooleanField("Racewide", default=False, db_index=True)
+    county_level = models.BooleanField("County", default=False, db_index=True)
+    precinct_level = models.BooleanField("Precinct", default=False, db_index=True)
     # Congress and state leg are only used when statewide offices are broken down by those units
-    cong_dist_level = models.BooleanField(default=False, db_index=True)
-    state_leg_level = models.BooleanField(default=False, db_index=True)
+    cong_dist_level = models.BooleanField("Congressional Distritct", default=False, db_index=True)
+    state_leg_level = models.BooleanField("State legislative", default=False, db_index=True)
     level_note = models.TextField(blank=True)
 
     # Offices covered (results include data for these offices)
-    prez = models.BooleanField(default=False, db_index=True)
-    senate = models.BooleanField(default=False, db_index=True)
-    house = models.BooleanField(default=False, db_index=True)
+    prez = models.BooleanField("President", default=False, db_index=True)
+    senate = models.BooleanField("U.S. Senate", default=False, db_index=True)
+    house = models.BooleanField("U.S. House", default=False, db_index=True)
     gov = models.BooleanField(default=False, db_index=True)
-    state_officers = models.BooleanField(default=False, db_index=True, help_text="True if state officials besides Governor are available (e.g. Attorney General)")
-    state_leg = models.BooleanField(default=False, db_index=True, help_text="True if state legislative data is available")
+    state_officers = models.BooleanField("State Officers", default=False, db_index=True, help_text="True if there were races for state-level, executive-branch offices besides Governor, such as Attorney General.")
+    state_leg = models.BooleanField("State Legislators", default=False, db_index=True, help_text="True if there were races for state legislators. Do NOT check this for state executive officer races.")
 
     # General note about data
     note = models.TextField(blank=True, help_text="Data quirks such as details about live results or reason for special election")
