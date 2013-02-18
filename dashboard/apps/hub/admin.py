@@ -9,7 +9,7 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields':('state', ('start_date', 'end_date'), ('race_type', 'runoff_for'), 'absentee_and_provisional'),
+        'fields':('state', ('start_date', 'end_date'), 'race_type', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
@@ -158,7 +158,6 @@ class ElecDataAdmin(admin.ModelAdmin):
     list_filter = [
         'start_date',
         'race_type',
-        'runoff_for',
         'special',
         'office',
         'state',
