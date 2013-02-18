@@ -107,7 +107,6 @@ class ElecData(models.Model):
         ('recall', 'Recall'),
     )
     RESULT_CHOICES = (
-        ('live', 'Live'),
         ('certified', 'Certified'),
         ('unofficial', 'Unofficial'),
     )
@@ -118,7 +117,7 @@ class ElecData(models.Model):
     # Election meta
     race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
-    end_date = models.DateField(db_index=True)
+    end_date = models.DateField(db_index=True, blank=True)
     runoff_for = models.DateField(blank=True, null=True, help_text="If runoff, date this election is a run-off for.")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
     #TODO: open_primary = models.BooleanField(blank=True, default=False, help_text="Are partisan candidates on a single ballot?")
@@ -148,7 +147,7 @@ class ElecData(models.Model):
     senate = models.BooleanField("U.S. Senate", default=False, db_index=True)
     house = models.BooleanField("U.S. House", default=False, db_index=True)
     gov = models.BooleanField(default=False, db_index=True)
-    state_officers = models.BooleanField("State Officers", default=False, db_index=True, help_text="True if there were races for state-level, executive-branch offices besides Governor, such as Attorney General.")
+    state_officers = models.BooleanField("State Officers", default=False, db_index=True, help_text="True if there were races for state-level, executive-branch offices besides Governor, such as Attorney General or Secretary of State.")
     state_leg = models.BooleanField("State Legislators", default=False, db_index=True, help_text="True if there were races for state legislators. Do NOT check this for state executive officer races.")
 
     # General note about data
@@ -171,6 +170,11 @@ class ElecData(models.Model):
 
     def __repr__(self):
         return '<%s - %s>' % (self.__class__.__name__, self.elec_key(as_string=True))
+
+    def save(self, *args, **kwargs):
+        if not self.end_date:
+            self.end_date = self.start_date
+        super(ElecData, self).save(*args, **kwargs)
 
     @property
     def offices(self):
