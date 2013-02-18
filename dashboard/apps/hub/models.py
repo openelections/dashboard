@@ -148,7 +148,7 @@ class ElecData(models.Model):
     house = models.BooleanField("U.S. House", default=False, db_index=True)
     gov = models.BooleanField(default=False, db_index=True)
     state_officers = models.BooleanField("State Officers", default=False, db_index=True, help_text="True if there were races for state-level, executive-branch offices besides Governor, such as Attorney General or Secretary of State.")
-    state_leg = models.BooleanField("State Legislators", default=False, db_index=True, help_text="True if there were races for state legislators. Do NOT check this for state executive officer races.")
+    state_leg = models.BooleanField("State Legislators", default=False, db_index=True, help_text="True if there were races for state legislators such as State Senators or Assembly members. Do NOT check this for state executive officer races.")
 
     # General note about data
     note = models.TextField(blank=True, help_text="Data quirks such as details about live results or reason for special election")
