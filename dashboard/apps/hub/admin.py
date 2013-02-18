@@ -8,7 +8,7 @@ ELEC_DATA_FIELDSET = (
         'fields':('organization','portal_link','direct_link', 'result_type', 'formats'),
         'classes': ('grp-collapse grp-closed',),
     }),
-    ('Race Meta', {
+    ('Election Meta', {
         'fields':('state', ('start_date', 'end_date'), ('race_type', 'runoff_for'), 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
