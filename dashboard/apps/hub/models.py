@@ -231,7 +231,7 @@ class Contact(BaseContact):
         return '%s (%s)' % (self.last_name, self.org)
 
 class VolunteerRole(models.Model):
-    slug = models.SlugField(max_length=30)
+    slug = models.SlugField(max_length=30, primary_key=True)
     name = models.CharField(max_length=25)
 
     def __unicode__(self):
