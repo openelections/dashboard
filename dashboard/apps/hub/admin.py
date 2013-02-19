@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Contact, DataFormat, ElecData, Log, Office, Organization, State, Volunteer, VolunteerLog
+from models import Contact, DataFormat, ElecData, Log, Office, Organization, State, Volunteer, VolunteerLog, VolunteerRole
 
 ### FIELDSET ###
 ELEC_DATA_FIELDSET = (
@@ -200,15 +200,18 @@ class VolunteerAdmin(admin.ModelAdmin):
             'fields':('user', 'first_name', 'middle_name', 'last_name', 'affil', 'title'),
         }),
         ('Contact Info', {
-            'fields':('phone', 'mobile', 'twitter', 'skype'),
+            'fields':('phone', 'mobile', 'email', 'website', 'twitter', 'skype'),
         }),
         (None, {
-            'fields': ('states', 'note',),
+            'fields': ('roles', 'states', 'note',),
         }),
     )
     
 class VolunteerLogAdmin(admin.ModelAdmin):
     fieldsets = VOLUNTEER_FIELDSET 
+
+class VolunteerRoleAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug':('name',)}
     
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
@@ -218,3 +221,4 @@ admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(VolunteerLog, VolunteerLogAdmin)
+admin.site.register(VolunteerRole, VolunteerRoleAdmin)

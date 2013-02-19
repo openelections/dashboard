@@ -230,15 +230,27 @@ class Contact(BaseContact):
     def __unicode__(self):
         return '%s (%s)' % (self.last_name, self.org)
 
+class VolunteerRole(models.Model):
+    slug = models.SlugField(max_length=30)
+    name = models.CharField(max_length=25)
+
+    def __unicode__(self):
+        return "%s" % self.name
+
 class Volunteer(BaseContact):
     user = models.OneToOneField(User, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
     affil = models.CharField("Affiliation", max_length=254, blank=True)
     twitter = models.CharField(max_length=254, blank=True)
+    website = models.CharField(max_length=254, blank=True)
     skype = models.CharField(max_length=254, blank=True)
     states = models.ManyToManyField('State', blank=True)
+    roles = models.ManyToManyField(VolunteerRole, help_text="In what ways has this volunteer agreed to contribute?")
 
     def __unicode__(self):
-        return '%s (%s)' % (self.last_name, self.org)
+        key = ' '.join((self.first_name, self.last_name))
+        if self.affil:
+            key += ' (%s)' % self.affil
+        return key
 
 class BaseLog(models.Model):
     user = models.ForeignKey(User, help_text="User who entered data for the log")
