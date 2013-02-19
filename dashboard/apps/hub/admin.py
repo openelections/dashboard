@@ -27,8 +27,8 @@ ELEC_DATA_FIELDSET = (
         ),
         'classes': ('grp-collapse grp-closed',),
     }),
-    ('Reporting Levels', {
-        'description':'Reporting levels at which results data are broken down. Racewide is the common case and denotes the widest jurisdiction '
+    ('Results Breakdowns', {
+        'description':'The level at which results are broken down. Racewide is the common case and denotes the widest jurisdiction '
                       'or reporting level at which data are available. In the case of presidential, senate or gubernatorial races, '
                       '"Racewide" implies statewide; in the case of U.S. House races, "Racewide" implies district-wide results.<br><br>' 
                       'The Congressional District and State Legislative boxes should only be flagged when there are result breakdowns ' 
