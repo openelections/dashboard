@@ -139,7 +139,7 @@ class ElecData(models.Model):
     # Congress and state leg are only used when statewide offices are broken down by those units
     cong_dist_level = models.BooleanField("Congressional Distritct", default=False, db_index=True)
     state_leg_level = models.BooleanField("State legislative", default=False, db_index=True)
-    level_note = models.TextField(blank=True)
+    level_note = models.TextField("Note", blank=True)
 
     # Offices covered (results include data for these offices)
     prez = models.BooleanField("President", default=False, db_index=True)
