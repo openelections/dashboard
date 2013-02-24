@@ -9,7 +9,8 @@ But first we need the data. That’s where you come in.
 The first phase of OpenElections is about getting the lay of the land. For each state, we want you to look beyond what’s posted on election agency websites and identify the best available data sources. By developing relationships with election agencies and other organizations and experts, you’ll help us identify the best sources of results for your state.
 
 Gathering metadata - the data about the data - from those sources sets the stage for the second phase: collecting election results. Whether you’re a student, a journalist, a developer or a civic-minded retiree, we want your help with getting the data. To contribute, you can adopt a state, gather some metadata about its elections and submit CSVs that meet our data spec.
-Defining the Important Bits
+
+### Defining the Important Bits
 
 As much as we’d like to have the most comprehensive election results data in human history, we have to make some decisions on scope. Here is what is important to this project.
 
@@ -19,7 +20,7 @@ The time frame for OpenElections, at least for now, is from 2000-on. Again, we w
 
 Finally, we care about all elections that fit the first two criteria, meaning primary, runoff, general and special elections. That’s the preamble. Now let’s get the data!
 
-### Phase I: Metadata Gathering
+### Metadata Gathering
 
 So you adopted a state. Now what? Make a phone call. Maybe several phone calls. Yes, election results are online. But never assume an agency website has the best data available.
 
@@ -39,7 +40,7 @@ From there, we’ll need some basic information, including relevant URLs from th
 
 ### Using the Data Hub Admin
 
-If you haven’t already received login credentials for the data admin, you should contact the OpenElections team.
+If you haven’t already received login credentials for the data admin, you should contact the OpenElections team at openelections@gmail.com.
 
 The Data Hub includes several forms for data entry. The primary interface is the States section, which you can click to navigate to the data entry page for your state.
 
@@ -98,7 +99,7 @@ This level of detail helps inform the OpenElections team about edge-case races s
 
 ![Special Elections Meta](https://s3.amazonaws.com/openelex-static/docs/special_meta.png)
 
-NOTE: While we obviously feel that all elections are special, you should only fill in this part of the Election form if truly is a special election. Vacancies often occur in state and federal legislative bodies due to retirements, death and countless other reasons. In such cases, special elections are typically held outside of the normal election cycle to fill the vacant seat. These edge cases are frequent enough that we track each one individually in the Data Hub.
+NOTE: While we obviously feel that all elections are special, you should only fill in this part of the Election form if it truly is a special election. Vacancies often occur in state and federal legislative bodies due to retirements, death and countless other reasons. In such cases, special elections are typically held outside of the normal election cycle to fill the vacant seat. These edge cases are frequent enough that we track each one individually in the Data Hub.
 
 **Special** - Check this box if the race is a special election
 
@@ -147,4 +148,4 @@ The FOIA contact logs should be used to track the history of important conversat
 
 * Initial phone call to an agency to inquire if they have a database of election results
 * Detailed conversations about the technical aspects of the results system (extended conversations can be recorded in a Google Doc and linked to from the FOIA Log record - be sure to make the Google Doc accessible to anyone who has the link).
-* Formal public records requests
+* Formal public records requests - please keep copies of any records requests submitted.
