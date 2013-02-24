@@ -8,6 +8,9 @@ Voters unable or unwilling to vote at polling stations on Election Day can vote 
 ###### Certified Election Results
 Certification occurs after a local or state canvassing board finalizes the election results and declares an official winner.  State statutes may authorize local canvassing boards to issue certificates of election for local offices.  State canvassing boards or other state officials issue certificates of election for multi-district, state, and federal offices. 
 
+###### Congressional
+Congressional is an umbrella term that means the U.S. House and U.S. Senate. House and Senate refer to the specific chamber.
+
 ###### Congressional District Reporting Level
 Results tabulated by congressional district for a state-wide or federal race. A congressional district is an electoral constituency that elects a single member of congress. 
 
@@ -32,9 +35,6 @@ An election that usually determines the occupant of a seat. Usually held in Nove
 ###### Governor
 The governor heads the executive branch in each state or territory and, depending on the individual jurisdiction, may have considerable control over government budgeting, the power of appointment of many officials (including many judges), and a significant role in legislation. 
 
-###### House vs Congressional vs Senate
-Congressional is an umbrella term that means the U.S. House and U.S. Senate. House and Senate refer to the specific chamber.
-
 ###### Open Primary
 A primary election in which candidates appear on a single ballot, regardless of party affiliation, and voters are allowed to vote for any candidate. In many cases, the top two vote-getters, possibly of the same party, advance to the general election. In some instances, a candidate who receives more than 50 percent becomes the winner.
 
@@ -51,7 +51,7 @@ An election that narrows the field of candidates before an election for office. 
 Provisional ballots are for would-be voters who assert that they are registered but whose names cannot be found in the official list available at a polling place. The voter completes a written ballot, which is placed in a sealed envelope. The ballot is opened and counted only if the voter is subsequently found to be registered.
 
 ###### Race Type
-The possible types of elections: Primary, Runoff, General and Recall. Special elections are not included because special elections are one of these.
+The possible types of elections: Primary, Runoff, General and Recall. Special primaries, generals and runoffs are often held outside of the normal election cycle when a seat becomes vacant (See "Special Election" for more details).
 
 ###### Race-wide Reporting Level
 Overall totals for a race, regardless of its geographical boundaries.
@@ -69,7 +69,7 @@ An election held to fill a political office that has become vacant in between re
 The date an election begins. Most elections begin and end on a single day.
 
 ###### State Officers
-Executive-level statewide offices (other than governor). Some examples include Attorney General, Treasurer and Secretary of State, although office titles can vary by state. Usually elected on the same date as the governor.
+Executive-level statewide offices (in addition to governor). Some examples include Attorney General, Treasurer and Secretary of State, although office titles can vary by state. Usually elected on the same date as the governor.
 
 ###### State Legislative Reporting Level
 Results tabulated by state legislative district for a state-wide or federal race. A state legislative district elects one or more members of the state legislature.
