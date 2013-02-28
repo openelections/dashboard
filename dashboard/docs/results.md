@@ -50,7 +50,7 @@ Each election date represents a directory containing CSV and JSON files covering
   * suffix - a string representing the parsed suffix of the candidate
   * name_raw - a string representing the "raw" full name of the candidate from the results, if present
   * party - a string representing the "raw" party name or abbreviation from the results
-  * winner - a boolean marked true for the winning candidate
+  * winner - a boolean marked true for the winning candidate; all other candidates are marked as false
   * votes - the race-wide number of votes received by a candidate
   * pct - the race-wide percentage of votes received by a candidate
   
