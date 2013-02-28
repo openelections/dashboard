@@ -57,6 +57,7 @@ Each election date represents a directory containing CSV and JSON files covering
 Depending on the state, there may be other fields in the results data, including:
 
   * write_in - a boolean marked true if the candidate is a write-in candidate
+  * precincts - the total number of precincts for a reporting level
   
 ### Other Result Levels
 
