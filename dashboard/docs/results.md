@@ -20,7 +20,7 @@ In the CSV version, years and volunteers are comma-delimited text; in JSON they 
 
 ### Elections by Year
 
-Inside a particular year's directory within a state there is a file called "elections" listing the elections that occurred in that year and information about the status and scope of results data. An example url would be: http://example.com/us/states/md/2012/elections.json
+Inside a particular year's directory within a state there is a file called "elections" listing the elections that occurred in that year and information about the status and scope of results data. An example url would be: [https://s3.amazonaws.com/openelex-data/us/states/md/2012/elections.json](https://s3.amazonaws.com/openelex-data/us/states/md/2012/elections.json) for JSON and [https://s3.amazonaws.com/openelex-data/us/states/md/2012/elections.csv](https://s3.amazonaws.com/openelex-data/us/states/md/2012/elections.csv) for CSV.
 
 The layout of the elections file is as follows:
 
@@ -58,6 +58,8 @@ Depending on the state, there may be other fields in the results data, including
 
   * write_in - a boolean marked true if the candidate is a write-in candidate
   * precincts - the total number of precincts for a reporting level
+  
+Here's [an example of a JSON president file](https://s3.amazonaws.com/openelex-data/us/states/md/2012/2012-11-06/president.json) and a [CSV president file](https://s3.amazonaws.com/openelex-data/us/states/md/2012/2012-11-06/president.csv).
   
 ### Other Result Levels
 
