@@ -122,7 +122,7 @@ class ElecData(models.Model):
     #TODO: open_primary = models.BooleanField(blank=True, default=False, help_text="Are partisan candidates on a single ballot?")
     state = models.ForeignKey(State)
     office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
-    district = models.IntegerField(blank=True, null=True, db_index=True, help_text="Only fill out for special Congressional Races")
+    district = models.IntegerField(blank=True, null=True, db_index=True, help_text="Only fill out for legislative special elections")
 
     # Data Source Meta
     organization = models.ForeignKey(Organization, null=True, help_text="Agency or Org that is source of the data")
