@@ -223,6 +223,7 @@ class BaseContact(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['last_name']
 
 class Contact(BaseContact):
     org = models.ForeignKey("Organization")
@@ -247,11 +248,15 @@ class Volunteer(BaseContact):
     roles = models.ManyToManyField(VolunteerRole, help_text="In what ways has this volunteer agreed to contribute?")
 
     def __unicode__(self):
-        key = ' '.join((self.first_name, self.last_name))
+        key = self.full_name
         if self.affil:
             key += ' (%s)' % self.affil
         return key
 
+    @property
+    def full_name(self):
+        return ' '.join((self.first_name, self.last_name))
+    
 class BaseLog(models.Model):
     user = models.ForeignKey(User, help_text="User who entered data for the log")
     date = models.DateField()

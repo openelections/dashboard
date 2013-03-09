@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
+from django.contrib.localflavor.us.us_states import US_STATES
+from django.utils.translation import ugettext_lazy as _
 
 from models import Contact, DataFormat, ElecData, Log, Office, Organization, State, Volunteer, VolunteerLog, VolunteerRole
 
@@ -126,7 +129,7 @@ class LogInline(admin.StackedInline):
     extra = 0
 
 class StateAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name', 'state_volunteers']
     inlines = [
         ElecDataInline,
         LogInline,
@@ -147,6 +150,11 @@ class StateAdmin(admin.ModelAdmin):
             formset.save_m2m()
         else:
             formset.save()
+
+    def state_volunteers(self, obj):
+        return ", ".join([vol.full_name for vol in obj.volunteer_set.all()])
+    state_volunteers.short_description = "Volunteers assigned to each state"
+
 
 class ElecDataAdmin(admin.ModelAdmin):
     #TODO: dynamic attribute filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
@@ -190,10 +198,29 @@ class VolunteerLogInline(admin.StackedInline):
     extra = 0
     fieldsets = VOLUNTEER_FIELDSET 
 
+class VolunteersByStateFilter(SimpleListFilter):
+    title = _('States')
+    parameter_name = 'states'
+
+    def lookups(self, request, model_amdin):
+        return US_STATES
+
+    def queryset(self, request, queryset):
+        val = self.value()
+        if not val or val.lower() == 'all':
+            return queryset.all()
+        if val in set([state[0] for state in US_STATES]):
+            return queryset.filter(states=val)
+
+
 #TODO: Create data_admin dynamic filter based on presence of value in User field (to indicate if volunteer has admin privs)
 #TODO: Create num_states adopted filter for change list page
 #TODO: Create states_adopted field for changelist page
 class VolunteerAdmin(admin.ModelAdmin):
+    list_display = ('first_name','last_name', 'assigned_states', 'email', 'twitter', 'phone', 'mobile')
+    list_display_links = ('last_name',)
+    list_select_related = True 
+    list_filter = (VolunteersByStateFilter,)
     inlines = [VolunteerLogInline]
     fieldsets = (
         (None, {
@@ -206,6 +233,11 @@ class VolunteerAdmin(admin.ModelAdmin):
             'fields': ('roles', 'states', 'note',),
         }),
     )
+
+    def assigned_states(self, obj):
+        return ", ".join(obj.states.values_list('postal', flat=True))
+    assigned_states.short_description = "States covered by this volunteer"
+
     
 class VolunteerLogAdmin(admin.ModelAdmin):
     fieldsets = VOLUNTEER_FIELDSET 
