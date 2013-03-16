@@ -125,6 +125,7 @@ class ElecDataInline(admin.StackedInline):
     #TODO: validation rule - ensure district only filled out for special elections
     #TODO: validation rule -  If special election, enforce that Offices covered only checked for appropriate office and no others
     model = ElecData
+    template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0
     filter_horizontal = ['formats']
     prepopulated_fields = {'end_date': ('start_date',)}
