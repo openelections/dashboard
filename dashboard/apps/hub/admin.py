@@ -160,6 +160,9 @@ class StateAdmin(admin.ModelAdmin):
         }),
     )
 
+    class Media:
+        js = ("/static/admin/js/CopyButton.js",)
+
     def save_formset(self, request, form, formset, change):
         if formset.model in (ElecData, Log):
             instances = formset.save(commit=False)
