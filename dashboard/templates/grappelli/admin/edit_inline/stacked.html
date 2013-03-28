@@ -35,9 +35,11 @@
                         <li><a href="javascript://" class="grp-icon grp-remove-handler" title="{% trans 'Delete Item' %}"></a></li>
                     {% endif %}
                     {% comment %}
-                    <li><a href="javascript://" class="grp-icon grp-copy-handler"><img src="/static/admin/img/copy_btn.png" alt="Create a new record by copying this one"></img></a></li>
+                        <li><a href="javascript://" class="grp-icon grp-copy-handler"><img src="/static/admin/img/copy_btn.png" alt="Create a new record by copying this one"></img></a></li>
                     {% endcomment %}
-                    <li><a href="javascript://" class="grp-icon grp-copy-handler" title="{% trans 'Create a new record by copying this one' %}">Copy</a></li>
+                    {% if not forloop.last %}
+                        <li><a href="javascript://" class="grp-icon grp-copy-handler" title="{% trans 'Create a new record by copying this one' %}">Copy</a></li>
+                    {% endif %}
                 </ul>
                 {% if inline_admin_form.form.non_field_errors %}
                     {{ inline_admin_form.form.non_field_errors }}
