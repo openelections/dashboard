@@ -22,7 +22,7 @@ OPELEC.inlines = {
             replacement = prefix + '-' + meta.totalFormsCount.toString();
 
         // Update ids in forms which have a dash (e.g. elecdata_set-0)
-        this.updateFormIndexes(inline_copy, to_replace, replacement);
+        OPELEC.inlines.updateFormIndexes(inline_copy, to_replace, replacement);
 
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
