@@ -14,22 +14,30 @@ OPELEC.inlines = {
             empty_template = inlines_div.find("#" + prefix + "-empty"),
             meta = OPELEC.inlines.getInlinesAndFormMeta(inlines_div);
 
-        // Clone the element and update its indexes
-        var inline_copy = inline.clone(true);
+        var inline_copy = inline.clone();
+
+        // Fix h3 text
+        var header = inline_copy.find('h3');
+        var new_header = header.text().split(/\d{4}/)[0].trim();
+        header.text(new_header);
 
         var orig_idx = parseInt(inline_copy.attr('id').split(prefix)[1], 10),
             to_replace = prefix + '-' + orig_idx.toString(),
             replacement = prefix + '-' + meta.totalFormsCount.toString();
 
-        // Update ids in forms which have a dash (e.g. elecdata_set-0)
+        // Update index in form ids
         OPELEC.inlines.updateFormIndexes(inline_copy, to_replace, replacement);
 
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
 
+
         // Insert inline into DOM
         inline_copy.insertBefore(empty_template);
-
+        // Initialize click handlers
+        inline_copy.grp_collapsible();
+        inline_copy.find('.grp-collapse').grp_collapsible();
+        //TODO: Add rest of handler initializations
     },
     getInlinesAndFormMeta: function(inlines_div) {
         var prefix = OPELEC.inlines.getFormPrefix(inlines_div);
