@@ -25,14 +25,21 @@ OPELEC.inlines = {
             to_replace = prefix + '-' + orig_idx.toString(),
             replacement = prefix + '-' + meta.totalFormsCount.toString();
 
+        // Insert inline into DOM
+        inline_copy.insertBefore(empty_template);
+
         // Update index in form ids
         OPELEC.inlines.updateFormIndexes(inline_copy, to_replace, replacement);
 
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
-
-        // Insert inline into DOM
-        inline_copy.insertBefore(empty_template);
+        
+        /*
+        grappelli.reinitDateTimeFields(inline_copy);
+        grappelli.updateSelectFilter(inline_copy);
+        inline_copy.grp_collapsible();
+        inline_copy.find(".grp-collapse").grp_collapsible();
+        */
     },
     getInlinesAndFormMeta: function(inlines_div) {
         var prefix = OPELEC.inlines.getFormPrefix(inlines_div);
