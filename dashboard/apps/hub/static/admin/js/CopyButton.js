@@ -31,13 +31,8 @@ OPELEC.inlines = {
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
 
-
         // Insert inline into DOM
         inline_copy.insertBefore(empty_template);
-        // Initialize click handlers
-        inline_copy.grp_collapsible();
-        inline_copy.find('.grp-collapse').grp_collapsible();
-        //TODO: Add rest of handler initializations
     },
     getInlinesAndFormMeta: function(inlines_div) {
         var prefix = OPELEC.inlines.getFormPrefix(inlines_div);
