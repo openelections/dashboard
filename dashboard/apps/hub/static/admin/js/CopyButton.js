@@ -14,7 +14,7 @@ OPELEC.inlines = {
             empty_template = inlines_div.find("#" + prefix + "-empty"),
             meta = OPELEC.inlines.getInlinesAndFormMeta(inlines_div);
 
-        var inline_copy = inline.clone();
+        var inline_copy = inline.clone(true);
 
         // Fix h3 text
         var header = inline_copy.find('h3');
