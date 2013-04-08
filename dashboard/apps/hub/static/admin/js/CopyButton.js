@@ -14,7 +14,7 @@ OPELEC.inlines = {
             empty_template = inlines_div.find("#" + prefix + "-empty"),
             meta = OPELEC.inlines.getInlinesAndFormMeta(inlines_div);
 
-        var inline_copy = inline.clone(true);
+        var inline_copy = inline.clone();
 
         // Fix h3 text
         var header = inline_copy.find('h3');
@@ -33,13 +33,52 @@ OPELEC.inlines = {
 
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
-        
-        /*
-        grappelli.reinitDateTimeFields(inline_copy);
+
+        // Insert inline into DOM
+        inline_copy.insertBefore(empty_template);
+
+        // Re-init some grappelli initializers and edge-case handling 
+        // datepicker (explained below)
         grappelli.updateSelectFilter(inline_copy);
+
+        var options = {
+            //appendText: '(mm/dd/yyyy)',
+            showOn: 'button',
+            buttonImageOnly: false,
+            buttonText: '',
+            dateFormat: grappelli.getFormat('date'),
+            showButtonPanel: true,
+            showAnim: '',
+            // HACK: sets the current instance to a global var.
+            // needed to actually select today if the today-button is clicked.
+            // see onClick handler for ".ui-datepicker-current"
+            beforeShow: function(year, month, inst) {
+                grappelli.datepicker_instance = this;
+            }
+        };
+        // Reinitialize datepicker, due to issue described here:
+        // http://stackoverflow.com/questions/2441061/problem-when-cloning-jquery-ui-datepicker
+        var dateFields = inline_copy.find('.vDateField');
+        dateFields.removeClass('hasDatepicker')
+                  .removeData('datepicker')
+                  .unbind()
+                  .datepicker(options);
+        dateFields.each(function() {
+            var buttons = grp.jQuery(this).siblings('.ui-datepicker-trigger');
+            if (buttons.length > 1) {
+                buttons.eq(1).remove();
+            };
+        });
         inline_copy.grp_collapsible();
-        inline_copy.find(".grp-collapse").grp_collapsible();
-        */
+        inline_copy.find('.grp-collapse').grp_collapsible();
+        //TODO: restore delete handler
+        //TODO: fix format M2M
+        // Re-initialize copy handler
+        inline_copy.find('a.grp-copy-handler').click(function(e) {
+            var target = e.target;
+            var target = (e.target) ? e.target : e.srcElement;
+            OPELEC.inlines.copy(target);
+        });
     },
     getInlinesAndFormMeta: function(inlines_div) {
         var prefix = OPELEC.inlines.getFormPrefix(inlines_div);
