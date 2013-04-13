@@ -22,14 +22,15 @@ OPELEC.inlines = {
         header.text(new_header);
 
         var orig_idx = parseInt(inline_copy.attr('id').split(prefix)[1], 10),
-            to_replace = prefix + '-' + orig_idx.toString(),
-            replacement = prefix + '-' + meta.totalFormsCount.toString();
-
-        // Insert inline into DOM
-        inline_copy.insertBefore(empty_template);
+            new_idx = meta.totalFormsCount,
+            to_replace = prefix + '-' + orig_idx,
+            replacement = prefix + '-' + new_idx;
 
         // Update index in form ids
         OPELEC.inlines.updateFormIndexes(inline_copy, to_replace, replacement);
+
+        // Remove the ID value copied from prior record (this corresponds to db primary key)
+        inline_copy.find('#id_' + prefix + '-' + new_idx + '-id').removeAttr('value');
 
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
@@ -71,8 +72,8 @@ OPELEC.inlines = {
         });
         inline_copy.grp_collapsible();
         inline_copy.find('.grp-collapse').grp_collapsible();
-        //TODO: restore delete handler
-        //TODO: fix format M2M
+        //TODO: re-init delete handler
+        //
         // Re-initialize copy handler
         inline_copy.find('a.grp-copy-handler').click(function(e) {
             var target = e.target;
