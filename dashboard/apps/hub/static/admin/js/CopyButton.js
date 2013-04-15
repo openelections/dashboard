@@ -32,17 +32,42 @@ OPELEC.inlines = {
         // Remove the ID value copied from prior record (this corresponds to db primary key)
         inline_copy.find('#id_' + prefix + '-' + new_idx + '-id').removeAttr('value');
 
+        // Remove delete button input and change inline class to remove button 
+        // handler (this matches behavior of Add button)
+        var opts = OPELEC.inlines.opts();
+        inline_copy.find('#id_' + prefix + '-' + new_idx + '-DELETE').remove();
+        inline_copy.find('.' + opts.deleteCssClass)
+                   .removeClass(opts.deleteCssClass)
+                   .addClass(opts.removeCssClass);
+
         // Update Total Forms count
         meta.totalForms.val(meta.totalFormsCount + 1);
 
         // Insert inline into DOM
         inline_copy.insertBefore(empty_template);
 
+        OPELEC.inlines.onAfterCopied(inline_copy, prefix, opts);
+    },
+    opts: function() {
+        return {
+            prefix: "form",                         // The form prefix for your django formset
+            addText: "add another",                 // Text for the add link
+            deleteText: "remove",                   // Text for the delete link
+            addCssClass: "grp-add-handler",             // CSS class applied to the add link
+            copyCssClass: "grp-copy-handler",
+            removeCssClass: "grp-remove-handler",       // CSS class applied to the remove link
+            deleteCssClass: "grp-delete-handler",       // CSS class applied to the delete link
+            emptyCssClass: "grp-empty-form",            // CSS class applied to the empty row
+            formCssClass: "grp-dynamic-form",           // CSS class applied to each form in a formset
+            predeleteCssClass: "grp-predelete"
+        };
+    },
+    onAfterCopied: function(inline_copy, prefix, opts) {
         // Re-init some grappelli initializers and edge-case handling 
         // datepicker (explained below)
         grappelli.updateSelectFilter(inline_copy);
 
-        var options = {
+        var date_opts = {
             //appendText: '(mm/dd/yyyy)',
             showOn: 'button',
             buttonImageOnly: false,
@@ -63,7 +88,7 @@ OPELEC.inlines = {
         dateFields.removeClass('hasDatepicker')
                   .removeData('datepicker')
                   .unbind()
-                  .datepicker(options);
+                  .datepicker(date_opts);
         dateFields.each(function() {
             var buttons = grp.jQuery(this).siblings('.ui-datepicker-trigger');
             if (buttons.length > 1) {
@@ -72,14 +97,49 @@ OPELEC.inlines = {
         });
         inline_copy.grp_collapsible();
         inline_copy.find('.grp-collapse').grp_collapsible();
-        //TODO: re-init delete handler
-        //
+
+        // Re-init remove handler
+        OPELEC.inlines.removeButtonHandler(inline_copy.find("a." + opts.removeCssClass), prefix, opts);
+
+        // Re-init SelectBox selections (which lose the attribute on clone)
+        inline_copy.find('.selector-chosen option').each(function() {
+            this.selected = 'selected';
+        });
+
         // Re-initialize copy handler
-        inline_copy.find('a.grp-copy-handler').click(function(e) {
+        inline_copy.find('a.' + opts.copyCssClass).click(function(e) {
             var target = e.target;
             var target = (e.target) ? e.target : e.srcElement;
             OPELEC.inlines.copy(target);
         });
+    },
+    removeButtonHandler: function(elem, prefix, options) {
+        elem.bind("click", function() {
+            var inline = elem.parents(".grp-group"),
+                form = grp.jQuery(this).parents("." + options.formCssClass).first(),
+                totalForms = inline.find("#id_" + prefix + "-TOTAL_FORMS"),
+                maxForms = inline.find("#id_" + prefix + "-MAX_NUM_FORMS");
+            // remove form
+            form.remove();
+            // update total forms
+            var index = parseInt(totalForms.val(), 10);
+            totalForms.val(index - 1);
+            // show add button in case we've dropped below max
+            if ((maxForms.val() !== 0) && (maxForms.val() - totalForms.val()) > 0) {
+                showAddButtons(inline, options);
+            }
+            // update form index (for all forms)
+            var re = /-\d+-/g,
+                i = 0;
+            inline.find("." + options.formCssClass).each(function() {
+                updateFormIndex(grp.jQuery(this), options, re, "-" + i + "-");
+                i++;
+            });
+        });
+    },
+    showAddButtons: function(elem, options) {
+        var addButtons = elem.find("a." + options.addCssClass);
+        addButtons.show().parents('.grp-add-item').show();
     },
     getInlinesAndFormMeta: function(inlines_div) {
         var prefix = OPELEC.inlines.getFormPrefix(inlines_div);
