@@ -105,6 +105,9 @@ OPELEC.inlines = {
         inline_copy.find('.selector-chosen option').each(function() {
             this.selected = 'selected';
         });
+        // Add "available" and "chosen" options to SelectBox cache
+        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_from"]');
+        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_to"]');
 
         // Re-initialize copy handler
         inline_copy.find('a.' + opts.copyCssClass).click(function(e) {
@@ -179,5 +182,15 @@ OPELEC.inlines = {
             new_id = replace_with.replace('-','')
             div_id = elem.attr('id');
         elem.attr('id', div_id.replace(old_id, new_id));
+    },
+    updateSelectBoxCache: function(inline_div, selector) {
+        var box = inline_div.find(selector),
+            id = box.attr('id');
+        SelectBox.cache[id] = new Array();
+        var cache = SelectBox.cache[id];
+        box.find('option').each(function(){
+            cache.push({value: this.value, text: this.text, displayed: 1});
+        });
     }
+
 };
