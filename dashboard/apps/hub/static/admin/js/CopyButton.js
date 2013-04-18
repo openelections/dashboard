@@ -158,8 +158,9 @@ OPELEC.inlines = {
     getFormPrefix: function(inlines_div) {
         return inlines_div[0].id.split('-')[0];
     },
-    updateFormIndexes: function(elem, replace_regex, replace_with) {
+    updateFormIndexes: function(elem, replace_text, replace_with) {
         elem.find(':input,span,table,iframe,label,a,ul,p,img,div').each(function() {
+            var replace_regex = new RegExp(replace_text, "g");
             var node = grp.jQuery(this),
                 node_id = node.attr('id'),
                 node_name = node.attr('name'),
@@ -174,7 +175,7 @@ OPELEC.inlines = {
         });
 
         // Fix parent div's id which does not have a dash (e.g. elecdata_set0)
-        var old_id = replace_regex.replace('-',''),
+        var old_id = replace_text.replace('-',''),
             new_id = replace_with.replace('-','')
             div_id = elem.attr('id');
         elem.attr('id', div_id.replace(old_id, new_id));
