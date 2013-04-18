@@ -101,13 +101,14 @@ OPELEC.inlines = {
         // Re-init remove handler
         OPELEC.inlines.removeButtonHandler(inline_copy.find("a." + opts.removeCssClass), prefix, opts);
 
+        // Add "available" and "chosen" options to SelectBox cache
+        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_from"]');
+        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_to"]');
+
         // Re-init SelectBox selections (which lose the attribute on clone)
         inline_copy.find('.selector-chosen option').each(function() {
             this.selected = 'selected';
         });
-        // Add "available" and "chosen" options to SelectBox cache
-        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_from"]');
-        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_to"]');
 
         // Re-initialize copy handler
         inline_copy.find('a.' + opts.copyCssClass).click(function(e) {
@@ -189,6 +190,8 @@ OPELEC.inlines = {
         SelectBox.cache[id] = new Array();
         var cache = SelectBox.cache[id];
         box.find('option').each(function(){
+            //if box(
+            //this.selected = 'selected';
             cache.push({value: this.value, text: this.text, displayed: 1});
         });
     }
