@@ -123,7 +123,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class ElecDataInline(admin.StackedInline):
     #TODO: validation rule - ensure district only filled out for special elections
-    #TODO: validation rule -  If special election, enforce that Offices covered only checked for appropriate office and no others
+    #TODO: validation rule - If special election, enforce that Offices covered only checked for appropriate office and no others
     model = ElecData
     template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0

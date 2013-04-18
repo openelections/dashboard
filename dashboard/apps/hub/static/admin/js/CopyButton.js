@@ -32,7 +32,7 @@ OPELEC.inlines = {
         // Remove the ID value copied from prior record (this corresponds to db primary key)
         inline_copy.find('#id_' + prefix + '-' + new_idx + '-id').removeAttr('value');
 
-        // Remove delete button input and change inline class to remove button 
+        // Remove delete button input tag and change inline class to remove button 
         // handler (this matches behavior of Add button)
         var opts = OPELEC.inlines.opts();
         inline_copy.find('#id_' + prefix + '-' + new_idx + '-DELETE').remove();
