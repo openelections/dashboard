@@ -1,3 +1,6 @@
+import sys
+from os.path import join
+
 from dashboard.config.base.settings import *
 
 INTERNAL_IPS=('127.0.0.1')
@@ -10,7 +13,7 @@ WSGI_APPLICATION = 'dashboard.config.prod.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_ROOT, 'dashboard.db'),
+        'NAME': join(PROJECT_ROOT, 'dashboard.db'),
         'USER':  '',
         'PASSWORD': '',
         'HOST': '',
@@ -21,7 +24,7 @@ DATABASES = {
 # If not using sqlite, move database settings to 
 # 'local_settings.py' outside of version control
 try:
-    from dashboard.config.prod.local_settings import *
+    from dashboard.config.local_settings import *
 except ImportError:
     pass
 
@@ -31,3 +34,13 @@ INSTALLED_APPS += (
     'south',
     #'test_utils',
 )
+
+# Test config tweaks/customizations
+if 'test' in sys.argv:
+    """
+    #DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
+    #FIXTURE_DIRS = (
+    #    PROJECT_ROOT + '/foo/bar/fixtures',
+    #)
+    """
+    SOUTH_TESTS_MIGRATE = False
