@@ -1,6 +1,6 @@
 from os.path import abspath, dirname, join
 
-PROJECT_ROOT = abspath(join(dirname(__file__),"..",".."))
+PROJECT_ROOT = abspath(join(dirname(__file__), "..", ".."))
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -29,9 +29,10 @@ MEDIA_ROOT = '/var/www/dashboard/media'
 MEDIA_URL = '/media/'
 
 # Statics are collected out of /static/ directories in each app
-# via management command. Below settings control where an app's static files 
-# are moved to, for example: /var/www/static/project/, which would then 
-# be served up at the STATIC_URL such as http://my.mediaserver.com/apps/static/project/
+# via management command. Below settings control where an app's static files
+# are moved to, for example: /var/www/static/project/, which would then
+# be served up at the STATIC_URL such as
+# http://my.mediaserver.com/apps/static/project/
 STATIC_URL = '/static/'
 
 STATIC_ROOT = '/var/www/dashboard/static'
@@ -62,7 +63,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_DIRS = (
-     join(PROJECT_ROOT, 'templates'),
+    join(PROJECT_ROOT, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -81,10 +82,9 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Project apps must precede
     'grappelli',
     'django.contrib.admin',
-
-    # Project apps
     'dashboard.apps.hub',
 )
 

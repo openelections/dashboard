@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.localflavor.us.us_states import US_STATES
+from django.core.exceptions import NON_FIELD_ERRORS
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -155,14 +156,15 @@ class ElecData(models.Model):
     class Meta:
         ordering = ['state', '-end_date']
         verbose_name_plural = 'Election Data Sources'
-        unique_together = (
+        unique_together = ((
+            'organization',
             'race_type',
             'end_date',
             'special',
             'office',
             'state',
             'district',
-        )
+        ),)
 
     def __unicode__(self):
         return self.elec_key(as_string=True)
@@ -174,6 +176,48 @@ class ElecData(models.Model):
         if not self.end_date:
             self.end_date = self.start_date
         super(ElecData, self).save(*args, **kwargs)
+
+    def _perform_unique_checks(self, unique_checks):
+        """Override default method to force unique checks"""
+        errors = {}
+
+        for model_class, unique_check in unique_checks:
+            # Try to look up an existing object with the same values as this
+            # object's values for all the unique field.
+
+            lookup_kwargs = {}
+            for field_name in unique_check:
+                f = self._meta.get_field(field_name)
+                lookup_value = getattr(self, f.attname)
+                if lookup_value is None:
+                    # no value, skip the lookup
+                    continue
+                if f.primary_key and not self._state.adding:
+                    # no need to check for unique primary key when editing
+                    continue
+                lookup_kwargs[str(field_name)] = lookup_value
+
+            # NOTE: BELOW skip check was erroneously short-circuiting
+            # unique checks when office field is null
+            # some fields were skipped, no reason to do the check
+            #if len(unique_check) != len(lookup_kwargs.keys()):
+            #    continue
+
+            qs = model_class._default_manager.filter(**lookup_kwargs)
+
+            # Exclude the current object from the query if we are editing an
+            # instance (as opposed to creating a new one)
+            if not self._state.adding and self.pk is not None:
+                qs = qs.exclude(pk=self.pk)
+
+            if qs.exists():
+                if len(unique_check) == 1:
+                    key = unique_check[0]
+                else:
+                    key = NON_FIELD_ERRORS
+                errors.setdefault(key, []).append(self.unique_error_message(model_class, unique_check))
+
+        return errors
 
     @property
     def offices(self):
@@ -256,7 +300,7 @@ class Volunteer(BaseContact):
     @property
     def full_name(self):
         return ' '.join((self.first_name, self.last_name))
-    
+
 class BaseLog(models.Model):
     user = models.ForeignKey(User, help_text="User who entered data for the log")
     date = models.DateField()

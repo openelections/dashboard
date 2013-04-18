@@ -3,42 +3,53 @@ from django.contrib.admin import SimpleListFilter
 from django.contrib.localflavor.us.us_states import US_STATES
 from django.utils.translation import ugettext_lazy as _
 
-from models import Contact, DataFormat, ElecData, Log, Office, Organization, State, Volunteer, VolunteerLog, VolunteerRole
+from models import (
+    Contact,
+    DataFormat,
+    ElecData,
+    Log,
+    Office,
+    Organization,
+    State,
+    Volunteer,
+    VolunteerLog,
+    VolunteerRole
+)
 
 ### FIELDSET ###
 ELEC_DATA_FIELDSET = (
     ('Data Source', {
-        'fields':('organization','portal_link','direct_link', 'result_type', 'formats'),
+        'fields': ('organization', 'portal_link', 'direct_link', 'result_type', 'formats'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields':('state', ('start_date', 'end_date'), 'race_type', 'absentee_and_provisional'),
+        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
         'description': """Special elections are edge cases that we itemize. <br>If this is a special,
-                          check the box and fill in the office. If it's a House race, include the District number 
+                          check the box and fill in the office. If it's a House race, include the District number
                           as an integer or 'AL' for At-Large.""",
-        'fields':(('special', 'office', 'district'),),
+        'fields': (('special', 'office', 'district'),),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Offices Covered', {
-        'description':'Data for this source includes results for:',
-        'fields':(
+        'description': 'Data for this source includes results for:',
+        'fields': (
             ('prez', 'senate', 'house', 'gov',),
-            ('state_officers','state_leg',),
+            ('state_officers', 'state_leg',),
         ),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Results Breakdowns', {
-        'description':'The level at which results are broken down. Racewide is the common case and denotes the widest jurisdiction '
-                      'or reporting level at which data are available. In the case of presidential, senate or gubernatorial races, '
-                      '"Racewide" implies statewide; in the case of U.S. House races, "Racewide" implies district-wide results.<br><br>' 
-                      'The Congressional District and State Legislative boxes should only be flagged when there are result breakdowns ' 
+        'description': 'The level at which results are broken down. Racewide is the common case and denotes the widest jurisdiction '
+                       'or reporting level at which data are available. In the case of presidential, senate or gubernatorial races, '
+                      '"Racewide" implies statewide; in the case of U.S. House races, "Racewide" implies district-wide results.<br><br>'
+                      'The Congressional District and State Legislative boxes should only be flagged when there are result breakdowns '
                       'at those levels for unrelated offices. In other words, flag the Congressional District box if there are results for the '
                       'presidential race at the congressional district level. Do NOT check the box to denote results for a U.S. House race '
                       '(these should be denoted with the "Racewide" checkbox).',
-        'fields':(
+        'fields': (
             ('state_level', 'county_level', 'precinct_level'),
             ('cong_dist_level', 'state_leg_level',),
             'level_note'
@@ -46,42 +57,47 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Notes', {
-        'fields':('note',),
+        'fields': ('note',),
         'classes': ('grp-collapse grp-closed',),
     }),
 )
 
 VOLUNTEER_FIELDSET = (
     (None, {
-        'fields':('user', 'volunteer', 'date', 'subject', 'follow_up', 'gdoc_link', 'notes'),
+        'fields': ('user', 'volunteer', 'date', 'subject', 'follow_up', 'gdoc_link', 'notes'),
     }),
 )
 
 ### ADMIN CLASSES ###
 
+
 class DataFormatAdmin(admin.ModelAdmin):
     list_display = ('name',)
-    prepopulated_fields = {'slug':('name',)}
+    prepopulated_fields = {'slug': ('name',)}
+
 
 class ContactAdmin(admin.ModelAdmin):
     pass
 
+
 class OfficeAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('name',)}
+    prepopulated_fields = {'slug': ('name',)}
+
 
 class ContactInline(admin.StackedInline):
-    #TODO: Add custom validation to ensure that at least one form
-    # of contact info has been entered (phone, mobile, email_work, email_personal)
+    # TODO: Add custom validation to ensure that at least one form of contact
+    # info has been entered (phone, mobile, email_work, email_personal)
     model = Contact
     extra = 0
 
+
 class OrganizationAdmin(admin.ModelAdmin):
-    #TODO: Add check to ensure that if gov agency is checked, 
-    # gov_level must also be selected and vice versa 
+    #TODO: Add check to ensure that if gov agency is checked,
+    # gov_level must also be selected and vice versa
     list_display = ('name', 'state',)
     list_display_link = ('url',)
     list_filter = ('gov_level', 'gov_agency',)
-    prepopulated_fields = {'slug':('name',)}
+    prepopulated_fields = {'slug': ('name',)}
     save_on_top = True
     inlines = [
         ContactInline,
@@ -89,29 +105,30 @@ class OrganizationAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields':(
+            'fields': (
                 ('name', 'slug',),
                 ('gov_agency', 'gov_level',),
                 ('url', 'fec_page',),
             ),
         }),
         ('Address', {
-            'fields':('street','city','state',),
+            'fields': ('street', 'city', 'state',),
         }),
         ('Profile', {
-            'description':"<p>Notes on data sources, key contacts, etc.<p>",
-            'fields':('description',),
+            'description': "<p>Notes on data sources, key contacts, etc.<p>",
+            'fields': ('description',),
         }),
     )
 
+
 class ElecDataInline(admin.StackedInline):
-    #TODO: validation rule - to ensure district only filled out for special elections
-    #TODO: validation rule -  If special election, enforce that Offices covered only checked for appropriate office and no others
-    #TODO: js helper - Create JS copy button that lets you populate values of new inline using values of a previous inline
+    #TODO: validation rule - ensure district only filled out for special elections
+    #TODO: validation rule - If special election, enforce that Offices covered only checked for appropriate office and no others
     model = ElecData
+    template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0
     filter_horizontal = ['formats']
-    prepopulated_fields = {'end_date':('start_date',)}
+    prepopulated_fields = {'end_date': ('start_date',)}
     fieldsets = ELEC_DATA_FIELDSET
 
     def queryset(self, request):
@@ -124,9 +141,11 @@ class ElecDataInline(admin.StackedInline):
             formfield.choices = formfield.choices
         return formfield
 
+
 class LogInline(admin.StackedInline):
     model = Log
     extra = 0
+
 
 class StateAdmin(admin.ModelAdmin):
     list_display = ['name', 'state_volunteers']
@@ -137,7 +156,7 @@ class StateAdmin(admin.ModelAdmin):
     readonly_fields = ('name',)
     fieldsets = (
         (None, {
-            'fields':('name', 'note',)
+            'fields': ('name', 'note',)
         }),
     )
 
@@ -196,7 +215,8 @@ class ElecDataAdmin(admin.ModelAdmin):
 class VolunteerLogInline(admin.StackedInline):
     model = VolunteerLog
     extra = 0
-    fieldsets = VOLUNTEER_FIELDSET 
+    fieldsets = VOLUNTEER_FIELDSET
+
 
 class VolunteersByStateFilter(SimpleListFilter):
     title = _('States')
@@ -213,21 +233,28 @@ class VolunteersByStateFilter(SimpleListFilter):
             return queryset.filter(states=val)
 
 
-#TODO: Create data_admin dynamic filter based on presence of value in User field (to indicate if volunteer has admin privs)
-#TODO: Create num_states adopted filter for change list page
-#TODO: Create states_adopted field for changelist page
+#TODO: Create data_admin dynamic filter based on presence of value in
+# User field (to indicate if volunteer has admin privs)
 class VolunteerAdmin(admin.ModelAdmin):
-    list_display = ('first_name','last_name', 'assigned_states', 'email', 'twitter', 'phone', 'mobile')
+    list_display = (
+        'first_name',
+        'last_name',
+        'assigned_states',
+        'email',
+        'twitter',
+        'phone',
+        'mobile'
+    )
     list_display_links = ('last_name',)
-    list_select_related = True 
+    list_select_related = True
     list_filter = (VolunteersByStateFilter,)
     inlines = [VolunteerLogInline]
     fieldsets = (
         (None, {
-            'fields':('user', 'first_name', 'middle_name', 'last_name', 'affil', 'title'),
+            'fields': ('user', 'first_name', 'middle_name', 'last_name', 'affil', 'title'),
         }),
         ('Contact Info', {
-            'fields':('phone', 'mobile', 'email', 'website', 'twitter', 'skype'),
+            'fields': ('phone', 'mobile', 'email', 'website', 'twitter', 'skype'),
         }),
         (None, {
             'fields': ('roles', 'states', 'note',),
@@ -238,13 +265,14 @@ class VolunteerAdmin(admin.ModelAdmin):
         return ", ".join(obj.states.values_list('postal', flat=True))
     assigned_states.short_description = "States covered by this volunteer"
 
-    
+
 class VolunteerLogAdmin(admin.ModelAdmin):
-    fieldsets = VOLUNTEER_FIELDSET 
+    fieldsets = VOLUNTEER_FIELDSET
+
 
 class VolunteerRoleAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug':('name',)}
-    
+    prepopulated_fields = {'slug': ('name',)}
+
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
 admin.site.register(ElecData, ElecDataAdmin)
