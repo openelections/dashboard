@@ -190,8 +190,6 @@ OPELEC.inlines = {
         SelectBox.cache[id] = new Array();
         var cache = SelectBox.cache[id];
         box.find('option').each(function(){
-            //if box(
-            //this.selected = 'selected';
             cache.push({value: this.value, text: this.text, displayed: 1});
         });
     }
