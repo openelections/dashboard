@@ -127,7 +127,6 @@ class ElecDataInline(admin.StackedInline):
     model = ElecData
     template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0
-    filter_horizontal = ['formats']
     prepopulated_fields = {'end_date': ('start_date',)}
     fieldsets = ELEC_DATA_FIELDSET
 
@@ -159,6 +158,10 @@ class StateAdmin(admin.ModelAdmin):
             'fields': ('name', 'note',)
         }),
     )
+
+    class Media:
+        js = ('admin/js/custom_datepicker.js',)
+
 
     def save_formset(self, request, form, formset, change):
         if formset.model in (ElecData, Log):
@@ -200,6 +203,10 @@ class ElecDataAdmin(admin.ModelAdmin):
         'state_leg',
     ]
     fieldsets = ELEC_DATA_FIELDSET
+
+    class Media:
+        js = ('admin/js/custom_datepicker.js',)
+
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user

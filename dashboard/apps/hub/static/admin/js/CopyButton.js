@@ -46,6 +46,7 @@ OPELEC.inlines = {
         // Insert inline into DOM
         inline_copy.insertBefore(empty_template);
 
+        // Assorted re-initializations
         OPELEC.inlines.onAfterCopied(inline_copy, prefix, opts);
     },
     opts: function() {
@@ -64,9 +65,9 @@ OPELEC.inlines = {
     },
     onAfterCopied: function(inline_copy, prefix, opts) {
         // Re-init some grappelli initializers and edge-case handling 
-        // datepicker (explained below)
         grappelli.updateSelectFilter(inline_copy);
 
+        // datepicker (explained below)
         var date_opts = {
             //appendText: '(mm/dd/yyyy)',
             showOn: 'button',
@@ -75,6 +76,8 @@ OPELEC.inlines = {
             dateFormat: grappelli.getFormat('date'),
             showButtonPanel: true,
             showAnim: '',
+            changeMonth: true,
+            changeYear: true,
             // HACK: sets the current instance to a global var.
             // needed to actually select today if the today-button is clicked.
             // see onClick handler for ".ui-datepicker-current"
@@ -102,13 +105,8 @@ OPELEC.inlines = {
         OPELEC.inlines.removeButtonHandler(inline_copy.find("a." + opts.removeCssClass), prefix, opts);
 
         // Add "available" and "chosen" options to SelectBox cache
-        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_from"]');
-        OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_to"]');
-
-        // Re-init SelectBox selections (which lose the attribute on clone)
-        inline_copy.find('.selector-chosen option').each(function() {
-            this.selected = 'selected';
-        });
+        //OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_from"]');
+        //OPELEC.inlines.updateSelectBoxCache(inline_copy, 'select[id^="id_"][id$="_to"]');
 
         // Re-initialize copy handler
         inline_copy.find('a.' + opts.copyCssClass).click(function(e) {
@@ -184,14 +182,23 @@ OPELEC.inlines = {
             div_id = elem.attr('id');
         elem.attr('id', div_id.replace(old_id, new_id));
     },
+    /*
     updateSelectBoxCache: function(inline_div, selector) {
         var box = inline_div.find(selector),
-            id = box.attr('id');
+            box_html = box[0],
+            id = box.attr('id'),
+            status = /_to$/.test(id) ? 'chosen':'available',
+            node;
         SelectBox.cache[id] = new Array();
         var cache = SelectBox.cache[id];
-        box.find('option').each(function(){
-            cache.push({value: this.value, text: this.text, displayed: 1});
-        });
+        for (var i = 0; (node = box_html.options[i]); i++) {
+            //if (status == 'chosen') {
+            //    node.selected = 'selected';
+            //}
+            SelectBox.add_to_cache(id, node);
+            //cache.push({value: node.value, text: node.text, displayed: 1});
+        };
     }
+   */
 
 };

@@ -44,6 +44,9 @@ class Organization(models.Model):
     fec_page = models.URLField(blank=True, help_text='Link to <a href="http://www.fec.gov/pubrec/cfsdd/cfsdd.shtml">FEC clearinghouse</a> page, if available.')
     description = models.TextField(blank=True, help_text="Notes on data sources, key contacts, records requests, etc.")
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return '%s' % self.name
 
@@ -59,6 +62,13 @@ class DataFormat(models.Model):
 
     def __unicode__(self):
         return '%s' % self.name
+
+    class Meta:
+        ordering = ['name']
+
+    def __unicode__(self):
+        return '%s' % self.name
+
 
 class State(models.Model):
     """Top-level window into state data
@@ -130,7 +140,7 @@ class ElecData(models.Model):
     portal_link = models.URLField(blank=True, help_text="Link to portal, page or form where data can be found, if available")
     direct_link = models.URLField(blank=True, help_text="Direct link to data, if available")
     result_type = models.CharField(max_length=10, choices=RESULT_CHOICES)
-    formats = models.ManyToManyField(DataFormat, help_text="Formats that data is available in")
+    formats = models.ManyToManyField(DataFormat, help_text="Formats that data are available in")
     absentee_and_provisional = models.BooleanField(default=False, db_index=True, help_text="True if absentee and provisional data available")
 
     # Reporting levels (aggregation levels(s) at which data is available)
@@ -320,6 +330,7 @@ class Log(BaseLog):
     formal_request = models.BooleanField(default=False, help_text="True if this represents a formal FOIA request")
 
     class Meta:
+        ordering = ['-date']
         verbose_name_plural = 'FOIA Logs'
 
     def __unicode__(self):
