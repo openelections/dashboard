@@ -134,7 +134,6 @@ class ElecData(models.Model):
     #TODO: open_primary = models.BooleanField(blank=True, default=False, help_text="Are partisan candidates on a single ballot?")
     state = models.ForeignKey(State)
     office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
-    district_alpha = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
     district = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
 
     # Data Source Meta
@@ -168,7 +167,6 @@ class ElecData(models.Model):
     class Meta:
         ordering = ['state', '-end_date']
         verbose_name_plural = 'Election Data Sources'
-        """
         unique_together = ((
             'organization',
             'race_type',
@@ -178,7 +176,6 @@ class ElecData(models.Model):
             'state',
             'district',
         ),)
-        """
 
     def __unicode__(self):
         return self.elec_key(as_string=True)
