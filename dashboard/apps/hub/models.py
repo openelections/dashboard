@@ -79,7 +79,7 @@ class State(models.Model):
     """
     postal = models.CharField(max_length=2, choices=US_STATES, primary_key=True)
     name = models.CharField(max_length=25, help_text="Full state name")
-    note = models.TextField(blank=True)
+    note = models.TextField("Overview", blank=True)
 
     class Meta:
         ordering = ['name']
@@ -113,9 +113,10 @@ class ElecData(models.Model):
     """
     RACE_CHOICES = (
         ('primary', 'Primary'),
+        ('primary-recall', 'Primary Recall'),
         ('general', 'General'),
+        ('general-recall', 'General Recall'),
         ('runoff', 'Runoff'),
-        ('recall', 'Recall'),
     )
     RESULT_CHOICES = (
         ('certified', 'Certified'),
