@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.localflavor.us.us_states import US_STATES
-from django.core.exceptions import NON_FIELD_ERRORS
+from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.db import models
 from django.template.defaultfilters import slugify
 
@@ -70,6 +70,23 @@ class DataFormat(models.Model):
         return '%s' % self.name
 
 
+class Party(models.Model):
+    id = models.CharField(max_length=10, primary_key=True)
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=55)
+    descrip = models.TextField(blank=True)
+
+    def __unicode__(self):
+        return '%s' % self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = "Parties"
+
+    def __unicode__(self):
+        return '%s' % self.name
+
+
 class State(models.Model):
     """Top-level window into state data
 
@@ -89,6 +106,7 @@ class State(models.Model):
 
     def __repr__(self):
         return '<%s - %s>' % (self.__class__.__name__, self.postal)
+
 
 class ElecData(models.Model):
     """Metadata about source of election results from a single state.
@@ -128,10 +146,10 @@ class ElecData(models.Model):
 
     # Election meta
     race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
+    primary_party = models.ForeignKey(Party, blank=True, null=True, help_text="If primary, select party, Open or Nonpartisan")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
-    #TODO: open_primary = models.BooleanField(blank=True, default=False, help_text="Are partisan candidates on a single ballot?")
     state = models.ForeignKey(State)
     office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
     district = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
@@ -170,12 +188,17 @@ class ElecData(models.Model):
         unique_together = ((
             'organization',
             'race_type',
+            'primary_party',
             'end_date',
             'special',
             'office',
             'state',
             'district',
         ),)
+
+    def clean(self):
+        if 'primary' in self.race_type and not self.primary_party:
+            raise ValidationError('Primary records must have a primary_party option selected.')
 
     def __unicode__(self):
         return self.elec_key(as_string=True)
@@ -243,7 +266,7 @@ class ElecData(models.Model):
 
     def special_key(self, as_string=False):
         if self.special:
-            bits = filter(lambda bit: bit not in ('None', None), ('special', self.office_id, str(self.district)))
+            bits = filter(lambda bit: bit.strip(), ('special', self.office_id, self.district))
         else:
             bits = ()
         if as_string:
@@ -251,18 +274,27 @@ class ElecData(models.Model):
         return bits
 
     def elec_key(self, as_string=False):
-        meta = (
+        meta = [
             self.start_date.strftime('%Y-%m-%d'),
             self.state_id,
-            self.race_type,
-        )
+        ]
+        # Primary, general, etc.
+        race_type = [self.race_type]
+        if 'primary' in self.race_type:
+            race_type.append(self.primary_party_id)
+
         # Race meta: Itemized special election or list of offices
         race_info = self.special_key() or self.offices
 
         if as_string:
-            key = " - ".join(meta) + ' (%s)' %  ', '.join(race_info)
+            key = "%s - %s - %s (%s)" % (
+                meta[0],
+                meta[1],
+                '/'.join(race_type),
+                ', '.join(race_info)
+            )
         else:
-            key = meta + race_info
+            key = tuple(meta + race_type + list(race_info))
         return key
 
 class BaseContact(models.Model):

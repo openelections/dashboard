@@ -10,6 +10,7 @@ from models import (
     Log,
     Office,
     Organization,
+    Party,
     State,
     Volunteer,
     VolunteerLog,
@@ -23,7 +24,7 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'absentee_and_provisional'),
+        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'primary_party', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
@@ -84,6 +85,11 @@ class OfficeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
+class PartyAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'slug')
+    prepopulated_fields = {'slug': ('name',)}
+
+
 class ContactInline(admin.StackedInline):
     # TODO: Add custom validation to ensure that at least one form of contact
     # info has been entered (phone, mobile, email_work, email_personal)
@@ -127,7 +133,9 @@ class ElecDataInline(admin.StackedInline):
     model = ElecData
     template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0
-    prepopulated_fields = {'end_date': ('start_date',)}
+    prepopulated_fields = {
+        'end_date': ('start_date',)
+    }
     fieldsets = ELEC_DATA_FIELDSET
 
     def queryset(self, request):
@@ -179,15 +187,15 @@ class StateAdmin(admin.ModelAdmin):
 
 
 class ElecDataAdmin(admin.ModelAdmin):
-    #TODO: dynamic attribute filter - create dynamic attribute that captures P/S/H/G -- ie core data -- for filter list
     model = ElecData
     filter_horizontal = ['formats']
-    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'special', 'offices']
+    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_party', 'special', 'offices']
     list_display_links = ['id']
     save_on_top = True
     list_filter = [
         'start_date',
         'race_type',
+        'primary_party',
         'special',
         'office',
         'state',
@@ -285,6 +293,7 @@ admin.site.register(DataFormat, DataFormatAdmin)
 admin.site.register(ElecData, ElecDataAdmin)
 admin.site.register(Office, OfficeAdmin)
 admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(Party, PartyAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(VolunteerLog, VolunteerLogAdmin)
