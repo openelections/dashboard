@@ -140,13 +140,19 @@ class ElecData(models.Model):
         ('certified', 'Certified'),
         ('unofficial', 'Unofficial'),
     )
+    PRIMARY_TYPE_CHOICES = (
+        ('blanket', 'Blanket'),
+        ('closed', 'Closed'),
+        ('open', 'Open'),
+    )
 
     # User meta
     user = models.ForeignKey(User)
 
     # Election meta
     race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
-    primary_party = models.ForeignKey(Party, blank=True, null=True, help_text="If primary, select party, Open or Nonpartisan")
+    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True)
+    primary_party = models.ForeignKey(Party, blank=True, null=True, db_index=True, help_text="If primary, select party, Open or Nonpartisan")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
@@ -197,8 +203,11 @@ class ElecData(models.Model):
         ),)
 
     def clean(self):
-        if 'primary' in self.race_type and not self.primary_party:
-            raise ValidationError('Primary records must have a primary_party option selected.')
+        if 'primary' in self.race_type and not self.primary_type:
+            raise ValidationError('You must select a primary type.')
+
+        if 'primary' in self.race_type and self.primary_type != 'blanket' and not self.primary_party:
+            raise ValidationError('Closed and Open primary records must have a primary_party option selected.')
 
     def __unicode__(self):
         return self.elec_key(as_string=True)

@@ -24,7 +24,7 @@ ELEC_DATA_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'primary_party', 'absentee_and_provisional'),
+        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'primary_type', 'primary_party', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
@@ -148,7 +148,6 @@ class ElecDataInline(admin.StackedInline):
             formfield.choices = formfield.choices
         return formfield
 
-
 class LogInline(admin.StackedInline):
     model = Log
     extra = 0
@@ -189,12 +188,13 @@ class StateAdmin(admin.ModelAdmin):
 class ElecDataAdmin(admin.ModelAdmin):
     model = ElecData
     filter_horizontal = ['formats']
-    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_party', 'special', 'offices']
+    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'primary_party', 'special', 'offices']
     list_display_links = ['id']
     save_on_top = True
     list_filter = [
         'start_date',
         'race_type',
+        'primary_type',
         'primary_party',
         'special',
         'office',
@@ -214,7 +214,6 @@ class ElecDataAdmin(admin.ModelAdmin):
 
     class Media:
         js = ('admin/js/custom_datepicker.js',)
-
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
