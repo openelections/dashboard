@@ -75,7 +75,8 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50', 'primary_key': 'True'})
         },
         'hub.elecdata': {
-            'Meta': {'ordering': "['state', '-end_date']", 'unique_together': "(('organization', 'race_type', 'end_date', 'special', 'office', 'state', 'district'),)", 'object_name': 'ElecData'},
+            #'Meta': {'ordering': "['state', '-end_date']", 'unique_together': "(('organization', 'race_type', 'end_date', 'special', 'office', 'state', 'district'),)", 'object_name': 'ElecData'},
+            'Meta': {'ordering': "['state', '-end_date']", 'object_name': 'ElecData'},
             'absentee_and_provisional': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'db_index': 'True'}),
             'cong_dist_level': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'db_index': 'True'}),
             'county_level': ('django.db.models.fields.BooleanField', [], {'default': 'False', 'db_index': 'True'}),
