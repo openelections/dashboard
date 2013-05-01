@@ -1,29 +1,11 @@
 [
   {
-    "pk": "BLKT", 
-    "model": "hub.party", 
-    "fields": {
-      "descrip": "In a blanket primary, voters pick one candidate for each office without regard to party. A voter might vote for a Democratic candidate for governor and a Republican candidate for senator. The candidates with the highest votes by party for each office advance to the general election, as the respective party's nominee. LA congressional races are blanket primaries.", 
-      "name": "Blanket", 
-      "slug": "blanket"
-    }
-  }, 
-  {
     "pk": "DEM", 
     "model": "hub.party", 
     "fields": {
       "descrip": "", 
       "name": "Democratic", 
       "slug": "democratic"
-    }
-  }, 
-  {
-    "pk": "OPEN", 
-    "model": "hub.party", 
-    "fields": {
-      "descrip": " In open primaries, voters pick candidates regardless of their own party registration, but may only choose among candidates from a single party of the voter's choice.", 
-      "name": "Open", 
-      "slug": "open"
     }
   }, 
   {

@@ -1,1 +1,1 @@
-from .test_models import ElecDataTest
+from .test_models import ElectionTest

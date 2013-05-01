@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from models import (
     Contact,
     DataFormat,
-    ElecData,
+    Election,
     Log,
     Office,
     Organization,
@@ -18,7 +18,7 @@ from models import (
 )
 
 ### FIELDSET ###
-ELEC_DATA_FIELDSET = (
+ELECTION_FIELDSET = (
     ('Data Source', {
         'fields': ('organization', 'portal_link', 'direct_link', 'result_type', 'formats'),
         'classes': ('grp-collapse grp-closed',),
@@ -127,22 +127,22 @@ class OrganizationAdmin(admin.ModelAdmin):
     )
 
 
-class ElecDataInline(admin.StackedInline):
+class ElectionInline(admin.StackedInline):
     #TODO: validation rule - ensure district only filled out for special elections
     #TODO: validation rule - If special election, enforce that Offices covered only checked for appropriate office and no others
-    model = ElecData
+    model = Election
     template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0
     prepopulated_fields = {
         'end_date': ('start_date',)
     }
-    fieldsets = ELEC_DATA_FIELDSET
+    fieldsets = ELECTION_FIELDSET
 
     def queryset(self, request):
-        return super(ElecDataInline, self).queryset(request).prefetch_related('formats')
+        return super(ElectionInline, self).queryset(request).prefetch_related('formats')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
-        formfield = super(ElecDataInline, self).formfield_for_dbfield(db_field, **kwargs)
+        formfield = super(ElectionInline, self).formfield_for_dbfield(db_field, **kwargs)
         if db_field.name in set(['office', 'organization', 'formats']):
             # Force queryset evaluation and cache in .choices
             formfield.choices = formfield.choices
@@ -156,7 +156,7 @@ class LogInline(admin.StackedInline):
 class StateAdmin(admin.ModelAdmin):
     list_display = ['name', 'state_volunteers']
     inlines = [
-        ElecDataInline,
+        ElectionInline,
         LogInline,
     ]
     readonly_fields = ('name',)
@@ -171,7 +171,7 @@ class StateAdmin(admin.ModelAdmin):
 
 
     def save_formset(self, request, form, formset, change):
-        if formset.model in (ElecData, Log):
+        if formset.model in (Election, Log):
             instances = formset.save(commit=False)
             for instance in instances:
                 instance.user = request.user
@@ -185,8 +185,8 @@ class StateAdmin(admin.ModelAdmin):
     state_volunteers.short_description = "Volunteers assigned to each state"
 
 
-class ElecDataAdmin(admin.ModelAdmin):
-    model = ElecData
+class ElectionAdmin(admin.ModelAdmin):
+    model = Election
     filter_horizontal = ['formats']
     list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'primary_party', 'special', 'offices']
     list_display_links = ['id']
@@ -210,7 +210,7 @@ class ElecDataAdmin(admin.ModelAdmin):
         'state_officers',
         'state_leg',
     ]
-    fieldsets = ELEC_DATA_FIELDSET
+    fieldsets = ELECTION_FIELDSET
 
     class Media:
         js = ('admin/js/custom_datepicker.js',)
@@ -289,7 +289,7 @@ class VolunteerRoleAdmin(admin.ModelAdmin):
 
 admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
-admin.site.register(ElecData, ElecDataAdmin)
+admin.site.register(Election, ElectionAdmin)
 admin.site.register(Office, OfficeAdmin)
 admin.site.register(Organization, OrganizationAdmin)
 admin.site.register(Party, PartyAdmin)

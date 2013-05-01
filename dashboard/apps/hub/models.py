@@ -306,6 +306,204 @@ class ElecData(models.Model):
             key = tuple(meta + race_type + list(race_info))
         return key
 
+
+class Election(models.Model):
+    """Metadata about source of election results from a single state.
+
+    This model is highly denormalized to simplify data entry in admin.
+    Allows entering multiple "election/race" combos for a single election date,
+    so that we can track both general elections (which assume core data of
+    Prez/Senate/House/Gov) and edge case races such as runoffs, recalls, unexpired
+    terms, etc. The edge cases should only be entered for core races (P/S/H/G).
+
+    Business rules:
+        * On all entries, indicate:
+            * if it's certified or live results
+            * levels of aggregation for results (precinct, county, state)
+            * available data formats
+        * General elections are common case, and assumes Prez/Sen/House/Gov
+            * Indicate which (if any) non-core races are available (state officers, legislative, local)
+            * Do NOT fill in Office if it's a general race
+        * Special/runoff/recall elections for federal or gov seats are edge case that should be itemized
+            * Requires Office foreign key
+
+    """
+    RACE_CHOICES = (
+        ('primary', 'Primary'),
+        ('primary-recall', 'Primary Recall'),
+        ('general', 'General'),
+        ('general-recall', 'General Recall'),
+        ('runoff', 'Runoff'),
+    )
+    RESULT_CHOICES = (
+        ('certified', 'Certified'),
+        ('unofficial', 'Unofficial'),
+    )
+    PRIMARY_TYPE_CHOICES = (
+        ('blanket', 'Blanket'),
+        ('closed', 'Closed'),
+        ('open', 'Open'),
+    )
+
+    # User meta
+    user = models.ForeignKey(User)
+
+    # Election meta
+    race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
+    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="Closed is the common case. See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a> for details on Blanket and Open")
+    primary_party = models.ForeignKey(Party, blank=True, null=True, db_index=True, help_text="You must select a party if the primary type is Closed or Open")
+    start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
+    end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
+    special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
+    state = models.ForeignKey(State)
+    office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
+    district = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
+
+    # Data Source Meta
+    organization = models.ForeignKey(Organization, null=True, help_text="Agency or Org that is source of the data")
+    portal_link = models.URLField(blank=True, help_text="Link to portal, page or form where data can be found, if available")
+    direct_link = models.URLField(blank=True, help_text="Direct link to data, if available")
+    result_type = models.CharField(max_length=10, choices=RESULT_CHOICES)
+    formats = models.ManyToManyField(DataFormat, help_text="Formats that data are available in")
+    absentee_and_provisional = models.BooleanField(default=False, db_index=True, help_text="True if absentee and provisional data available")
+
+    # Reporting levels (aggregation levels(s) at which data is available)
+    state_level = models.BooleanField("Racewide", default=False, db_index=True)
+    county_level = models.BooleanField("County", default=False, db_index=True)
+    precinct_level = models.BooleanField("Precinct", default=False, db_index=True)
+    # Congress and state leg are only used when statewide offices are broken down by those units
+    cong_dist_level = models.BooleanField("Congressional Distritct", default=False, db_index=True)
+    state_leg_level = models.BooleanField("State legislative", default=False, db_index=True)
+    level_note = models.TextField("Note", blank=True)
+
+    # Offices covered (results include data for these offices)
+    prez = models.BooleanField("President", default=False, db_index=True)
+    senate = models.BooleanField("U.S. Senate", default=False, db_index=True)
+    house = models.BooleanField("U.S. House", default=False, db_index=True)
+    gov = models.BooleanField(default=False, db_index=True)
+    state_officers = models.BooleanField("State Officers", default=False, db_index=True, help_text="True if there were races for state-level, executive-branch offices besides Governor, such as Attorney General or Secretary of State.")
+    state_leg = models.BooleanField("State Legislators", default=False, db_index=True, help_text="True if there were races for state legislators such as State Senators or Assembly members. Do NOT check this for state executive officer races.")
+
+    # General note about data
+    note = models.TextField(blank=True, help_text="Data quirks such as details about live results or reason for special election")
+
+    class Meta:
+        ordering = ['state', '-end_date']
+        unique_together = ((
+            'organization',
+            'race_type',
+            'primary_party',
+            'end_date',
+            'special',
+            'office',
+            'state',
+            'district',
+        ),)
+
+    def clean(self):
+        if 'primary' in self.race_type and not self.primary_type:
+            raise ValidationError('You must select a primary type.')
+
+        if 'primary' in self.race_type and self.primary_type != 'blanket' and not self.primary_party:
+            raise ValidationError('Closed and Open primary records must have a primary_party option selected.')
+
+    def __unicode__(self):
+        return self.elec_key(as_string=True)
+
+    def __repr__(self):
+        return '<%s - %s>' % (self.__class__.__name__, self.elec_key(as_string=True))
+
+    def _perform_unique_checks(self, unique_checks):
+        """Override default method to force unique checks"""
+        errors = {}
+
+        if not self.end_date:
+            self.end_date = self.start_date
+        self.end_date = self.start_date
+
+        for model_class, unique_check in unique_checks:
+            # Try to look up an existing object with the same values as this
+            # object's values for all the unique field.
+
+            lookup_kwargs = {}
+            for field_name in unique_check:
+                f = self._meta.get_field(field_name)
+                lookup_value = getattr(self, f.attname)
+                if lookup_value is None:
+                    # no value, skip the lookup
+                    continue
+                if f.primary_key and not self._state.adding:
+                    # no need to check for unique primary key when editing
+                    continue
+                lookup_kwargs[str(field_name)] = lookup_value
+
+            # NOTE: BELOW skip check was erroneously short-circuiting
+            # unique checks when office field is null
+            # some fields were skipped, no reason to do the check
+            #if len(unique_check) != len(lookup_kwargs.keys()):
+            #    continue
+
+            qs = model_class._default_manager.filter(**lookup_kwargs)
+
+            # Exclude the current object from the query if we are editing an
+            # instance (as opposed to creating a new one)
+            if not self._state.adding and self.pk is not None:
+                qs = qs.exclude(pk=self.pk)
+
+            if qs.exists():
+                if len(unique_check) == 1:
+                    key = unique_check[0]
+                else:
+                    key = NON_FIELD_ERRORS
+                errors.setdefault(key, []).append(self.unique_error_message(model_class, unique_check))
+
+        return errors
+
+    @property
+    def offices(self):
+        office_fields = (
+            'prez',
+            'senate',
+            'house',
+            'gov',
+            'state_officers',
+            'state_leg',
+        )
+        return tuple(attr for attr in office_fields if getattr(self, attr))
+
+    def special_key(self, as_string=False):
+        if self.special:
+            bits = filter(lambda bit: bit.strip(), ('special', self.office_id, self.district))
+        else:
+            bits = ()
+        if as_string:
+            return ', '.join(bits)
+        return bits
+
+    def elec_key(self, as_string=False):
+        meta = [
+            self.start_date.strftime('%Y-%m-%d'),
+            self.state_id,
+        ]
+        # Primary, general, etc.
+        race_type = [self.race_type]
+        if 'primary' in self.race_type:
+            race_type.append(self.primary_party_id)
+
+        # Race meta: Itemized special election or list of offices
+        race_info = self.special_key() or self.offices
+
+        if as_string:
+            key = "%s - %s - %s (%s)" % (
+                meta[0],
+                meta[1],
+                '/'.join(race_type),
+                ', '.join(race_info)
+            )
+        else:
+            key = tuple(meta + race_type + list(race_info))
+        return key
+
 class BaseContact(models.Model):
     first_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30, blank=True)

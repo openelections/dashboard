@@ -1,7 +1,7 @@
 [
   {
     "pk": 4, 
-    "model": "hub.elecdata", 
+    "model": "hub.election", 
     "fields": {
       "office": null, 
       "absentee_and_provisional": false, 
@@ -39,7 +39,7 @@
   }, 
   {
     "pk": 30, 
-    "model": "hub.elecdata", 
+    "model": "hub.election", 
     "fields": {
       "office": null, 
       "absentee_and_provisional": false, 
@@ -77,7 +77,7 @@
   }, 
   {
     "pk": 31, 
-    "model": "hub.elecdata", 
+    "model": "hub.election", 
     "fields": {
       "office": null, 
       "absentee_and_provisional": false, 
@@ -115,7 +115,7 @@
   }, 
   {
     "pk": 35, 
-    "model": "hub.elecdata", 
+    "model": "hub.election", 
     "fields": {
       "office": "state-senate", 
       "absentee_and_provisional": false, 
