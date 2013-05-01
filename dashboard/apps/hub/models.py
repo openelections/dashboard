@@ -41,7 +41,7 @@ class Organization(models.Model):
     city = models.CharField(max_length=75, blank=True)
     state = models.CharField(max_length=2, db_index=True, choices=US_STATES)
 
-    fec_page = models.URLField(blank=True, help_text='Link to <a href="http://www.fec.gov/pubrec/cfsdd/cfsdd.shtml">FEC clearinghouse</a> page, if available.')
+    fec_page = models.URLField(blank=True, help_text='Link to <a href="http://www.fec.gov/pubrec/cfsdd/cfsdd.shtml" target="_blank">FEC clearinghouse</a> page, if available.')
     description = models.TextField(blank=True, help_text="Notes on data sources, key contacts, records requests, etc.")
 
     class Meta:
