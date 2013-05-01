@@ -151,8 +151,8 @@ class ElecData(models.Model):
 
     # Election meta
     race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
-    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True)
-    primary_party = models.ForeignKey(Party, blank=True, null=True, db_index=True, help_text="If primary, select party, Open or Nonpartisan")
+    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="Closed is the common case. See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a> for details on Blanket and Open")
+    primary_party = models.ForeignKey(Party, blank=True, null=True, db_index=True, help_text="You must select a party if the primary type is Closed or Open")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
