@@ -410,7 +410,7 @@ class Election(models.Model):
         # Blanket primaries are either nonpartisan or
         # have candidates from mutliple parties in same race
         if 'primary' in self.race_type and self.primary_type == 'blanket' and self.primary_party:
-            raise ValidationError('Blanket primaries should not have have a primary_party.')
+            raise ValidationError('Blanket primaries should not have a primary_party.')
 
 
     def __unicode__(self):
