@@ -405,7 +405,13 @@ class Election(models.Model):
             raise ValidationError('You must select a primary type.')
 
         if 'primary' in self.race_type and self.primary_type != 'blanket' and not self.primary_party:
-            raise ValidationError('Closed and Open primary records must have a primary_party option selected.')
+            raise ValidationError('Closed and Open primary records must have a primary_party.')
+
+        # Blanket primaries are either nonpartisan or
+        # have candidates from mutliple parties in same race
+        if 'primary' in self.race_type and self.primary_type == 'blanket' and self.primary_party:
+            raise ValidationError('Blanket primaries should not have have a primary_party.')
+
 
     def __unicode__(self):
         return self.elec_key(as_string=True)

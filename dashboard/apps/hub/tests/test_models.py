@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 
-from ..models import Election
+from ..models import Election, Party
 
 class ElectionTest(TestCase):
 
@@ -57,3 +57,26 @@ class ElectionTest(TestCase):
         special.save()
         self.assertEqual(special.special_key(), ('special', u'state-senate'))
         self.assertEqual(special.elec_key(), ('2011-09-20', u'FL', u'primary', 'DEM', 'special', 'state-senate'))
+
+    def test_primary_validation_rules(self):
+        """Primary elections must have validation rules"""
+        gop_prez_primary = Election.objects.get(pk=31)
+
+        # Primary race_type must have a primary_type (e.g. closed, open, blanket)
+        gop_prez_primary.primary_type = ""
+        self.assertRaises(ValidationError, gop_prez_primary.clean)
+
+        # Primary must have party if closed or open
+        gop_prez_primary.primary_party = None
+
+        gop_prez_primary.primary_type = "closed"
+        self.assertRaises(ValidationError, gop_prez_primary.clean)
+
+        gop_prez_primary.primary_type = "open"
+        self.assertRaises(ValidationError, gop_prez_primary.clean)
+
+        # Error raised if it's a blanket primary, which is either
+        # nonpartisan or has candidates from mutliple parties in same race
+        gop_prez_primary.primary_type = "blanket"
+        gop_prez_primary.primary_party = Party.objects.get(pk="REP")
+        self.assertRaises(ValidationError, gop_prez_primary.clean)
