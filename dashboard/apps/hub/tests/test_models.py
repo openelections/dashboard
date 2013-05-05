@@ -58,7 +58,36 @@ class ElectionTest(TestCase):
         self.assertEqual(special.special_key(), ('special', u'state-senate'))
         self.assertEqual(special.elec_key(), ('2011-09-20', u'FL', u'primary', 'DEM', 'special', 'state-senate'))
 
-    def test_primary_validation_rules(self):
+    def test_general_elec_validation_rules(self):
+        #"""General elections must have validation rules"""
+        general = Election.objects.get(pk=4)
+        # Generals must have at least one office type selected
+        offices = [
+            'prez',
+            'senate',
+            'house',
+            'gov',
+            'state_officers',
+            'state_leg',
+        ]
+        for office in offices:
+            setattr(general, office, False)
+        self.assertRaises(ValidationError, general.clean)
+        # Restore one office
+        general.prez = True
+
+        # Primary elec fields should not be selected
+        # Test primary_type
+        general.primary_type = 'closed'
+        self.assertRaises(ValidationError, general.clean)
+        general.primary_type = ''
+
+        # Test primary_party
+        general.primary_party_id = 'DEM'
+        self.assertRaises(ValidationError, general.clean)
+        general.primary_party = None
+
+    def test_primary_elec_validation_rules(self):
         """Primary elections must have validation rules"""
         gop_prez_primary = Election.objects.get(pk=31)
 
@@ -80,3 +109,16 @@ class ElectionTest(TestCase):
         gop_prez_primary.primary_type = "blanket"
         gop_prez_primary.primary_party = Party.objects.get(pk="REP")
         self.assertRaises(ValidationError, gop_prez_primary.clean)
+
+    def test_special_elec_validation_rules(self):
+        """Special elections must have validation rules"""
+        # Special elections are itemized and should have an office
+        special = Election.objects.get(pk=36)
+        special.office_id = None
+        self.assertRaises(ValidationError, special.clean)
+
+        # Special elections for state legislative office must have a district
+        special = Election.objects.get(pk=36)
+        special.office_id = "state-house"
+        special.district = ""
+        self.assertRaises(ValidationError, special.clean)

@@ -202,13 +202,6 @@ class ElecData(models.Model):
             'district',
         ),)
 
-    def clean(self):
-        if 'primary' in self.race_type and not self.primary_type:
-            raise ValidationError('You must select a primary type.')
-
-        if 'primary' in self.race_type and self.primary_type != 'blanket' and not self.primary_party:
-            raise ValidationError('Closed and Open primary records must have a primary_party option selected.')
-
     def __unicode__(self):
         return self.elec_key(as_string=True)
 
@@ -401,16 +394,33 @@ class Election(models.Model):
         ),)
 
     def clean(self):
-        if 'primary' in self.race_type and not self.primary_type:
-            raise ValidationError('You must select a primary type.')
+        if 'general' in self.race_type:
+            # At least one Office fields must be selected
+            if not any((self.prez, self.senate, self.house, self.gov, self.state_officers, self.state_leg)):
+                raise ValidationError('General elections must have at least one selection for Offices Covered.')
 
-        if 'primary' in self.race_type and self.primary_type != 'blanket' and not self.primary_party:
-            raise ValidationError('Closed and Open primary records must have a primary_party.')
+            # Primary elec fields should not be selected
+            if any((self.primary_type, self.primary_party_id)):
+                raise ValidationError('General elections should not have primary election fields filled in.')
 
-        # Blanket primaries are either nonpartisan or
-        # have candidates from mutliple parties in same race
-        if 'primary' in self.race_type and self.primary_type == 'blanket' and self.primary_party:
-            raise ValidationError('Blanket primaries should not have a primary_party.')
+        if 'primary' in self.race_type:
+            if not self.primary_type:
+                raise ValidationError('Primaries require a primary type.')
+
+            # Non-blanket primaries should have a party
+            if self.primary_type != 'blanket' and not self.primary_party:
+                raise ValidationError('%s primary records must have a primary_party.' % self.primary_type.title())
+
+            # Blanket primaries are nonpartisan or have candidates from mutliple parties in same race
+            if self.primary_type == 'blanket' and self.primary_party:
+                raise ValidationError('Blanket primaries should not have a primary_party.')
+
+        if self.special:
+            if not self.office_id:
+                raise ValidationError('Special elections must have an office.')
+
+            if 'state' in self.office_id and not self.district:
+                raise ValidationError('Special state legislative races must have a district.')
 
 
     def __unicode__(self):

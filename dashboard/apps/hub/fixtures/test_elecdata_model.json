@@ -7,7 +7,7 @@
       "absentee_and_provisional": false, 
       "house": true, 
       "race_type": "general", 
-      "primary_type": "closed",
+      "primary_type": "",
       "primary_party": null,
       "special": false, 
       "district": "", 
@@ -152,6 +152,44 @@
     }
   }, 
   {
+    "pk": 36, 
+    "model": "hub.election", 
+    "fields": {
+      "office": "state-house", 
+      "absentee_and_provisional": false, 
+      "house": false, 
+      "race_type": "general", 
+      "primary_type": "",
+      "primary_party": null,
+      "special": true, 
+      "district": "1", 
+      "state_officers": false, 
+      "note": "Fake special election for testing purposes", 
+      "senate": false, 
+      "state": "FL", 
+      "prez": false, 
+      "gov": false, 
+      "start_date": "2011-10-20", 
+      "end_date": "2011-10-20", 
+      "state_leg": true, 
+      "state_leg_level": false, 
+      "state_level": true, 
+      "county_level": false, 
+      "user": 2, 
+      "precinct_level": false, 
+      "portal_link": "https://doe.dos.state.fl.us/elections/resultsarchive/Specials.asp?ElectionDate=9/20/2011&DATAMODE=", 
+      "cong_dist_level": false, 
+      "direct_link": "https://doe.dos.state.fl.us/elections/resultsarchive/downloadresults.asp?ElectionDate=9/20/2011&DATAMODE=", 
+      "level_note": "", 
+      "formats": [
+        "tsv", 
+        "html"
+      ], 
+      "organization": 3, 
+      "result_type": "certified"
+    }
+  },
+  {
     "pk": 2, 
     "model": "auth.user", 
     "fields": {
@@ -212,6 +250,13 @@
     "model": "hub.office", 
     "fields": {
       "name": "state-senate"
+    }
+  },
+  {
+    "pk": "state-house", 
+    "model": "hub.office", 
+    "fields": {
+      "name": "state-house"
     }
   }
 ]
