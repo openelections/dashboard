@@ -2,12 +2,11 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 
-from ..models import Election, Party
+from ..models import Election
 
 class ElectionTest(TestCase):
 
     fixtures = [
-        'parties_initial',
         'test_elecdata_model'
     ]
 
@@ -33,11 +32,11 @@ class ElectionTest(TestCase):
         self.assertEqual(general.elec_key(), ('2012-11-06', u'FL', u'general', 'prez', 'senate', 'house', 'state_officers', 'state_leg'))
         self.assertEqual(general.elec_key(as_string=True), u'2012-11-06 - FL - general (prez, senate, house, state_officers, state_leg)')
 
-        self.assertEqual(gop_primary.elec_key(), ('2012-08-14', u'FL', u'primary', u'REP', 'senate', 'house', 'state_leg'))
-        self.assertEqual(gop_primary.elec_key(as_string=True), u'2012-08-14 - FL - primary/REP (senate, house, state_leg)')
+        self.assertEqual(gop_primary.elec_key(), ('2012-08-14', u'FL', u'primary', 'senate', 'house', 'state_leg'))
+        self.assertEqual(gop_primary.elec_key(as_string=True), u'2012-08-14 - FL - primary (senate, house, state_leg)')
 
-        self.assertEqual(gop_prez_primary.elec_key(), ('2012-01-31', u'FL', u'primary', u'REP', 'prez'))
-        self.assertEqual(gop_prez_primary.elec_key(as_string=True), u'2012-01-31 - FL - primary/REP (prez)')
+        self.assertEqual(gop_prez_primary.elec_key(), ('2012-01-31', u'FL', u'primary', 'prez'))
+        self.assertEqual(gop_prez_primary.elec_key(as_string=True), u'2012-01-31 - FL - primary (prez)')
 
     def test_special_status(self):
         "Election.special key should return tuple of meta"
@@ -56,7 +55,7 @@ class ElectionTest(TestCase):
         special.district = ""
         special.save()
         self.assertEqual(special.special_key(), ('special', u'state-senate'))
-        self.assertEqual(special.elec_key(), ('2011-09-20', u'FL', u'primary', 'DEM', 'special', 'state-senate'))
+        self.assertEqual(special.elec_key(), ('2011-09-20', u'FL', u'primary', 'special', 'state-senate'))
 
     def test_general_elec_validation_rules(self):
         #"""General elections must have validation rules"""
@@ -82,32 +81,12 @@ class ElectionTest(TestCase):
         self.assertRaises(ValidationError, general.clean)
         general.primary_type = ''
 
-        # Test primary_party
-        general.primary_party_id = 'DEM'
-        self.assertRaises(ValidationError, general.clean)
-        general.primary_party = None
-
     def test_primary_elec_validation_rules(self):
         """Primary elections must have validation rules"""
         gop_prez_primary = Election.objects.get(pk=31)
 
         # Primary race_type must have a primary_type (e.g. closed, open, blanket)
         gop_prez_primary.primary_type = ""
-        self.assertRaises(ValidationError, gop_prez_primary.clean)
-
-        # Primary must have party if closed or open
-        gop_prez_primary.primary_party = None
-
-        gop_prez_primary.primary_type = "closed"
-        self.assertRaises(ValidationError, gop_prez_primary.clean)
-
-        gop_prez_primary.primary_type = "open"
-        self.assertRaises(ValidationError, gop_prez_primary.clean)
-
-        # Error raised if it's a blanket primary, which is either
-        # nonpartisan or has candidates from mutliple parties in same race
-        gop_prez_primary.primary_type = "blanket"
-        gop_prez_primary.primary_party = Party.objects.get(pk="REP")
         self.assertRaises(ValidationError, gop_prez_primary.clean)
 
     def test_special_elec_validation_rules(self):

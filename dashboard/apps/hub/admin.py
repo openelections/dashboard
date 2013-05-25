@@ -10,7 +10,6 @@ from models import (
     Log,
     Office,
     Organization,
-    Party,
     State,
     Volunteer,
     VolunteerLog,
@@ -24,7 +23,7 @@ ELECTION_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'primary_type', 'primary_party', 'absentee_and_provisional'),
+        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'primary_type', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Special Election', {
@@ -82,11 +81,6 @@ class ContactAdmin(admin.ModelAdmin):
 
 
 class OfficeAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
-
-
-class PartyAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
 
 
@@ -188,14 +182,13 @@ class StateAdmin(admin.ModelAdmin):
 class ElectionAdmin(admin.ModelAdmin):
     model = Election
     filter_horizontal = ['formats']
-    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'primary_party', 'special', 'offices']
+    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'special', 'offices']
     list_display_links = ['id']
     save_on_top = True
     list_filter = [
         'start_date',
         'race_type',
         'primary_type',
-        'primary_party',
         'special',
         'office',
         'state',
@@ -292,7 +285,6 @@ admin.site.register(DataFormat, DataFormatAdmin)
 admin.site.register(Election, ElectionAdmin)
 admin.site.register(Office, OfficeAdmin)
 admin.site.register(Organization, OrganizationAdmin)
-admin.site.register(Party, PartyAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(VolunteerLog, VolunteerLogAdmin)

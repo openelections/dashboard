@@ -9,7 +9,7 @@ See PivotalTracker for details:
 select state_id,  end_date, count(id)
 from hub_election 
 where race_type = 'primary'
-and special = 'f'
+and special = 't'
 and start_date = end_date
 group by 1,2
 having count(end_date) > 1
