@@ -115,6 +115,8 @@ class Election(models.Model):
         ('general', 'General'),
         ('general-recall', 'General Recall'),
         ('runoff', 'Runoff'),
+        ('primary-runoff', 'Primary Runoff'),
+        ('general-runoff', 'General Runoff'),
     )
     RESULT_CHOICES = (
         ('certified', 'Certified'),
