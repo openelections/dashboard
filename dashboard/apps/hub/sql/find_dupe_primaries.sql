@@ -6,12 +6,24 @@ See PivotalTracker for details:
    https://www.pivotaltracker.com/story/show/50554855
  
 */
+/* find dupe non-special primaries */
 select state_id,  end_date, count(id)
+from hub_election 
+where race_type = 'primary'
+and special = 'f'
+and start_date = end_date
+group by 1,2
+having count(end_date) > 1
+order by state_id, end_date DESC
+;
+
+/* find dupe special primaries */
+select state_id,  end_date, office_id, district, count(id)
 from hub_election 
 where race_type = 'primary'
 and special = 't'
 and start_date = end_date
-group by 1,2
+group by 1,2,3,4
 having count(end_date) > 1
 order by state_id, end_date DESC
 ;
