@@ -168,6 +168,7 @@ class Election(models.Model):
 
     # General note about data
     note = models.TextField(blank=True, help_text="Data quirks such as details about live results or reason for special election")
+    needs_review = models.TextField(blank=True, help_text="Notes on possible problems with this record that need to be investigated/fixed.")
 
     class Meta:
         ordering = ['state', '-end_date']

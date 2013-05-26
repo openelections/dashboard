@@ -57,7 +57,7 @@ ELECTION_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Notes', {
-        'fields': ('note',),
+        'fields': ('note', 'needs_review'),
         'classes': ('grp-collapse grp-closed',),
     }),
 )
@@ -179,6 +179,22 @@ class StateAdmin(admin.ModelAdmin):
     state_volunteers.short_description = "Volunteers assigned to each state"
 
 
+class ElectionNeedsReviewListFilter(admin.SimpleListFilter):
+    title = _('Needs review')
+    parameter_name = 'needs_review'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('Yes', _('Yes')),
+            ('No', _('No')),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'No':
+            return queryset.filter(needs_review=u'')
+        if self.value() == 'Yes':
+            return queryset.exclude(needs_review=u'')
+
 class ElectionAdmin(admin.ModelAdmin):
     model = Election
     filter_horizontal = ['formats']
@@ -186,6 +202,7 @@ class ElectionAdmin(admin.ModelAdmin):
     list_display_links = ['id']
     save_on_top = True
     list_filter = [
+        ElectionNeedsReviewListFilter,
         'start_date',
         'race_type',
         'primary_type',
