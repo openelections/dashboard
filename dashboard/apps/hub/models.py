@@ -132,7 +132,7 @@ class Election(models.Model):
     user = models.ForeignKey(User)
 
     # Election meta
-    race_type = models.CharField(max_length=10, choices=RACE_CHOICES, db_index=True)
+    race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
     primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="Closed is the common case. See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a> for details on Blanket and Open")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
