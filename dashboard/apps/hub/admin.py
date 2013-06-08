@@ -23,14 +23,7 @@ ELECTION_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'primary_type', 'absentee_and_provisional'),
-        'classes': ('grp-collapse grp-closed',),
-    }),
-    ('Special Election', {
-        'description': """Special elections are edge cases that we itemize. <br>If this is a special,
-                          check the box and fill in the office. If it's a House race, include the District number
-                          as an integer or 'AL' for At-Large.""",
-        'fields': (('special', 'office', 'district'),),
+        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'special', 'primary_type', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Offices Covered', {
@@ -122,8 +115,6 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 
 class ElectionInline(admin.StackedInline):
-    #TODO: validation rule - ensure district only filled out for special elections
-    #TODO: validation rule - If special election, enforce that Offices covered only checked for appropriate office and no others
     model = Election
     template = "grappelli/admin/edit_inline/stacked.html"
     extra = 0
@@ -137,7 +128,7 @@ class ElectionInline(admin.StackedInline):
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         formfield = super(ElectionInline, self).formfield_for_dbfield(db_field, **kwargs)
-        if db_field.name in set(['office', 'organization', 'formats']):
+        if db_field.name in set(['organization', 'formats']):
             # Force queryset evaluation and cache in .choices
             formfield.choices = formfield.choices
         return formfield
@@ -207,7 +198,6 @@ class ElectionAdmin(admin.ModelAdmin):
         'race_type',
         'primary_type',
         'special',
-        'office',
         'state',
         'result_type',
         'state_level',
@@ -230,8 +220,6 @@ class ElectionAdmin(admin.ModelAdmin):
         obj.save()
 
     def offices(self, obj):
-        if obj.special:
-            return obj.special_key(as_string=True)
         return ', '.join(obj.offices)
     offices.short_description = "Office(s) up for election"
 

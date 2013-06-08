@@ -138,8 +138,8 @@ class Election(models.Model):
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
     state = models.ForeignKey(State)
-    office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
-    district = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
+    #office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
+    #district = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
 
     # Data Source Meta
     organization = models.ForeignKey(Organization, null=True, help_text="Agency or Org that is source of the data")
@@ -171,15 +171,13 @@ class Election(models.Model):
     needs_review = models.TextField(blank=True, help_text="Notes on possible problems with this record that need to be investigated/fixed.")
 
     class Meta:
-        ordering = ['state', '-end_date']
+        ordering = ['state', '-end_date', 'race_type']
         unique_together = ((
             'organization',
             'race_type',
             'end_date',
-            'special',
-            'office',
             'state',
-            'district',
+            'special',
         ),)
 
     def clean(self):
@@ -195,13 +193,6 @@ class Election(models.Model):
         if 'primary' in self.race_type:
             if not self.primary_type:
                 raise ValidationError('Primaries require a primary type.')
-
-        if self.special:
-            if not self.office_id:
-                raise ValidationError('Special elections must have an office.')
-
-            if 'state' in self.office_id and not self.district:
-                raise ValidationError('Special state legislative races must have a district.')
 
 
     def __unicode__(self):
@@ -268,29 +259,27 @@ class Election(models.Model):
         )
         return tuple(attr for attr in office_fields if getattr(self, attr))
 
-    def special_key(self, as_string=False):
-        if self.special:
-            bits = filter(lambda bit: bit.strip(), ('special', self.office_id, self.district))
-        else:
-            bits = ()
-        if as_string:
-            return ', '.join(bits)
-        return bits
-
     def elec_key(self, as_string=False):
         meta = [
             self.start_date.strftime('%Y-%m-%d'),
             self.state_id,
             self.race_type,
         ]
-        # Race meta: Itemized special election or list of offices
-        race_info = self.special_key() or self.offices
+        if self.special:
+            meta.insert(2, 'special')
+
+        # Generate base format string using meta
+        # Then add offices in parens
+        tmplt = '%s - ' * len(meta)
+        tmplt = tmplt.strip()[:-2]
+        tmplt += ' (%s)'
 
         if as_string:
-            meta.append(', '.join(race_info))
-            key = "%s - %s - %s (%s)" % tuple(meta)
+            #%s - %s - %s (%s)"
+            meta.append(', '.join(self.offices))
+            key = tmplt % tuple(meta)
         else:
-            key = tuple(meta + list(race_info))
+            key = tuple(meta) + tuple(self.offices)
         return key
 
 class BaseContact(models.Model):
