@@ -114,7 +114,6 @@ class Election(models.Model):
         ('primary-recall', 'Primary Recall'),
         ('general', 'General'),
         ('general-recall', 'General Recall'),
-        ('runoff', 'Runoff'),
         ('primary-runoff', 'Primary Runoff'),
         ('general-runoff', 'General Runoff'),
     )
