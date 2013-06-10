@@ -1,5 +1,6 @@
-Overview
-========
+=======================
+OpenElections Dashboard
+=======================
 
 OpenElections Dashboard is a clearinghouse for state election data.
 The Dashboard will feature information about election agencies, sources of certified
