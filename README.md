@@ -50,7 +50,7 @@ $ cp dashboard/config/local_settings.py.tmpl dashboard/config/local_settings.py
 Edit the local settings with your database name and secret key
 
 ```bash
-$ vim dashbaord/config/local_settings.py
+$ vim dashboard/config/local_settings.py
 ```
 
 Create the database.
