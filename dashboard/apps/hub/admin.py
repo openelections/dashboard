@@ -139,7 +139,9 @@ class LogInline(admin.StackedInline):
 
 
 class StateAdmin(admin.ModelAdmin):
-    list_display = ['name', 'state_volunteers']
+    list_display = ['name', 'state_volunteers', 'metadata_status']
+    list_filter = ['metadata_status']
+    list_editable = ['metadata_status']
     inlines = [
         ElectionInline,
         LogInline,
@@ -147,7 +149,7 @@ class StateAdmin(admin.ModelAdmin):
     readonly_fields = ('name',)
     fieldsets = (
         (None, {
-            'fields': ('name', 'note',)
+            'fields': ('name', 'metadata_status', 'note',)
         }),
     )
 

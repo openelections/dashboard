@@ -74,8 +74,14 @@ class State(models.Model):
     as a skeleton for admin inlines such as election data and FOIA logs
 
     """
+    STATUS_OPTIONS = (
+        ('not-started', 'Not Started'),
+        ('partial', 'Partial'),
+        ('up-to-date', 'Up-to-date'),
+    )
     postal = models.CharField(max_length=2, choices=US_STATES, primary_key=True)
     name = models.CharField(max_length=25, help_text="Full state name")
+    metadata_status = models.CharField(max_length=20, choices=STATUS_OPTIONS, db_index=True, help_text="Status of metadata collection for state")
     note = models.TextField("Overview", blank=True)
 
     class Meta:
