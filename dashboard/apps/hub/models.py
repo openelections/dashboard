@@ -1,9 +1,12 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.localflavor.us.us_states import US_STATES
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.db import models
 from django.template.defaultfilters import slugify
+
 
 class Office(models.Model):
     name = models.CharField(max_length=40)
@@ -134,6 +137,8 @@ class Election(models.Model):
     )
 
     # User meta
+    created = models.DateTimeField(default=datetime.datetime.now)
+    modified = models.DateTimeField(default=datetime.datetime.now)
     user = models.ForeignKey(User)
 
     # Election meta
@@ -143,8 +148,6 @@ class Election(models.Model):
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
     state = models.ForeignKey(State)
-    #office = models.ForeignKey(Office, blank=True, null=True, help_text="Only fill out if this is a special election for a particular office")
-    #district = models.CharField(max_length=5, blank=True, default="", db_index=True, help_text="Only fill out for legislative special elections")
 
     # Data Source Meta
     organization = models.ForeignKey(Organization, null=True, help_text="Agency or Org that is source of the data")
@@ -184,6 +187,13 @@ class Election(models.Model):
             'state',
             'special',
         ),)
+
+    def save(self, *args, **kwargs):
+        timestamp = datetime.datetime.now()
+        if not self.id:
+            self.created = timestamp
+        self.modified = timestamp
+        super(Election, self).save(*args, **kwargs)
 
     def clean(self):
         if 'general' in self.race_type:
