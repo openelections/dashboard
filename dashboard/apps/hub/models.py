@@ -137,8 +137,8 @@ class Election(models.Model):
     )
 
     # User meta
-    created = models.DateTimeField(default=datetime.datetime.now)
-    modified = models.DateTimeField(default=datetime.datetime.now)
+    created = models.DateTimeField()
+    modified = models.DateTimeField()
     user = models.ForeignKey(User)
 
     # Election meta
