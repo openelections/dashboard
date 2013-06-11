@@ -1,18 +1,79 @@
 [
   {
-    "pk": 1, 
-    "model": "hub.organization", 
+    "pk": "csv", 
+    "model": "hub.dataformat", 
     "fields": {
-      "city": "", 
-      "name": "DC Board of Ethics and Elections", 
-      "gov_level": "state", 
-      "url": "", 
-      "fec_page": "", 
-      "state": "DC", 
-      "street": "", 
-      "gov_agency": true, 
-      "slug": "dc-board-ethics-and-elections", 
-      "description": ""
+      "name": "csv"
+    }
+  }, 
+  {
+    "pk": "fixedwidth", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "fixedwidth"
+    }
+  }, 
+  {
+    "pk": "html", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "html"
+    }
+  }, 
+  {
+    "pk": "json", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "json"
+    }
+  }, 
+  {
+    "pk": "paper", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "paper"
+    }
+  }, 
+  {
+    "pk": "pdf", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "pdf"
+    }
+  }, 
+  {
+    "pk": "pdf-image", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "pdf-image"
+    }
+  }, 
+  {
+    "pk": "pipe", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "pipe"
+    }
+  }, 
+  {
+    "pk": "tsv", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "tsv"
+    }
+  }, 
+  {
+    "pk": "xls", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "xls"
+    }
+  }, 
+  {
+    "pk": "xml", 
+    "model": "hub.dataformat", 
+    "fields": {
+      "name": "xml"
     }
   }, 
   {
@@ -35,7 +96,7 @@
     "pk": "AZ", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "These metadata have been created using the counties' official certified results. This is problematic because there are three different reporting systems used by the state's 15 counties. Automating a process that will correctly parse and organize the data uniformly will require using the readme file to see which counties use which, then programming accordingly. \r\n\r\n2010 - Present:\r\nHowever, much easier-to-use, uniformly organized, unofficial XML documents that are created from the state's Clarity ENR system are also linked to in each race's notes. Those data include provisional data, as well as racewide results. They do not report at the precinct level though.", 
       "name": "Arizona"
     }
   }, 
@@ -51,7 +112,7 @@
     "pk": "CA", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "Also included voter participation stats by county, as well as comparative historical voter participation by county. Also includes state ballot measures, and state assembly member races by district.", 
       "name": "California"
     }
   }, 
@@ -67,7 +128,7 @@
     "pk": "CT", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "2002 primary results are in an image PDF; will attempt to find better source before entering; later primary results are in a variety of formats, but appear to either ignore uncontested races or are woefully incomplete; will verify with the state. Some external sources suggest that if a race is uncontested, no voting occurs. The state Republican Party also appears to hold closed primaries, so maybe the state has no role in them?", 
       "name": "Connecticut"
     }
   }, 
@@ -91,7 +152,7 @@
     "pk": "FL", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "The Division of Elections in FL is the primary statewide agency that handles results (http://election.dos.state.fl.us/)", 
       "name": "Florida"
     }
   }, 
@@ -139,7 +200,7 @@
     "pk": "IA", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "Iowa Election Results\r\n================================\r\n\r\nIowa has a two-tiered results system: a [live results site](http://electionresults.sos.iowa.gov/default.aspx) for the most recent election (the 2012 primaries at this time) and general election results by precinct from 1996-2004 in pdf form. Results for 2008 can be found in xls format. There are also archived election results and statistics from 1938-1999. From 1936-1979, pdfs of the canvass summary are provided for both general and primary elections. And from 1980-1999, additional statistics on absentee counts and precinct/county data are available in pdf form for general elections. There is only data available for governor, senate, and house seats. Results for county auditor and sheriff are available for 2012 and 2008.\r\n\r\nLive Results\r\n-------------------------\r\n\r\nThe live results page has an RSS feed and CSV file for federal, senate, house, and county results (broken down by county). Results on the live results site are considered unofficial. The files are found at http://electionresults.sos.iowa.gov/resultsMedia.aspx. Here is an example of a rss feed showing results from senate races by district: http://electionresults.sos.iowa.gov/resultsRSS.aspx?text=All&type=SEN&map=DIST. The equivalent file in CSV format is at http://electionresults.sos.iowa.gov/resultsCSV.aspx?text=All&type=SEN&map=DIST.\r\n\r\nOfficial Results\r\n-------------------------\r\n\r\nThe official results pages contain statistics on voter turnout, absentee ballots (for some years), results for individual races and, in recent years, an Excel file with precinct-level data for all races ([example from 2010](http://sos.iowa.gov/elections/results/xls/2010/general/statewidepct.xlsx)) for primary and general elections. The individual race result pages can be found in xls format (example: http://sos.iowa.gov/elections/results/xls/2010/primary/Johnson.xls) from 2006 and later. Results priof to 2004 are found in pdf format. Special elections results also include turnout reports and precinct results by county (in pdf form).", 
       "name": "Iowa"
     }
   }, 
@@ -171,7 +232,7 @@
     "pk": "ME", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "According to Melissa Packard, director of elections and commissions, there *is* no central database of election results--each cycles results are spit out, piecemeal. The state doesn't post unofficial election results, apparently ever. After an election is held, the governor has 20 days to certify the results, and they are typically posted online within a few days after that--definitely within a month of the election being held. \r\n\r\nMaine doesn't have results for presidential primaries; officially caucuses are held by the parties. See fec data here: http://www.fec.gov/pubrec/fe2012/2012pdates.pdf", 
       "name": "Maine"
     }
   }, 
@@ -243,7 +304,7 @@
     "pk": "NV", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "Nevada Secretary of State website (http://www.nvsos.gov/index.aspx?page=93) has results in HTML tables broken down only by county.\r\n\r\nResults for 2012 primary and general elections are also available on the \"Official SOS ENR Webste\" (http://www.silverstateelection.com) but appear to only provide results in HTML tables and maps broken down by county.", 
       "name": "Nevada"
     }
   }, 
@@ -267,7 +328,7 @@
     "pk": "NM", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "2004-June 2012 results are in PDFs that are entirely text except for the column labels; statewide and county-by-county results could be extracted with a little data entry, but precinct-level results would be exhausting. 2012 general election results, produced for the Web by an outside contractor, are housed in HTML pages produced by an app, and would be difficult to crawl/scrape (http://www.electionpeople.com/nmger2012/County/GroupByCountyTable.aspx).", 
       "name": "New Mexico"
     }
   }, 
@@ -355,7 +416,7 @@
     "pk": "TN", 
     "model": "hub.state", 
     "fields": {
-      "note": "", 
+      "note": "Sent email describing scope of database files wanted and inquired about best method to obtain them. Will follow up in a week if I don't hear back.\r\n\r\n3/19 - Received response from Fontenay requesting detailed list of files wanted. Sent reply and awaiting response.", 
       "name": "Tennessee"
     }
   }, 
@@ -421,105 +482,6 @@
     "fields": {
       "note": "", 
       "name": "Wyoming"
-    }
-  }, 
-  {
-    "pk": "csv", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "csv"
-    }
-  }, 
-  {
-    "pk": "json", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "json"
-    }
-  }, 
-  {
-    "pk": "paper", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "paper"
-    }
-  }, 
-  {
-    "pk": "pdf", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "pdf"
-    }
-  }, 
-  {
-    "pk": "pdf-image", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "pdf-image"
-    }
-  }, 
-  {
-    "pk": "xls", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "xls"
-    }
-  }, 
-  {
-    "pk": "xml", 
-    "model": "hub.dataformat", 
-    "fields": {
-      "name": "xml"
-    }
-  }, 
-  {
-    "pk": 2, 
-    "model": "hub.elecdata", 
-    "fields": {
-      "office": null, 
-      "senate": true, 
-      "house": true, 
-      "race_type": "general", 
-      "special": false, 
-      "unexpired_term": false, 
-      "runoff_for": null, 
-      "district": null, 
-      "state_officers": false, 
-      "note": "", 
-      "state": "DC", 
-      "prez": true, 
-      "gov": false, 
-      "start_date": "2012-11-06", 
-      "end_date": "2012-11-06", 
-      "state_leg": false, 
-      "state_level": true, 
-      "county_level": false, 
-      "user": 1, 
-      "precinct_level": false, 
-      "portal_link": "", 
-      "direct_link": "", 
-      "formats": [
-        "csv", 
-        "xml"
-      ], 
-      "organization": 1, 
-      "result_type": "certified"
-    }
-  }, 
-  {
-    "pk": 5, 
-    "model": "hub.log", 
-    "fields": {
-      "follow_up": null, 
-      "notes": "", 
-      "gdoc_link": "", 
-      "state": "DC", 
-      "contact": null, 
-      "user": 1, 
-      "formal_request": false, 
-      "date": "2012-12-02", 
-      "org": 1, 
-      "subject": "Testing"
     }
   }
 ]

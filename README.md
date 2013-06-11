@@ -41,7 +41,7 @@ Add the ``dashboard`` directory to your PYTHONPATH
 $ export PYTHONPATH=$PYTHONPATH:`pwd`/dashboard
 ```
 
-Make a couple of the ``local_settings.py`` template
+Create a ``local_settings.py`` from the template 
 
 ```bash
 $ cp dashboard/config/local_settings.py.tmpl dashboard/config/local_settings.py
@@ -65,6 +65,12 @@ Sync the database and catch up with all the migrations
 ```bash
 $ django-admin.py syncdb
 $ django-admin.py migrate hub
+```
+
+Load initial metadata
+
+```bash
+$ django-admin.py loaddata dashboard/apps/hub/fixtures/initial_metadata.json
 ```
 
 Fire up the development server
