@@ -1,1 +1,1 @@
-from .test_models import ElectionTest
+from .test_models import ElectionTest, LogTest

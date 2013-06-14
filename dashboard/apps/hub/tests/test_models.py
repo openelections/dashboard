@@ -1,8 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-
-from ..models import Election
+from ..models import Contact, Election, Log
 
 class ElectionTest(TestCase):
 
@@ -72,3 +71,40 @@ class ElectionTest(TestCase):
         # Primary race_type must have a primary_type (e.g. closed, open, blanket)
         gop_prez_primary.primary_type = ""
         self.assertRaises(ValidationError, gop_prez_primary.clean)
+
+class LogTest(TestCase):
+
+        fixtures = [
+            'test_log_model',
+        ]
+
+        def test_log_key(self):
+            """Log key returns info on state, date and subject of conversation"""
+            kwargs = {
+                "follow_up": None,
+                "notes": "This is a test.",
+                "gdoc_link": "",
+                "state_id": "KS",
+                "contact": None,
+                "user_id": 9,
+                "formal_request": False,
+                "date": "2013-03-28",
+                "org_id": 15,
+                "subject": "Test subject line"
+            }
+            log = Log(**kwargs)
+            log.save()
+            self.assertEqual(log.log_key(),  ('KS', '2013-03-28', 'Test subject line'))
+            self.assertEqual(log.log_key(as_string=True),  'KS - 2013-03-28 - Test subject line')
+
+            # Test with contact
+            contact = Contact.objects.all()[0]
+            log.contact = contact
+            log.save()
+            expected = (
+                'KS',
+                '2013-03-28',
+                u'Williams (Kansas Secretary of State elections division)',
+                'Test subject line',
+            )
+            self.assertEqual(expected, log.log_key())

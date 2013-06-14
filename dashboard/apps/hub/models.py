@@ -372,9 +372,13 @@ class Log(BaseLog):
         return "<%s: %s>" % (self.__class__.__name__, self.log_key(as_string=True))
 
     def log_key(self, as_string=False):
-        key = (self.state_id, self.date.strftime('%Y-%m-%d'),)
+        try:
+            date_str = self.date.strftime('%Y-%m-%d')
+        except AttributeError:
+            date_str = self.date
+        key = (self.state_id, date_str)
         if self.contact:
-            key += (self.contact,)
+            key += (unicode(self.contact),)
         key += (self.subject,)
         if as_string:
             key = ' - '.join(key)

@@ -1,0 +1,62 @@
+[
+  {
+    "pk": 9, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "testuser", 
+      "first_name": "John", 
+      "last_name": "Smith", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": true, 
+      "last_login": "2013-06-12T12:06:03.439", 
+      "groups": [
+        1
+      ], 
+      "user_permissions": [], 
+      "password": "pbkdf2_sha256$10000$KpluR6OpM5SU$BHcFRbo9Ls6owZ1uqEItxqmFa0eGNRNiaybnyFGbyjQ=", 
+      "email": "testuser@gmail.com", 
+      "date_joined": "2013-03-11T23:25:41"
+    }
+  }, 
+  {
+    "pk": "KS", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Kansas", 
+      "metadata_status": "partial"
+    }
+  }, 
+  {
+    "pk": 15, 
+    "model": "hub.organization", 
+    "fields": {
+      "city": "Topeka", 
+      "name": "Kansas Secretary of State elections division", 
+      "gov_level": "state", 
+      "url": "http://www.sos.ks.gov/elections/elections_statistics.html", 
+      "fec_page": "", 
+      "state": "KS", 
+      "street": "Memorial Hall, 1st Floor 120 SW 10th Avenue", 
+      "gov_agency": true, 
+      "slug": "kansas-secretary-state-elections-division", 
+      "description": ""
+    }
+  },
+  {
+    "pk": 1, 
+    "model": "hub.contact", 
+    "fields": {
+      "first_name": "Jane", 
+      "last_name": "Williams", 
+      "middle_name": "", 
+      "title": "Communications Director", 
+      "mobile": "", 
+      "note": "", 
+      "phone": "", 
+      "org": 15, 
+      "email": ""
+    }
+  } 
+]
