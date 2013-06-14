@@ -3,6 +3,8 @@
     "pk": 4, 
     "model": "hub.election", 
     "fields": {
+      "created": "2013-03-11T23:25:41",
+      "modified": "2013-03-11T23:25:41",
       "absentee_and_provisional": false, 
       "house": true, 
       "race_type": "general", 
@@ -38,6 +40,8 @@
     "pk": 30, 
     "model": "hub.election", 
     "fields": {
+      "created": "2013-03-11T23:25:41",
+      "modified": "2013-03-11T23:25:41",
       "absentee_and_provisional": false, 
       "house": true, 
       "race_type": "primary", 
@@ -73,6 +77,8 @@
     "pk": 31, 
     "model": "hub.election", 
     "fields": {
+      "created": "2013-03-11T23:25:41",
+      "modified": "2013-03-11T23:25:41",
       "absentee_and_provisional": false, 
       "house": false, 
       "race_type": "primary", 
@@ -108,6 +114,8 @@
     "pk": 35, 
     "model": "hub.election", 
     "fields": {
+      "created": "2013-03-11T23:25:41",
+      "modified": "2013-03-11T23:25:41",
       "absentee_and_provisional": false, 
       "house": false, 
       "race_type": "primary", 
@@ -143,6 +151,8 @@
     "pk": 36, 
     "model": "hub.election", 
     "fields": {
+      "created": "2013-03-11T23:25:41",
+      "modified": "2013-03-11T23:25:41",
       "absentee_and_provisional": false, 
       "house": false, 
       "race_type": "general", 

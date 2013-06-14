@@ -23,7 +23,7 @@ ELECTION_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {
-        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'special', 'primary_type', 'absentee_and_provisional'),
+        'fields': ('state', ('start_date', 'end_date'), 'race_type', 'special', 'primary_type', 'primary_note', 'absentee_and_provisional'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Offices Covered', {

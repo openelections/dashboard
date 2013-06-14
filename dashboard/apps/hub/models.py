@@ -134,6 +134,7 @@ class Election(models.Model):
         ('blanket', 'Blanket'),
         ('closed', 'Closed'),
         ('open', 'Open'),
+        ('other', 'Other'),
     )
 
     # User meta
@@ -143,7 +144,13 @@ class Election(models.Model):
 
     # Election meta
     race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
-    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="Closed is the common case. See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a> for details on Blanket and Open")
+    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="""
+        Closed is the common case, though many states have open primaries.
+        Use Other for edge cases such as semi-closed.
+        (See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a>
+        for detailed explanations of primary types).
+    """)
+    primary_note = models.TextField(blank=True, help_text="If the Other box is checked for primary_type, please explain the edge case.")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
@@ -208,6 +215,9 @@ class Election(models.Model):
         if 'primary' in self.race_type:
             if not self.primary_type:
                 raise ValidationError('Primaries require a primary type.')
+
+            if self.primary_type == 'other' and not self.primary_note:
+                raise ValidationError("Primary types flagged as 'Other' represent edge cases. Please provide some background in the Primary Note field.")
 
 
     def __unicode__(self):

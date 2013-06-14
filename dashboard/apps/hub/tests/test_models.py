@@ -72,6 +72,11 @@ class ElectionTest(TestCase):
         gop_prez_primary.primary_type = ""
         self.assertRaises(ValidationError, gop_prez_primary.clean)
 
+        # Primary race_type of other represents an edge case that requires explanation
+        gop_prez_primary.primary_type = "other"
+        self.assertRaises(ValidationError, gop_prez_primary.clean)
+
+
 class LogTest(TestCase):
 
         fixtures = [
