@@ -150,7 +150,7 @@ class Election(models.Model):
         (See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a>
         for detailed explanations of primary types).
     """)
-    primary_note = models.TextField(blank=True, help_text="If the Other box is checked for primary_type, please explain the edge case.")
+    primary_note = models.TextField(blank=True, help_text="Explain primary idiosyncracies here. If Other is selected for primary type, you must explain the edge case in this field.")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
