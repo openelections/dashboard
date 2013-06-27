@@ -134,6 +134,8 @@ class Election(models.Model):
         ('blanket', 'Blanket'),
         ('closed', 'Closed'),
         ('open', 'Open'),
+        ('semi-closed', 'Semi-closed'),
+        ('semi-open', 'Semi-open'),
         ('other', 'Other'),
     )
 
@@ -144,13 +146,13 @@ class Election(models.Model):
 
     # Election meta
     race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
-    primary_type = models.CharField(max_length=10, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="""
+    primary_type = models.CharField(max_length=15, blank=True, default='', choices=PRIMARY_TYPE_CHOICES, db_index=True, help_text="""
         Closed is the common case, though many states have open primaries.
         Use Other for edge cases such as semi-closed.
         (See <a href='http://en.wikipedia.org/wiki/Primary_election' target='_blank'>Wikipedia</a>
         for detailed explanations of primary types).
     """)
-    primary_note = models.TextField(blank=True, help_text="Explain primary idiosyncracies here. If Other is selected for primary type, you must explain the edge case in this field.")
+    primary_note = models.TextField(blank=True, help_text="Explain primary idiosyncrasies here. If Other is selected for primary type, you must explain the edge case in this field.")
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
