@@ -311,7 +311,14 @@ class Election(models.Model):
     
     @property
     def slug(self):
-        return "%s-%s-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
+        if self.special:
+            return "%s-%s-special-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
+        else:
+            return "%s-%s-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
+        
+    @property
+    def division(self):
+        return "ocd-division/country:us/state:%s" % self.state_id.lower()
 
 class BaseContact(models.Model):
     first_name = models.CharField(max_length=30)
