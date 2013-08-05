@@ -308,6 +308,10 @@ class Election(models.Model):
         else:
             key = tuple(meta) + tuple(self.offices)
         return key
+    
+    @property
+    def slug(self):
+        return "%s-%s-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
 
 class BaseContact(models.Model):
     first_name = models.CharField(max_length=30)
