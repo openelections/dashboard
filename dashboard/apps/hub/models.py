@@ -285,6 +285,23 @@ class Election(models.Model):
             'state_leg',
         )
         return tuple(attr for attr in office_fields if getattr(self, attr))
+    
+    @property
+    def reporting_levels(self):
+        r_levels = []
+        levels = {
+            'state_level' : 'Race-wide',
+            'county_level' : 'County',
+            'precinct_level' : 'Precinct', 
+            'cong_dist_level' : 'Congressional District',
+            'state_leg_level' : 'State Legislative'
+        }
+        for level in levels:
+            if getattr(self, level):
+                r_levels.append({levels[level] : True})
+            else:
+                r_levels.append({levels[level] : False})
+        return r_levels
 
     def elec_key(self, as_string=False):
         meta = [
