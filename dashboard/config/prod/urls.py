@@ -1,6 +1,6 @@
 from django.conf.urls.defaults import patterns, include, url
-
 from dashboard.config.base.urls import urlpatterns
 
-urlpatterns += patterns('',
+urlpatterns += patterns('dashboard.apps.hub.views',
+    url(r'^api/state/(?P<state>[a-z]+)/year/(?P<year>\d{4})/$', 'elections_for_state_and_year'),
 )

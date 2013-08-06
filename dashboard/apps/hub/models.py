@@ -285,7 +285,42 @@ class Election(models.Model):
             'state_leg',
         )
         return tuple(attr for attr in office_fields if getattr(self, attr))
-
+    
+    @property
+    def offices_for_api(self):
+        o = []
+        offices = {
+            'prez' : 'President',
+            'senate' : 'Senate',
+            'house' : 'House' ,
+            'gov' : 'Governor',
+            'state_officers' : 'State Officers',
+            'state_leg' : 'State Legislature'
+        }
+        for office in offices:
+            if getattr(self, office):
+                o.append({offices[office] : True})
+            else:
+                o.append({offices[office] : False})
+        return o
+    
+    @property
+    def reporting_levels(self):
+        r_levels = []
+        levels = {
+            'state_level' : 'Race-wide',
+            'county_level' : 'County',
+            'precinct_level' : 'Precinct', 
+            'cong_dist_level' : 'Congressional District',
+            'state_leg_level' : 'State Legislative'
+        }
+        for level in levels:
+            if getattr(self, level):
+                r_levels.append({levels[level] : True})
+            else:
+                r_levels.append({levels[level] : False})
+        return r_levels
+    
     def elec_key(self, as_string=False):
         meta = [
             self.start_date.strftime('%Y-%m-%d'),
@@ -308,6 +343,17 @@ class Election(models.Model):
         else:
             key = tuple(meta) + tuple(self.offices)
         return key
+    
+    @property
+    def slug(self):
+        if self.special:
+            return "%s-%s-special-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
+        else:
+            return "%s-%s-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
+        
+    @property
+    def division(self):
+        return "ocd-division/country:us/state:%s" % self.state_id.lower()
 
 class BaseContact(models.Model):
     first_name = models.CharField(max_length=30)
