@@ -287,6 +287,24 @@ class Election(models.Model):
         return tuple(attr for attr in office_fields if getattr(self, attr))
     
     @property
+    def offices_for_api(self):
+        o = []
+        offices = {
+            'prez' : 'President',
+            'senate' : 'Senate',
+            'house' : 'House' ,
+            'gov' : 'Governor',
+            'state_officers' : 'State Officers',
+            'state_leg' : 'State Legislature'
+        }
+        for office in offices:
+            if getattr(self, office):
+                o.append({offices[office] : True})
+            else:
+                o.append({offices[office] : False})
+        return o
+    
+    @property
     def reporting_levels(self):
         r_levels = []
         levels = {
@@ -302,7 +320,7 @@ class Election(models.Model):
             else:
                 r_levels.append({levels[level] : False})
         return r_levels
-
+    
     def elec_key(self, as_string=False):
         meta = [
             self.start_date.strftime('%Y-%m-%d'),
