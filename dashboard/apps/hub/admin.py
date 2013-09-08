@@ -254,14 +254,18 @@ class VolunteerAdmin(admin.ModelAdmin):
         'first_name',
         'last_name',
         'assigned_states',
-        'email',
-        'twitter',
-        'phone',
-        'mobile'
+        'attended_sprint',
+        'last_emailed',
+        'note_snippet',
     )
     list_display_links = ('last_name',)
+    list_editable = ('attended_sprint', 'last_emailed',) 
     list_select_related = True
-    list_filter = (VolunteersByStateFilter,)
+    list_filter = (
+        VolunteersByStateFilter,
+        'attended_sprint',
+        'last_emailed',
+    )
     inlines = [VolunteerLogInline]
     fieldsets = (
         (None, {
@@ -270,14 +274,18 @@ class VolunteerAdmin(admin.ModelAdmin):
         ('Contact Info', {
             'fields': ('phone', 'mobile', 'email', 'website', 'twitter', 'skype'),
         }),
-        (None, {
-            'fields': ('roles', 'states', 'note',),
+        ('Activity', {
+            'fields': ('roles', 'states', 'attended_sprint', 'last_emailed', 'note'),
         }),
     )
 
     def assigned_states(self, obj):
         return ", ".join(obj.states.values_list('postal', flat=True))
     assigned_states.short_description = "States covered by this volunteer"
+
+    def note_snippet(self, obj):
+        return obj.note.split('\n')[0]
+    note_snippet.short_description = "First line of the Note field"
 
 
 class VolunteerLogAdmin(admin.ModelAdmin):

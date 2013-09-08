@@ -390,6 +390,8 @@ class Volunteer(BaseContact):
     skype = models.CharField(max_length=254, blank=True)
     states = models.ManyToManyField('State', blank=True)
     roles = models.ManyToManyField(VolunteerRole, help_text="In what ways has this volunteer agreed to contribute?")
+    attended_sprint = models.BooleanField(default=False)
+    last_emailed = models.DateField(blank=True, null=True)
 
     def __unicode__(self):
         key = self.full_name
