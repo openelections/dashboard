@@ -221,6 +221,7 @@ class ElectionAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         obj.user = request.user
+        obj.user_fullname = "%s, %s" % (obj.user.last_name, obj.user.first_name)
         obj.save()
 
     def offices(self, obj):
