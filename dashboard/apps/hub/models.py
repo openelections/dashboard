@@ -143,6 +143,7 @@ class Election(models.Model):
     created = models.DateTimeField()
     modified = models.DateTimeField()
     user = models.ForeignKey(User)
+    user_fullname = models.CharField(max_length=70, db_index=True, help_text="denormalized user name")
 
     # Election meta
     race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
@@ -285,7 +286,7 @@ class Election(models.Model):
             'state_leg',
         )
         return tuple(attr for attr in office_fields if getattr(self, attr))
-    
+
     @property
     def offices_for_api(self):
         o = []
@@ -303,7 +304,7 @@ class Election(models.Model):
             else:
                 o.append({offices[office] : False})
         return o
-    
+
     @property
     def reporting_levels(self):
         r_levels = []
@@ -320,7 +321,7 @@ class Election(models.Model):
             else:
                 r_levels.append({levels[level] : False})
         return r_levels
-    
+
     def elec_key(self, as_string=False):
         meta = [
             self.start_date.strftime('%Y-%m-%d'),
@@ -343,17 +344,19 @@ class Election(models.Model):
         else:
             key = tuple(meta) + tuple(self.offices)
         return key
-    
+
     @property
     def slug(self):
         if self.special:
             return "%s-%s-special-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
         else:
             return "%s-%s-%s" % (self.state_id.lower(), self.start_date.strftime('%Y-%m-%d'), self.race_type)
-        
+
     @property
     def division(self):
         return "ocd-division/country:us/state:%s" % self.state_id.lower()
+
+
 
 class BaseContact(models.Model):
     first_name = models.CharField(max_length=30)

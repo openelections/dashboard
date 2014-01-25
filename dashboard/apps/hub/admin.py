@@ -188,14 +188,16 @@ class ElectionNeedsReviewListFilter(admin.SimpleListFilter):
         if self.value() == 'Yes':
             return queryset.exclude(needs_review=u'')
 
+
 class ElectionAdmin(admin.ModelAdmin):
     model = Election
     filter_horizontal = ['formats']
-    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'special', 'offices']
+    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'special', 'offices', 'user_fullname']
     list_display_links = ['id']
     save_on_top = True
     list_filter = [
         ElectionNeedsReviewListFilter,
+        'user_fullname',
         'start_date',
         'race_type',
         'primary_type',
