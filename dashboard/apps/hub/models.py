@@ -172,7 +172,7 @@ class Election(models.Model):
     county_level = models.BooleanField("County", default=False, db_index=True)
     precinct_level = models.BooleanField("Precinct", default=False, db_index=True)
     # Congress and state leg are only used when statewide offices are broken down by those units
-    cong_dist_level = models.BooleanField("Congressional Distritct", default=False, db_index=True)
+    cong_dist_level = models.BooleanField("Congressional District", default=False, db_index=True)
     state_leg_level = models.BooleanField("State legislative", default=False, db_index=True)
     level_note = models.TextField("Note", blank=True)
 
@@ -311,7 +311,7 @@ class Election(models.Model):
         levels = {
             'state_level' : 'Race-wide',
             'county_level' : 'County',
-            'precinct_level' : 'Precinct', 
+            'precinct_level' : 'Precinct',
             'cong_dist_level' : 'Congressional District',
             'state_leg_level' : 'State Legislative'
         }
