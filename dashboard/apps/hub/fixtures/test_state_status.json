@@ -1,0 +1,50 @@
+[
+  {
+    "pk": 9, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "testuser", 
+      "first_name": "John", 
+      "last_name": "Smith", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": true, 
+      "last_login": "2013-06-12T12:06:03.439", 
+      "groups": [
+        1
+      ], 
+      "user_permissions": [], 
+      "password": "pbkdf2_sha256$10000$KpluR6OpM5SU$BHcFRbo9Ls6owZ1uqEItxqmFa0eGNRNiaybnyFGbyjQ=", 
+      "email": "testuser@gmail.com", 
+      "date_joined": "2013-03-11T23:25:41"
+    }
+  }, 
+  {
+    "pk": "KS", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Kansas", 
+      "metadata_status": "partial"
+    }
+  },
+  {
+    "pk": "metadata-editor",
+    "model": "hub.volunteerrole",
+    "fields": {
+      "name": "Metadata Editor"
+    }
+  },
+  {
+    "pk": null,
+    "model": "hub.volunteer",
+    "fields": {
+      "user": 9,
+      "first_name": "John", 
+      "last_name": "Smith", 
+      "website": "http://example.com/~testuser/",
+      "states": ["KS"],
+      "roles": ["metadata-editor"]
+    }
+  }
+]
