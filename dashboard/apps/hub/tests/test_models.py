@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from ..models import Contact, Election, Log
+from ..models import Contact, Election, Log, State, Volunteer
 
 class ElectionTest(TestCase):
 
@@ -113,3 +113,31 @@ class LogTest(TestCase):
                 'Test subject line',
             )
             self.assertEqual(expected, log.log_key())
+
+
+class VolunteerTest(TestCase):
+    fixtures = [
+        'test_state_status',
+    ]
+
+    def test_status_entry(self):
+        v = Volunteer.objects.get(user__username="testuser")
+        status = v.status_entry()
+        self.assertEqual(len(status), 2)
+        self.assertEqual(status['full_name'], "John Smith")
+        self.assertEqual(status['website'], "http://example.com/~testuser/")
+
+
+class StateTest(TestCase):
+    fixtures = [
+        'test_state_status',
+    ]
+
+    def test_status_entry(self):
+        s = State.objects.get(pk="KS")
+        status = s.status_entry()
+        self.assertEqual(status['postal'], "KS")
+        self.assertEqual(status['name'], "Kansas")
+        self.assertEqual(status['metadata_status'], "partial")
+        self.assertEqual(len(status['volunteers']), 1)
+        self.assertEqual(status['volunteers'][0]['full_name'], "John Smith")
