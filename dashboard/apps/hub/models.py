@@ -7,6 +7,8 @@ from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.db import models
 from django.template.defaultfilters import slugify
 
+from managers import StateManager
+
 
 class ProxyUser(User):
 
@@ -96,6 +98,8 @@ class State(models.Model):
     metadata_status = models.CharField(max_length=20, choices=STATUS_OPTIONS, db_index=True, help_text="Status of metadata collection for state")
     note = models.TextField("Overview", blank=True)
 
+    objects = StateManager()
+
     class Meta:
         ordering = ['name']
 
@@ -104,6 +108,20 @@ class State(models.Model):
 
     def __repr__(self):
         return '<%s - %s>' % (self.__class__.__name__, self.postal)
+
+    def status_entry(self):
+        """
+        Returns a dict, suitable for serialization that represents
+        the state's completion status.
+        """
+        volunteers = [v.status_entry() for v in
+                      self.volunteer_set.all()]
+        return {
+            'name': self.name,
+            'postal': self.postal,
+            'metadata_status': self.metadata_status,
+            'volunteers': volunteers,
+        }
 
 
 class Election(models.Model):
@@ -182,7 +200,7 @@ class Election(models.Model):
     county_level = models.BooleanField("County", default=False, db_index=True)
     precinct_level = models.BooleanField("Precinct", default=False, db_index=True)
     # Congress and state leg are only used when statewide offices are broken down by those units
-    cong_dist_level = models.BooleanField("Congressional Distritct", default=False, db_index=True)
+    cong_dist_level = models.BooleanField("Congressional District", default=False, db_index=True)
     state_leg_level = models.BooleanField("State legislative", default=False, db_index=True)
     level_note = models.TextField("Note", blank=True)
 
@@ -321,7 +339,7 @@ class Election(models.Model):
         levels = {
             'state_level' : 'Race-wide',
             'county_level' : 'County',
-            'precinct_level' : 'Precinct', 
+            'precinct_level' : 'Precinct',
             'cong_dist_level' : 'Congressional District',
             'state_leg_level' : 'State Legislative'
         }
@@ -415,6 +433,17 @@ class Volunteer(BaseContact):
     @property
     def full_name(self):
         return ' '.join((self.first_name, self.last_name))
+
+    def status_entry(self):
+        """
+        Returns a dict, suitable for serialization containing volunteer
+        information that will be displayed with their state's status.
+        """
+        return {
+            'full_name': self.full_name,
+            'website': self.website
+        }
+
 
 class BaseLog(models.Model):
     user = models.ForeignKey(ProxyUser, help_text="User who entered data for the log")
