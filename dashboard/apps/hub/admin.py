@@ -50,7 +50,7 @@ ELECTION_FIELDSET = (
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Notes', {
-        'fields': ('note', 'needs_review'),
+        'fields': ('proofed_by', 'note', 'needs_review'),
         'classes': ('grp-collapse grp-closed',),
     }),
 )

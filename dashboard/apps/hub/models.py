@@ -8,6 +8,15 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 
+class ProxyUser(User):
+
+    class Meta:
+        proxy = True
+        ordering = ['last_name', 'first_name']
+
+    def __unicode__(self):
+        return u'%s, %s' % (self.last_name, self.first_name)
+
 class Office(models.Model):
     name = models.CharField(max_length=40)
     slug = models.SlugField(primary_key=True)
@@ -144,6 +153,7 @@ class Election(models.Model):
     modified = models.DateTimeField()
     user = models.ForeignKey(User)
     user_fullname = models.CharField(max_length=70, db_index=True, help_text="denormalized user name")
+    proofed_by = models.ForeignKey(ProxyUser, related_name='proofer', blank=True, null=True, help_text="Name of person who reviewed this record.")
 
     # Election meta
     race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
@@ -386,7 +396,7 @@ class VolunteerRole(models.Model):
         return "%s" % self.name
 
 class Volunteer(BaseContact):
-    user = models.OneToOneField(User, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
+    user = models.OneToOneField(ProxyUser, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
     affil = models.CharField("Affiliation", max_length=254, blank=True)
     twitter = models.CharField(max_length=254, blank=True)
     website = models.CharField(max_length=254, blank=True)
@@ -407,7 +417,7 @@ class Volunteer(BaseContact):
         return ' '.join((self.first_name, self.last_name))
 
 class BaseLog(models.Model):
-    user = models.ForeignKey(User, help_text="User who entered data for the log")
+    user = models.ForeignKey(ProxyUser, help_text="User who entered data for the log")
     date = models.DateField()
     subject = models.CharField(max_length=100)
     gdoc_link = models.URLField(blank=True, help_text="Link to GDoc for extended notes on conversation")
