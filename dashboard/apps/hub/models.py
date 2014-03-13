@@ -396,7 +396,7 @@ class VolunteerRole(models.Model):
         return "%s" % self.name
 
 class Volunteer(BaseContact):
-    user = models.OneToOneField(User, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
+    user = models.OneToOneField(ProxyUser, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
     affil = models.CharField("Affiliation", max_length=254, blank=True)
     twitter = models.CharField(max_length=254, blank=True)
     website = models.CharField(max_length=254, blank=True)
@@ -417,7 +417,7 @@ class Volunteer(BaseContact):
         return ' '.join((self.first_name, self.last_name))
 
 class BaseLog(models.Model):
-    user = models.ForeignKey(User, help_text="User who entered data for the log")
+    user = models.ForeignKey(ProxyUser, help_text="User who entered data for the log")
     date = models.DateField()
     subject = models.CharField(max_length=100)
     gdoc_link = models.URLField(blank=True, help_text="Link to GDoc for extended notes on conversation")
