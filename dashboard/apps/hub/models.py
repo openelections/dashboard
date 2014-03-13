@@ -8,6 +8,15 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 
+class ProxyUser(User):
+
+    class Meta:
+        proxy = True
+        ordering = ['last_name', 'first_name']
+
+    def __unicode__(self):
+        return u'%s, %s' % (self.last_name, self.first_name)
+
 class Office(models.Model):
     name = models.CharField(max_length=40)
     slug = models.SlugField(primary_key=True)
@@ -144,6 +153,7 @@ class Election(models.Model):
     modified = models.DateTimeField()
     user = models.ForeignKey(User)
     user_fullname = models.CharField(max_length=70, db_index=True, help_text="denormalized user name")
+    proofed_by = models.ForeignKey(ProxyUser, related_name='proofer', blank=True, null=True, help_text="Name of person who reviewed this record.")
 
     # Election meta
     race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
