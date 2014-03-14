@@ -192,11 +192,23 @@ class ElectionNeedsReviewListFilter(admin.SimpleListFilter):
 class ElectionAdmin(admin.ModelAdmin):
     model = Election
     filter_horizontal = ['formats']
-    list_display = ['id', 'state', 'start_date', 'end_date', 'race_type', 'primary_type', 'special', 'offices', 'user_fullname']
+    list_display = [
+        'id',
+        'state',
+        'start_date',
+        'end_date',
+        'race_type',
+        'primary_type',
+        'special',
+        'offices',
+        'user_fullname',
+        'proofed_by',
+    ]
     list_display_links = ['id']
     save_on_top = True
     list_filter = [
         ElectionNeedsReviewListFilter,
+        'proofed_by',
         'user_fullname',
         'start_date',
         'race_type',
