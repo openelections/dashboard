@@ -189,6 +189,23 @@ class ElectionNeedsReviewListFilter(admin.SimpleListFilter):
             return queryset.exclude(needs_review=u'')
 
 
+class ElectionProofedListFilter(admin.SimpleListFilter):
+    title = _('Proofed')
+    parameter_name = 'proofed'
+
+    def lookups(self, request, model_admin):
+        return (
+            ('Yes', _('Yes')),
+            ('No', _('No')),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'No':
+            return queryset.filter(proofed_by__isnull=True)
+        if self.value() == 'Yes':
+            return queryset.filter(proofed_by__isnull=False)
+
+
 class ElectionAdmin(admin.ModelAdmin):
     model = Election
     filter_horizontal = ['formats']
@@ -208,6 +225,7 @@ class ElectionAdmin(admin.ModelAdmin):
     save_on_top = True
     list_filter = [
         ElectionNeedsReviewListFilter,
+        ElectionProofedListFilter,
         'proofed_by',
         'user_fullname',
         'start_date',
