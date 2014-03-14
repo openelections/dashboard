@@ -1,6 +1,9 @@
+from decimal import Decimal
+
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.localflavor.us.us_states import US_STATES
+from django.db import connection
 from django.utils.translation import ugettext_lazy as _
 
 from models import (
@@ -15,6 +18,12 @@ from models import (
     VolunteerLog,
     VolunteerRole
 )
+
+### Create single db cursor for raw queries
+DB_CURSOR = connection.cursor()
+
+### number helpers
+ONEPLACE = Decimal(10) ** -1
 
 ### FIELDSET ###
 ELECTION_FIELDSET = (
@@ -139,7 +148,7 @@ class LogInline(admin.StackedInline):
 
 
 class StateAdmin(admin.ModelAdmin):
-    list_display = ['name', 'state_volunteers', 'metadata_status']
+    list_display = ['name', 'state_volunteers', 'percent_proofed', 'metadata_status']
     list_filter = ['metadata_status']
     list_editable = ['metadata_status']
     inlines = [
@@ -170,6 +179,26 @@ class StateAdmin(admin.ModelAdmin):
     def state_volunteers(self, obj):
         return ", ".join([vol.full_name for vol in obj.volunteer_set.all()])
     state_volunteers.short_description = "Volunteers assigned to each state"
+
+    def percent_proofed(self, obj):
+        sql = '''select (
+                    cast(sum(case when proofed_by_id is not null then 1 end) as decimal)/count(*)
+                   )*100
+                from hub_election
+                where state_id = %s;'''
+        DB_CURSOR.execute(sql, [obj.postal])
+        # Assume zero
+        value = DB_CURSOR.fetchone()[0]
+        try:
+            pct = value.quantize(ONEPLACE).to_eng_string()
+        except AttributeError:
+        # States with zero records return None value
+            pct = "0"
+        # Generic trap for all other error types, to avoid breaking admin
+        except:
+            pct = "Could not be determined."
+        return pct
+    percent_proofed.short_description = "% of election records proofed"
 
 
 class ElectionNeedsReviewListFilter(admin.SimpleListFilter):
