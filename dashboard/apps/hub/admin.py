@@ -19,8 +19,6 @@ from models import (
     VolunteerRole
 )
 
-### Create single db cursor for raw queries
-DB_CURSOR = connection.cursor()
 
 ### number helpers
 ONEPLACE = Decimal(10) ** -1
@@ -186,9 +184,12 @@ class StateAdmin(admin.ModelAdmin):
                    )*100
                 from hub_election
                 where state_id = %s;'''
-        DB_CURSOR.execute(sql, [obj.postal])
+
+        ### Create single db cursor for raw queries
+        cursor = connection.cursor()
+        cursor.execute(sql, [obj.postal])
         # Assume zero
-        value = DB_CURSOR.fetchone()[0]
+        value = cursor.fetchone()[0]
         try:
             pct = value.quantize(ONEPLACE).to_eng_string()
         except AttributeError:
