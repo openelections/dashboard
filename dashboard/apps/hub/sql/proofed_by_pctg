@@ -1,0 +1,20 @@
+﻿select (
+	--cast(sum(case when proofed_by_id is not null then 1 end) as decimal) as unproofed_cnt, 
+	cast(sum(case when proofed_by_id is not null then 1 end) as decimal)/count(*)
+	)*100 as pct
+from hub_election
+where state_id = 'DC'
+;
+/*
+
+select (sum(
+	case when proofed_by_id is null and state_id = 'DC' then 1 end)/count(proofed_by_id)
+	)*100 as pct
+from hub_election
+where state_id = 'DC'
+
+select race_type, start_date, end_date, state_id, proofed_by_id
+from hub_election
+where state_id = 'DC'
+;
+*/

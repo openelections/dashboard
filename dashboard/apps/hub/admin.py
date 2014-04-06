@@ -26,7 +26,7 @@ ONEPLACE = Decimal(10) ** -1
 ### FIELDSET ###
 ELECTION_FIELDSET = (
     ('Data Source', {
-        'fields': ('organization', 'portal_link', 'direct_link', 'result_type', 'formats'),
+        'fields': ('organization', 'portal_link', 'direct_links', 'result_type', 'formats'),
         'classes': ('grp-collapse grp-closed',),
     }),
     ('Election Meta', {

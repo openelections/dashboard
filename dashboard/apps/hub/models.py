@@ -190,7 +190,8 @@ class Election(models.Model):
     # Data Source Meta
     organization = models.ForeignKey(Organization, null=True, help_text="Agency or Org that is source of the data")
     portal_link = models.URLField(blank=True, help_text="Link to portal, page or form where data can be found, if available")
-    direct_link = models.URLField(blank=True, help_text="Direct link to data, if available")
+    direct_link = models.URLField(blank=True, help_text="DEPRECATED: Direct link to data, if available")
+    direct_links = models.TextField(blank=True, help_text="One or more direct links to source data related to this election date, if available. Each link should be on a separate line.")
     result_type = models.CharField(max_length=10, choices=RESULT_CHOICES)
     formats = models.ManyToManyField(DataFormat, help_text="Formats that data are available in")
     absentee_and_provisional = models.BooleanField(default=False, db_index=True, help_text="True if absentee and provisional data available")

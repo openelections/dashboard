@@ -1,3 +1,5 @@
+import re
+
 from tastypie import fields
 from tastypie.resources import ModelResource, ALL, ALL_WITH_RELATIONS
 from dashboard.apps.hub.models import Election, State, Organization
@@ -54,3 +56,8 @@ class ElectionResource(ModelResource):
             'start_date': ALL,
             'end_date': ALL,
         }
+
+    def dehydrate_direct_links(self, bundle):
+        urls = re.sub(r'\n+', "\n", bundle.data['direct_links']).split("\n")
+        bundle.data['direct_links'] = [url for url in urls if url.strip()]
+        return bundle.data['direct_links']
