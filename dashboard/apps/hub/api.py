@@ -58,6 +58,6 @@ class ElectionResource(ModelResource):
         }
 
     def dehydrate_direct_links(self, bundle):
-        urls = re.sub(r'\n+', "\n", bundle.data['direct_links']).split("\n")
+        urls = re.sub(r'\n+', "\n", bundle.data['direct_links'].replace('\r', '')).split("\n")
         bundle.data['direct_links'] = [url for url in urls if url.strip()]
         return bundle.data['direct_links']
