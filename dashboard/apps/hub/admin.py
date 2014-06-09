@@ -165,7 +165,7 @@ class StateAdmin(admin.ModelAdmin):
 
 
     def save_formset(self, request, form, formset, change):
-        if formset.model in (Election, Log):
+        if formset.model == Election:
             instances = formset.save(commit=False)
             for instance in instances:
                 instance.user = request.user
