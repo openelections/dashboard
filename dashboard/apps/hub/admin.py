@@ -156,7 +156,7 @@ class StateAdmin(admin.ModelAdmin):
     readonly_fields = ('name',)
     fieldsets = (
         (None, {
-            'fields': ('name', 'metadata_status', 'note',)
+            'fields': ('name', 'metadata_status', 'note', 'results_description')
         }),
     )
 

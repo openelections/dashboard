@@ -97,6 +97,7 @@ class State(models.Model):
     name = models.CharField(max_length=25, help_text="Full state name")
     metadata_status = models.CharField(max_length=20, choices=STATUS_OPTIONS, db_index=True, help_text="Status of metadata collection for state")
     note = models.TextField("Overview", blank=True)
+    results_description = models.TextField(blank=True, help_text="Quality and consistency of results over time. E.g., CSV files with consistent formats for all years except 2000 and 2002")
 
     objects = StateManager()
 
