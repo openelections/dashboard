@@ -93,10 +93,17 @@ class State(models.Model):
         ('partial', 'Partial'),
         ('up-to-date', 'Up-to-date'),
     )
+    PAIN_CHOICES = (
+        ('easy', 'Easy'),
+        ('medium', 'Medium'),
+        ('hard', 'Hard'),
+        ('excruciating', 'Excruciating'),
+    )
     postal = models.CharField(max_length=2, choices=US_STATES, primary_key=True)
     name = models.CharField(max_length=25, help_text="Full state name")
     metadata_status = models.CharField(max_length=20, choices=STATUS_OPTIONS, db_index=True, help_text="Status of metadata collection for state")
     note = models.TextField("Overview", blank=True)
+    pain = models.CharField(max_length=15, blank=True, choices=PAIN_CHOICES, default='', help_text="Degree of difficulty for loading a state's results.")
     results_description = models.TextField(blank=True, help_text="Quality and consistency of results over time. E.g., CSV files with consistent formats for all years except 2000 and 2002")
 
     objects = StateManager()
