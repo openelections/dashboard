@@ -146,9 +146,9 @@ class LogInline(admin.StackedInline):
 
 
 class StateAdmin(admin.ModelAdmin):
-    list_display = ['name', 'state_volunteers', 'percent_proofed', 'metadata_status']
-    list_filter = ['metadata_status']
-    list_editable = ['metadata_status']
+    list_display = ['name', 'state_volunteers', 'percent_proofed', 'metadata_status', 'pain']
+    list_filter = ['metadata_status', 'pain']
+    list_editable = ['metadata_status','pain']
     inlines = [
         ElectionInline,
         LogInline,
