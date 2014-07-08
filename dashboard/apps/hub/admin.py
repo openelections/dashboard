@@ -41,6 +41,14 @@ ELECTION_FIELDSET = (
         ),
         'classes': ('grp-collapse grp-closed',),
     }),
+    ('Results Availability', {
+        'description': 'Availability/status of data at various reporting levels:',
+        'fields': (
+            'state_level_status', 'county_level_status', 'precinct_level_status',
+            'cong_dist_level_status', 'state_leg_level_status',
+        ),
+        'classes': ('grp-collapse grp-closed',),
+    }),
     ('Results Breakdowns', {
         'description': 'The level at which results are broken down. Racewide is the common case and denotes the widest jurisdiction '
                        'or reporting level at which data are available. In the case of presidential, senate or gubernatorial races, '
@@ -146,9 +154,9 @@ class LogInline(admin.StackedInline):
 
 
 class StateAdmin(admin.ModelAdmin):
-    list_display = ['name', 'state_volunteers', 'percent_proofed', 'metadata_status']
-    list_filter = ['metadata_status']
-    list_editable = ['metadata_status']
+    list_display = ['name', 'state_volunteers', 'percent_proofed', 'metadata_status', 'pain']
+    list_filter = ['metadata_status', 'pain']
+    list_editable = ['metadata_status', 'pain']
     inlines = [
         ElectionInline,
         LogInline,
@@ -250,6 +258,11 @@ class ElectionAdmin(admin.ModelAdmin):
         'offices',
         'user_fullname',
         'proofed_by',
+        'state_level_status',
+        'county_level_status',
+        'precinct_level_status',
+        'cong_dist_level_status',
+        'state_leg_level_status',
     ]
     list_display_links = ['id']
     save_on_top = True
@@ -273,6 +286,14 @@ class ElectionAdmin(admin.ModelAdmin):
         'gov',
         'state_officers',
         'state_leg',
+    ]
+    list_editable = [
+        'proofed_by',
+        'state_level_status',
+        'county_level_status',
+        'precinct_level_status',
+        'cong_dist_level_status',
+        'state_leg_level_status',
     ]
     fieldsets = ELECTION_FIELDSET
 
