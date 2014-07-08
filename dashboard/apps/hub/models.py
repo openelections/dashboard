@@ -173,6 +173,14 @@ class Election(models.Model):
         ('semi-open', 'Semi-open'),
         ('other', 'Other'),
     )
+    LEVEL_STATUS_CHOICES = (
+        ('yes', 'Yes - Will be included'),
+        ('no', 'No - Will not be included'),
+        ('unknown', 'Unsure if exists'),
+        ('Unavailable', 'Not available'),
+        ('baked-raw', 'Baked Raw'),
+        ('baked', 'Baked'),
+    )
 
     # User meta
     created = models.DateTimeField()
@@ -212,6 +220,14 @@ class Election(models.Model):
     cong_dist_level = models.BooleanField("Congressional District", default=False, db_index=True)
     state_leg_level = models.BooleanField("State legislative", default=False, db_index=True)
     level_note = models.TextField("Note", blank=True)
+
+    # Status of data at a particular reporting level
+    state_level_status = models.CharField("Racewide Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
+    county_level_status = models.CharField("County Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
+    precinct_level_status = models.CharField("Precinct Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
+    # Congress and state leg are only used when statewide offices are broken down by those units
+    cong_dist_level_status = models.CharField("CD Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
+    state_leg_level_status = models.CharField("State Leg Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
 
     # Offices covered (results include data for these offices)
     prez = models.BooleanField("President", default=False, db_index=True)
