@@ -1,4 +1,9 @@
+import unittest
+import mock
+
 from django.core.exceptions import ValidationError
+from django.db.models import Q
+from django.db.models.query import QuerySet
 from django.test import TestCase
 
 from ..models import Contact, Election, Log, State, Volunteer
@@ -128,7 +133,65 @@ class VolunteerTest(TestCase):
         self.assertEqual(status['website'], "http://example.com/~testuser/")
 
 
-class StateTest(TestCase):
+class StateTest(unittest.TestCase):
+    @classmethod
+    def make_mock_filter_method(cls, counts=None):
+        """Factory for creating mock QuerySet filter methods"""
+        if counts is None:
+            counts = {}
+
+        def filter_method(*args, **kwargs):
+            count_val = 0
+
+            try:
+                q_obj = args[0]
+                if isinstance(q_obj, Q):
+                    filter_kwargs = {k:v for k, v in q_obj.children}
+            except IndexError:
+                filter_kwargs = kwargs
+
+            for kwarg, val in filter_kwargs.items():
+                try:
+                    count_val = counts[kwarg][val]
+                    break
+                except KeyError:
+                    pass
+                
+            mqs = mock.MagicMock(spec=QuerySet)
+            mqs.count.return_value = count_val
+            return mqs
+
+        return filter_method
+
+    # It would be great to use mock-django
+    # (https://github.com/dcramer/mock-django/) for more full-featured mocks
+    # of Django QuerySets and Managers. However, the version on pypi doesn't
+    # support Django 1.5.
+    @mock.patch('apps.hub.models.State.election_set', autospec=True) 
+    def test_results_status(self, election_set):
+        election_set.filter = self.make_mock_filter_method()
+        s = State(postal="MD")
+        self.assertEqual(s.results_status, None)
+
+        election_set.filter = self.make_mock_filter_method({
+            'precinct_level_status': {
+                'raw': 5,
+            }
+        })
+        self.assertEqual(s.results_status, 'raw')
+
+        election_set.filter = self.make_mock_filter_method({
+            'precinct_level_status': {
+                'raw': 5,
+            },
+            'county_level_status': {
+                'clean': 2,
+            }
+        })
+        self.assertEqual(s.results_status, 'clean')
+
+
+class StateTestWithDatabase(TestCase):
     fixtures = [
         'test_state_status',
     ]

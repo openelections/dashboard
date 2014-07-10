@@ -5,6 +5,7 @@ from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.localflavor.us.us_states import US_STATES
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.db import models
+from django.db.models import Q
 from django.template.defaultfilters import slugify
 
 from managers import StateManager
@@ -128,8 +129,37 @@ class State(models.Model):
             'name': self.name,
             'postal': self.postal,
             'metadata_status': self.metadata_status,
+            'results_status': self.results_status,
             'volunteers': volunteers,
         }
+
+    @property
+    def results_status(self):
+        """
+        The status of results for this state.
+
+        The value can be one of these:
+
+        None: Unknown status.
+        "raw": Raw results available for at least some elections.
+        "clean": Cleaned/transformed results available for at least some
+            elections.
+        """
+        clean_q = (Q(precinct_level_status='clean') | Q(county_level_status='clean') |
+            Q(cong_dist_level_status='clean') | Q(state_leg_level_status='clean') |
+            Q(state_level_status='clean'))
+
+        if self.election_set.filter(clean_q).count():
+            return 'clean'
+
+        raw_q = (Q(precinct_level_status='raw') | Q(county_level_status='raw') |
+            Q(cong_dist_level_status='raw') | Q(state_leg_level_status='raw') |
+            Q(state_level_status='raw'))
+
+        if self.election_set.filter(raw_q).count():
+            return 'raw'
+
+        return None
 
 
 class Election(models.Model):
