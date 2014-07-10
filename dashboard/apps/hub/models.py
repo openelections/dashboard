@@ -145,16 +145,16 @@ class State(models.Model):
         "clean": Cleaned/transformed results available for at least some
             elections.
         """
-        clean_q = (Q(precinct_level_status='clean') | Q(county_level_status='clean') |
-            Q(cong_dist_level_status='clean') | Q(state_leg_level_status='clean') |
-            Q(state_level_status='clean'))
+        clean_q = (Q(precinct_level_status='baked') | Q(county_level_status='baked') |
+            Q(cong_dist_level_status='baked') | Q(state_leg_level_status='baked') |
+            Q(state_level_status='baked'))
 
         if self.election_set.filter(clean_q).count():
             return 'clean'
 
-        raw_q = (Q(precinct_level_status='raw') | Q(county_level_status='raw') |
-            Q(cong_dist_level_status='raw') | Q(state_leg_level_status='raw') |
-            Q(state_level_status='raw'))
+        raw_q = (Q(precinct_level_status='baked-raw') | Q(county_level_status='baked-raw') |
+            Q(cong_dist_level_status='baked-raw') | Q(state_leg_level_status='baked-raw') |
+            Q(state_level_status='baked-raw'))
 
         if self.election_set.filter(raw_q).count():
             return 'raw'

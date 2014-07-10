@@ -175,17 +175,17 @@ class StateTest(unittest.TestCase):
 
         election_set.filter = self.make_mock_filter_method({
             'precinct_level_status': {
-                'raw': 5,
+                'baked-raw': 5,
             }
         })
         self.assertEqual(s.results_status, 'raw')
 
         election_set.filter = self.make_mock_filter_method({
             'precinct_level_status': {
-                'raw': 5,
+                'baked-raw': 5,
             },
             'county_level_status': {
-                'clean': 2,
+                'baked': 2,
             }
         })
         self.assertEqual(s.results_status, 'clean')
