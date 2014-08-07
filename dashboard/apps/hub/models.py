@@ -125,12 +125,19 @@ class State(models.Model):
         """
         volunteers = [v.status_entry() for v in
                       self.volunteer_set.all()]
+        dev_volunteers = [v.status_entry() for v in
+            self.volunteer_set.filter(roles__slug="dev")]
+        metadata_volunteers = [v.status_entry() for v in
+            self.volunteer_set.filter(roles__slug="metadata")]
+
         return {
             'name': self.name,
             'postal': self.postal,
             'metadata_status': self.metadata_status,
             'results_status': self.results_status,
             'volunteers': volunteers,
+            'dev_volunteers': dev_volunteers,
+            'metadata_volunteers': metadata_volunteers,
         }
 
     @property

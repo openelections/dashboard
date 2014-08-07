@@ -20,6 +20,26 @@
     }
   }, 
   {
+    "pk": 10, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "testuser2", 
+      "first_name": "Aaliyah", 
+      "last_name": "Clay", 
+      "is_active": true, 
+      "is_superuser": false, 
+      "is_staff": true, 
+      "last_login": "2013-06-12T12:06:03.439", 
+      "groups": [
+        1
+      ], 
+      "user_permissions": [], 
+      "password": "pbkdf2_sha256$10000$KpluR6OpM5SU$BHcFRbo9Ls6owZ1uqEItxqmFa0eGNRNiaybnyFGbyjQ=", 
+      "email": "testuser@gmail.com", 
+      "date_joined": "2013-03-11T23:25:41"
+    }
+  }, 
+  {
     "pk": "KS", 
     "model": "hub.state", 
     "fields": {
@@ -29,10 +49,26 @@
     }
   },
   {
-    "pk": "metadata-editor",
+    "pk": "IL", 
+    "model": "hub.state", 
+    "fields": {
+      "note": "", 
+      "name": "Illinois", 
+      "metadata_status": "partial"
+    }
+  },
+  {
+    "pk": "metadata",
     "model": "hub.volunteerrole",
     "fields": {
       "name": "Metadata Editor"
+    }
+  },
+  {
+    "pk": "dev",
+    "model": "hub.volunteerrole",
+    "fields": {
+      "name": "Developer"
     }
   },
   {
@@ -44,7 +80,19 @@
       "last_name": "Smith", 
       "website": "http://example.com/~testuser/",
       "states": ["KS"],
-      "roles": ["metadata-editor"]
+      "roles": ["metadata"]
+    }
+  },
+  {
+    "pk": null,
+    "model": "hub.volunteer",
+    "fields": {
+      "user": 10,
+      "first_name": "Aaliyah",
+      "last_name": "Clay", 
+      "website": "http://example.com/~testuser2/",
+      "states": ["IL"],
+      "roles": ["dev"]
     }
   }
 ]
