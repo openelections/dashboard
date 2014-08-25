@@ -148,6 +148,7 @@ class State(models.Model):
         The value can be one of these:
 
         None: Unknown status.
+        "partial": A developer has been assigned to this state.
         "raw": Raw results available for at least some elections.
         "clean": Cleaned/transformed results available for at least some
             elections.
@@ -162,15 +163,24 @@ class State(models.Model):
                 'out': 'raw',
             },
         )
+        status = None
+        # Check if we have any clean or raw results
         for status in statuses:
             q = (Q(precinct_level_status=status['in']) | Q(county_level_status=status['in']) |
                 Q(cong_dist_level_status=status['in']) | Q(state_leg_level_status=status['in']) |
                 Q(state_level_status=status['in']))
 
-            if self.election_set.filter(q).count():
-                return status['out']
+            if self.election_set.filter(q).exists():
+                status = status['out']
+                break
 
-        return None
+        # No clean or raw results, see if a developer volunteer has been
+        # assigned.
+        if (status is None and
+                self.volunteer_set.filter(roles__slug='dev').exists()):
+            status = 'partial'
+
+        return status
 
 
 class Election(models.Model):
