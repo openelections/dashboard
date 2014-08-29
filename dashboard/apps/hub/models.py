@@ -125,12 +125,19 @@ class State(models.Model):
         """
         volunteers = [v.status_entry() for v in
                       self.volunteer_set.all()]
+        dev_volunteers = [v.status_entry() for v in
+            self.volunteer_set.filter(roles__slug="dev")]
+        metadata_volunteers = [v.status_entry() for v in
+            self.volunteer_set.filter(roles__slug="metadata")]
+
         return {
             'name': self.name,
             'postal': self.postal,
             'metadata_status': self.metadata_status,
             'results_status': self.results_status,
             'volunteers': volunteers,
+            'dev_volunteers': dev_volunteers,
+            'metadata_volunteers': metadata_volunteers,
         }
 
     @property
@@ -141,25 +148,39 @@ class State(models.Model):
         The value can be one of these:
 
         None: Unknown status.
+        "partial": A developer has been assigned to this state.
         "raw": Raw results available for at least some elections.
         "clean": Cleaned/transformed results available for at least some
             elections.
         """
-        clean_q = (Q(precinct_level_status='baked') | Q(county_level_status='baked') |
-            Q(cong_dist_level_status='baked') | Q(state_leg_level_status='baked') |
-            Q(state_level_status='baked'))
+        statuses = (
+            {
+                'in': 'baked',
+                'out': 'clean',
+            },
+            {
+                'in': 'baked-raw',
+                'out': 'raw',
+            },
+        )
+        status = None
+        # Check if we have any clean or raw results
+        for status in statuses:
+            q = (Q(precinct_level_status=status['in']) | Q(county_level_status=status['in']) |
+                Q(cong_dist_level_status=status['in']) | Q(state_leg_level_status=status['in']) |
+                Q(state_level_status=status['in']))
 
-        if self.election_set.filter(clean_q).count():
-            return 'clean'
+            if self.election_set.filter(q).exists():
+                status = status['out']
+                break
 
-        raw_q = (Q(precinct_level_status='baked-raw') | Q(county_level_status='baked-raw') |
-            Q(cong_dist_level_status='baked-raw') | Q(state_leg_level_status='baked-raw') |
-            Q(state_level_status='baked-raw'))
+        # No clean or raw results, see if a developer volunteer has been
+        # assigned.
+        if (status is None and
+                self.volunteer_set.filter(roles__slug='dev').exists()):
+            status = 'partial'
 
-        if self.election_set.filter(raw_q).count():
-            return 'raw'
-
-        return None
+        return status
 
 
 class Election(models.Model):
