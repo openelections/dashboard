@@ -163,7 +163,7 @@ class State(models.Model):
                 'out': 'raw',
             },
         )
-        status = None
+        final_status = None
         # Check if we have any clean or raw results
         for status in statuses:
             q = (Q(precinct_level_status=status['in']) | Q(county_level_status=status['in']) |
@@ -171,16 +171,16 @@ class State(models.Model):
                 Q(state_level_status=status['in']))
 
             if self.election_set.filter(q).exists():
-                status = status['out']
+                final_status = status['out']
                 break
 
         # No clean or raw results, see if a developer volunteer has been
         # assigned.
-        if (status is None and
+        if (final_status is None and
                 self.volunteer_set.filter(roles__slug='dev').exists()):
-            status = 'partial'
+            final_status = 'partial'
 
-        return status
+        return final_status
 
 
 class Election(models.Model):
