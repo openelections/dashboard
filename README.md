@@ -63,6 +63,7 @@ $ sudo -u postgres createdb openelections-dashboard
 Sync the database and catch up with all the migrations
 
 ```bash
+$ export DJANGO_SETTINGS_MODULE=dashboard.config.dev.settings
 $ django-admin.py syncdb
 $ django-admin.py migrate hub
 ```
