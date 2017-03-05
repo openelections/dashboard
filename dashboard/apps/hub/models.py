@@ -142,7 +142,7 @@ class State(models.Model):
             if repo_name in repos:
                 today = datetime.datetime.today()
                 commits = g.get_repo("openelections/" + repo_name).get_commits()
-                return [{ "sha": c.sha, "committer": c.commit.author.name if type(c.author) == "NoneType" else "", "date": unicode(c.commit.author.date), "message": c.commit.message, "url": c.url } for c in commits]
+                return [{ "sha": c.sha, "committer": c.commit.author.name if type(c.author) == "NoneType" else "", "date": unicode(c.commit.author.date), "message": c.commit.message, "url": c.url } for c in commits][:10]
             return []
 
         return {
