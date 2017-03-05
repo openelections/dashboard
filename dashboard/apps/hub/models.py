@@ -1,5 +1,8 @@
 import datetime
 
+import json
+import sys
+
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
 from django.contrib.localflavor.us.us_states import US_STATES
@@ -89,6 +92,7 @@ class State(models.Model):
     as a skeleton for admin inlines such as election data and FOIA logs
 
     """
+
     STATUS_OPTIONS = (
         ('not-started', 'Not Started'),
         ('partial', 'Partial'),
@@ -118,17 +122,26 @@ class State(models.Model):
     def __repr__(self):
         return '<%s - %s>' % (self.__class__.__name__, self.postal)
 
-    def status_entry(self):
+    def status_entry(self, repos, g):
         """
         Returns a dict, suitable for serialization that represents
         the state's completion status.
         """
+
         volunteers = [v.status_entry() for v in
                       self.volunteer_set.all()]
         dev_volunteers = [v.status_entry() for v in
             self.volunteer_set.filter(roles__slug="dev")]
         metadata_volunteers = [v.status_entry() for v in
             self.volunteer_set.filter(roles__slug="metadata")]
+
+        def get_repo_changes(repo_type):
+            repo_name = "openelections-" + repo_type + "-" + self.postal.lower()
+            if repo_name in repos:
+                sys.stderr.write(repo_name + "\n")
+                commits = g.get_repo("openelections/" + repo_name).get_commits()
+                return [{ "sha": c.sha, "committer": c.author.name, "date": c.commit.author.date, "message": c.commit.message } for c in commits]
+            return []
 
         return {
             'name': self.name,
@@ -138,6 +151,9 @@ class State(models.Model):
             'volunteers': volunteers,
             'dev_volunteers': dev_volunteers,
             'metadata_volunteers': metadata_volunteers,
+            'data_repo_changes': get_repo_changes('data'),
+            'results_repo_changes': get_repo_changes('results'),
+            'sources_repo_changes': get_repo_changes('sources')
         }
 
     @property
