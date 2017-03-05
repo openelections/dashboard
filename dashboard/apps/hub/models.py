@@ -142,7 +142,16 @@ class State(models.Model):
             if repo_name in repos:
                 today = datetime.datetime.today()
                 commits = g.get_repo("openelections/" + repo_name).get_commits()
-                return [{ "sha": c.sha, "committer": c.commit.author.name if type(c.author) == "NoneType" else "", "date": unicode(c.commit.author.date), "message": c.commit.message, "url": c.url } for c in commits][:10]
+                return [{
+                    "sha": c.sha,
+                    # Unsure why the login field is not there, though should be
+                    # https://pygithub.readthedocs.io/en/latest/github_objects/NamedUser.html#github.NamedUser.NamedUser
+                    "login": c.commit.author.login if hasattr(c.commit.author, 'login') else '',
+                    "name": c.commit.author.name,
+                    "date": unicode(c.commit.author.date),
+                    "message": c.commit.message,
+                    "url": c.url
+                } for c in commits][:10]
             return []
 
         return {
