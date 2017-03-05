@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from github import Github
-import sys # remove this
+import os
 
 from dashboard.apps.hub.models import State
 
@@ -10,7 +10,7 @@ class Command(BaseCommand):
             "consumed be the front-end website.")
 
     def handle(self, *args, **options):
-        g = Github("0cba242dc698e71f0947fbf150ed814a0d5ff624")
+        g = Github(os.environ['GITHUB_TOKEN'])
 
         repos = g.get_organization("openelections").get_repos()
 
