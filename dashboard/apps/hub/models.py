@@ -1,7 +1,6 @@
 import datetime
-
+from datetime import timedelta
 import json
-import sys
 
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
@@ -136,11 +135,14 @@ class State(models.Model):
             self.volunteer_set.filter(roles__slug="metadata")]
 
         def get_repo_changes(repo_type):
+            """
+            Return an array of commits for a given repository type
+            """
             repo_name = "openelections-" + repo_type + "-" + self.postal.lower()
             if repo_name in repos:
-                sys.stderr.write(repo_name + "\n")
+                today = datetime.datetime.today()
                 commits = g.get_repo("openelections/" + repo_name).get_commits()
-                return [{ "sha": c.sha, "committer": c.author.name, "date": c.commit.author.date, "message": c.commit.message } for c in commits]
+                return [{ "sha": c.sha, "committer": c.commit.author.name if type(c.author) == "NoneType" else "", "date": unicode(c.commit.author.date), "message": c.commit.message, "url": c.url } for c in commits]
             return []
 
         return {
