@@ -1,4 +1,6 @@
 import datetime
+from datetime import timedelta
+import json
 
 from django.contrib.auth.models import User
 from django.contrib.localflavor.us.models import PhoneNumberField
@@ -89,6 +91,7 @@ class State(models.Model):
     as a skeleton for admin inlines such as election data and FOIA logs
 
     """
+
     STATUS_OPTIONS = (
         ('not-started', 'Not Started'),
         ('partial', 'Partial'),
@@ -118,17 +121,38 @@ class State(models.Model):
     def __repr__(self):
         return '<%s - %s>' % (self.__class__.__name__, self.postal)
 
-    def status_entry(self):
+    def status_entry(self, repos, g):
         """
         Returns a dict, suitable for serialization that represents
         the state's completion status.
         """
+
         volunteers = [v.status_entry() for v in
                       self.volunteer_set.all()]
         dev_volunteers = [v.status_entry() for v in
             self.volunteer_set.filter(roles__slug="dev")]
         metadata_volunteers = [v.status_entry() for v in
             self.volunteer_set.filter(roles__slug="metadata")]
+
+        def get_repo_changes(repo_type):
+            """
+            Return an array of commits for a given repository type
+            """
+            repo_name = "openelections-" + repo_type + "-" + self.postal.lower()
+            if repo_name in repos:
+                today = datetime.datetime.today()
+                commits = g.get_repo("openelections/" + repo_name).get_commits()
+                return [{
+                    "sha": c.sha,
+                    # Unsure why the login field is not there, though should be
+                    # https://pygithub.readthedocs.io/en/latest/github_objects/NamedUser.html#github.NamedUser.NamedUser
+                    "login": c.commit.author.login if hasattr(c.commit.author, 'login') else '',
+                    "name": c.commit.author.name,
+                    "date": unicode(c.commit.author.date),
+                    "message": c.commit.message,
+                    "url": c.url
+                } for c in commits][:10]
+            return []
 
         return {
             'name': self.name,
@@ -138,6 +162,9 @@ class State(models.Model):
             'volunteers': volunteers,
             'dev_volunteers': dev_volunteers,
             'metadata_volunteers': metadata_volunteers,
+            'data_repo_changes': get_repo_changes('data'),
+            'results_repo_changes': get_repo_changes('results'),
+            'sources_repo_changes': get_repo_changes('sources')
         }
 
     @property
