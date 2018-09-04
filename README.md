@@ -8,7 +8,15 @@ results, and the status of the project's data gathering operation.
 Getting started as a developer
 ------------------------------
 
-Create a virtualenv 
+### Prerequisites (on Ubuntu 18.04)
+
+```bash
+$ sudo apt-get install libpq-dev memcached
+```
+
+### Setup
+
+Create a virtualenv
 
 ```bash
 $ virtualenv openelections
@@ -41,7 +49,7 @@ Add the ``dashboard`` directory to your PYTHONPATH
 $ export PYTHONPATH=$PYTHONPATH:`pwd`/dashboard
 ```
 
-Create a ``local_settings.py`` from the template 
+Create a ``local_settings.py`` from the template
 
 ```bash
 $ cp dashboard/config/local_settings.py.tmpl dashboard/config/local_settings.py
