@@ -16,6 +16,8 @@ if os.path.isfile(dotenv_file):
 DATABASES = {}
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 
+SECRET_KEY = 'rni%5*#+iyo0#yq32##a8n(4sib)o6#2*a5)4^00le0z*fdv3@'
+
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
