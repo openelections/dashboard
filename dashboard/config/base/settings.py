@@ -1,3 +1,4 @@
+import django_heroku
 from os.path import abspath, dirname, join
 
 PROJECT_ROOT = abspath(join(dirname(__file__), "..", ".."))
@@ -140,3 +141,5 @@ LOGGING = {
         #}
     #},
 }
+
+django_heroku.settings(locals())
