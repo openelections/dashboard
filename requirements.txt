@@ -1,8 +1,6 @@
-Django~=1.5.12
+Django~=2.2
 django-extensions~=1.5.9
-django-grappelli==2.4.6
+django-grappelli
 django-localflavor==1.2
-django-tastypie~=0.12.2
-psycopg2
+django-tastypie~=0.14.2
 python-memcached
-South
