@@ -1,1 +1,1 @@
-web: gunicorn openelex-admin.wsgi --log-level=info --log-file -
+web: gunicorn wsgi.py --log-level=info --log-file -
