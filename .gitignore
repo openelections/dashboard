@@ -17,9 +17,6 @@ sdist
 develop-eggs
 .installed.cfg
 
-#Exclude sqlite by default
-*.db
-
 # Project
 */public
 local_settings.py
