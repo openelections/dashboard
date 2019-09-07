@@ -1,14 +1,14 @@
 import datetime
 
 from django.contrib.auth.models import User
-from django.contrib.localflavor.us.models import PhoneNumberField
-from django.contrib.localflavor.us.us_states import US_STATES
+from localflavor.us.models import PhoneNumberField
+from localflavor.us.us_states import US_STATES
 from django.core.exceptions import NON_FIELD_ERRORS, ValidationError
 from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import slugify
 
-from managers import StateManager
+from .managers import StateManager
 
 
 class ProxyUser(User):
@@ -236,9 +236,9 @@ class Election(models.Model):
     # User meta
     created = models.DateTimeField()
     modified = models.DateTimeField()
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     user_fullname = models.CharField(max_length=70, db_index=True, help_text="denormalized user name")
-    proofed_by = models.ForeignKey(ProxyUser, related_name='proofer', blank=True, null=True, help_text="Name of person who reviewed this record.")
+    proofed_by = models.ForeignKey(ProxyUser, on_delete=models.PROTECT, related_name='proofer', blank=True, null=True, help_text="Name of person who reviewed this record.")
 
     # Election meta
     race_type = models.CharField(max_length=15, choices=RACE_CHOICES, db_index=True)
@@ -252,10 +252,10 @@ class Election(models.Model):
     start_date = models.DateField(db_index=True, help_text="Some races such as NH and WY pririmaries span multiple days. Most elections, however, are single-day elections where start and end date should match.")
     end_date = models.DateField(db_index=True, blank=True, help_text="Should match start_date if race started and ended on same day (this is the common case)")
     special = models.BooleanField(blank=True, default=False, db_index=True, help_text="Is this a special election (i.e. to fill a vacancy for an unexpired term)?")
-    state = models.ForeignKey(State)
+    state = models.ForeignKey(State, on_delete=models.PROTECT)
 
     # Data Source Meta
-    organization = models.ForeignKey(Organization, null=True, help_text="Agency or Org that is source of the data")
+    organization = models.ForeignKey(Organization, on_delete=models.PROTECT, null=True, help_text="Agency or Org that is source of the data")
     portal_link = models.URLField(blank=True, help_text="Link to portal, page or form where data can be found, if available")
     direct_link = models.URLField(blank=True, help_text="DEPRECATED: Direct link to data, if available")
     direct_links = models.TextField(blank=True, help_text="One or more direct links to source data related to this election date, if available. Each link should be on a separate line.")
@@ -273,12 +273,12 @@ class Election(models.Model):
     level_note = models.TextField("Note", blank=True)
 
     # Status of data at a particular reporting level
-    state_level_status = models.CharField("Racewide Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
-    county_level_status = models.CharField("County Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
-    precinct_level_status = models.CharField("Precinct Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
+    state_level_status = models.CharField("Racewide Status", choices=LEVEL_STATUS_CHOICES, max_length=30, default='', blank=True, db_index=True)
+    county_level_status = models.CharField("County Status", choices=LEVEL_STATUS_CHOICES, max_length=30, default='', blank=True, db_index=True)
+    precinct_level_status = models.CharField("Precinct Status", choices=LEVEL_STATUS_CHOICES, max_length=30, default='', blank=True, db_index=True)
     # Congress and state leg are only used when statewide offices are broken down by those units
-    cong_dist_level_status = models.CharField("CD Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
-    state_leg_level_status = models.CharField("State Leg Status", choices=LEVEL_STATUS_CHOICES, max_length='30', default='', blank=True, db_index=True)
+    cong_dist_level_status = models.CharField("CD Status", choices=LEVEL_STATUS_CHOICES, max_length=30, default='', blank=True, db_index=True)
+    state_leg_level_status = models.CharField("State Leg Status", choices=LEVEL_STATUS_CHOICES, max_length=30, default='', blank=True, db_index=True)
 
     # Offices covered (results include data for these offices)
     prez = models.BooleanField("President", default=False, db_index=True)
@@ -477,7 +477,7 @@ class BaseContact(models.Model):
         ordering = ['last_name']
 
 class Contact(BaseContact):
-    org = models.ForeignKey("Organization")
+    org = models.ForeignKey("Organization", on_delete=models.PROTECT)
 
     def __unicode__(self):
         return '%s (%s)' % (self.last_name, self.org)
@@ -490,7 +490,7 @@ class VolunteerRole(models.Model):
         return "%s" % self.name
 
 class Volunteer(BaseContact):
-    user = models.OneToOneField(ProxyUser, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
+    user = models.OneToOneField(ProxyUser, on_delete=models.PROTECT, blank=True, null=True, help_text="Link volunteer to User with data admin privileges, if he or she has them")
     affil = models.CharField("Affiliation", max_length=254, blank=True)
     twitter = models.CharField(max_length=254, blank=True)
     website = models.CharField(max_length=254, blank=True)
@@ -522,7 +522,7 @@ class Volunteer(BaseContact):
 
 
 class BaseLog(models.Model):
-    user = models.ForeignKey(ProxyUser, help_text="User who entered data for the log")
+    user = models.ForeignKey(ProxyUser, on_delete=models.PROTECT, help_text="User who entered data for the log")
     date = models.DateField()
     subject = models.CharField(max_length=100)
     gdoc_link = models.URLField(blank=True, help_text="Link to GDoc for extended notes on conversation")
@@ -534,9 +534,9 @@ class BaseLog(models.Model):
 
 class Log(BaseLog):
     """Notes, docs and other bits from conversations with election contacts"""
-    state = models.ForeignKey(State)
-    org = models.ForeignKey(Organization, blank=True, null=True, help_text="If conversation took place with more than one person at an org")
-    contact = models.ForeignKey(Contact, blank=True, null=True)
+    state = models.ForeignKey(State, on_delete=models.PROTECT)
+    org = models.ForeignKey(Organization, on_delete=models.PROTECT, blank=True, null=True, help_text="If conversation took place with more than one person at an org")
+    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, blank=True, null=True)
     formal_request = models.BooleanField(default=False, help_text="True if this represents a formal FOIA request")
 
     class Meta:
@@ -564,7 +564,7 @@ class Log(BaseLog):
 
 class VolunteerLog(BaseLog):
     """Track correspondence with Volunteers"""
-    volunteer = models.ForeignKey(Volunteer)
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.log_key(as_string=True)

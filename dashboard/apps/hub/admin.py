@@ -2,11 +2,11 @@ from decimal import Decimal
 
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
-from django.contrib.localflavor.us.us_states import US_STATES
+from localflavor.us.us_states import US_STATES
 from django.db import connection
 from django.utils.translation import ugettext_lazy as _
 
-from models import (
+from .models import (
     Contact,
     DataFormat,
     Election,
@@ -343,7 +343,7 @@ class VolunteerAdmin(admin.ModelAdmin):
         'note_snippet',
     )
     list_display_links = ('last_name',)
-    list_editable = ('attended_sprint', 'last_emailed',) 
+    list_editable = ('attended_sprint', 'last_emailed',)
     list_select_related = True
     list_filter = (
         VolunteersByStateFilter,
