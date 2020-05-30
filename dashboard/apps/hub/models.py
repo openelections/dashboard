@@ -62,7 +62,7 @@ class Organization(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % self.name
 
     def save(self, *args, **kwargs):
@@ -75,7 +75,7 @@ class DataFormat(models.Model):
     name = models.CharField(max_length=10)
     slug = models.SlugField(primary_key=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % self.name
 
     class Meta:
