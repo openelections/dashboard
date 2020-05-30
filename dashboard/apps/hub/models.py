@@ -17,7 +17,7 @@ class ProxyUser(User):
         proxy = True
         ordering = ['last_name', 'first_name']
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s, %s' % (self.last_name, self.first_name)
 
 class Office(models.Model):
@@ -27,7 +27,7 @@ class Office(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % self.slug
 
     def __repr__(self):
@@ -112,7 +112,7 @@ class State(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s' % self.name
 
     def __repr__(self):
@@ -327,7 +327,7 @@ class Election(models.Model):
                 raise ValidationError("Primary types flagged as 'Other' represent edge cases. Please provide some background in the Primary Note field.")
 
 
-    def __unicode__(self):
+    def __str__(self):
         return self.elec_key(as_string=True)
 
     def __repr__(self):
@@ -479,14 +479,14 @@ class BaseContact(models.Model):
 #class Contact(BaseContact):
 #    org = models.ForeignKey("Organization", on_delete=models.PROTECT)
 #
-#    def __unicode__(self):
+#    def __str__(self):
 #        return '%s (%s)' % (self.last_name, self.org)
 
 class VolunteerRole(models.Model):
     slug = models.SlugField(max_length=30, primary_key=True)
     name = models.CharField(max_length=25)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.name
 
 class Volunteer(BaseContact):
@@ -500,7 +500,7 @@ class Volunteer(BaseContact):
     attended_sprint = models.BooleanField(default=False)
     last_emailed = models.DateField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         key = self.full_name
         if self.affil:
             key += ' (%s)' % self.affil
@@ -543,7 +543,7 @@ class Log(BaseLog):
         ordering = ['-date']
         verbose_name_plural = 'FOIA Logs'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.log_key(as_string=True)
 
     def __repr__(self):
@@ -566,7 +566,7 @@ class VolunteerLog(BaseLog):
     """Track correspondence with Volunteers"""
     volunteer = models.ForeignKey(Volunteer, on_delete=models.PROTECT)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.log_key(as_string=True)
 
     def __repr__(self):
