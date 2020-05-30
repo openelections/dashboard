@@ -1,6 +1,4 @@
 import os
-import django_heroku
-import dj_database_url
 from os.path import abspath, dirname, join
 
 PROJECT_ROOT = abspath(join(dirname(__file__), "..", ".."))
@@ -153,5 +151,3 @@ LOGGING = {
         #}
     #},
 }
-
-django_heroku.settings(locals())
