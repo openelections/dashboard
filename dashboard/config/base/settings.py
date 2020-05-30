@@ -23,7 +23,7 @@ DATABASES = {
 
 SECRET_KEY = 'rni%5*#+iyo0#yq32##a8n(4sib)o6#2*a5)4^00le0z*fdv3@'
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
