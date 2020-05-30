@@ -4,7 +4,7 @@ click-default-group==1.2.2
 datasette==0.29.3
 db-to-sqlite==1.0.2
 dj-database-url==0.5.0
-Django==2.2.5
+Django==2.2.10
 django-debug-toolbar==2.0
 django-extensions==1.5.9
 django-grappelli==2.13.1
