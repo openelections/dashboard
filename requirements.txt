@@ -30,4 +30,5 @@ tabulate==0.8.3
 uvicorn==0.8.6
 uvloop==0.12.2
 websockets==7.0
+whitenoise
 zipp==0.6.0

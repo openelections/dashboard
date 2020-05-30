@@ -56,10 +56,10 @@ MEDIA_URL = '/media/'
 # http://my.mediaserver.com/apps/static/project/
 STATIC_URL = '/static/'
 
-STATIC_ROOT = '/var/www/dashboard/static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = (
-    join(PROJECT_ROOT, 'static'),
+    os.path.join(BASE_DIR, 'staticfiles'),
 )
 
 STATICFILES_FINDERS = (
@@ -68,6 +68,7 @@ STATICFILES_FINDERS = (
 )
 
 MIDDLEWARE = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -109,7 +110,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Project apps must precede
     'grappelli',
-#    'tastypie',
     'django.contrib.admin',
     'dashboard.apps.hub',
 )
