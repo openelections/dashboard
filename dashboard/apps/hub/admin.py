@@ -7,7 +7,7 @@ from django.db import connection
 from django.utils.translation import ugettext_lazy as _
 
 from .models import (
-    Contact,
+#    Contact,
     DataFormat,
     Election,
     Log,
@@ -84,19 +84,19 @@ class DataFormatAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-class ContactAdmin(admin.ModelAdmin):
-    pass
+#class ContactAdmin(admin.ModelAdmin):
+#    pass
 
 
 class OfficeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-class ContactInline(admin.StackedInline):
+#class ContactInline(admin.StackedInline):
     # TODO: Add custom validation to ensure that at least one form of contact
     # info has been entered (phone, mobile, email_work, email_personal)
-    model = Contact
-    extra = 0
+#    model = Contact
+#    extra = 0
 
 
 class OrganizationAdmin(admin.ModelAdmin):
@@ -108,7 +108,7 @@ class OrganizationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     save_on_top = True
     inlines = [
-        ContactInline,
+        #ContactInline,
     ]
 
     fieldsets = (
@@ -379,7 +379,7 @@ class VolunteerLogAdmin(admin.ModelAdmin):
 class VolunteerRoleAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
-admin.site.register(Contact, ContactAdmin)
+#admin.site.register(Contact, ContactAdmin)
 admin.site.register(DataFormat, DataFormatAdmin)
 admin.site.register(Election, ElectionAdmin)
 admin.site.register(Office, OfficeAdmin)

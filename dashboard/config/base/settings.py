@@ -7,14 +7,21 @@ PROJECT_ROOT = abspath(join(dirname(__file__), "..", ".."))
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+ALLOWED_HOSTS=['*']
+
 # load environment variables from .env
 dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
-# load database from the DATABASE_URL environment variable
-DATABASES = {}
-DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+DATABASE_URL = "dashboard.db"
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': DATABASE_URL,
+    }
+}
 
 SECRET_KEY = 'rni%5*#+iyo0#yq32##a8n(4sib)o6#2*a5)4^00le0z*fdv3@'
 
@@ -75,13 +82,14 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            # insert your TEMPLATE_DIRS here
+            os.path.join(PROJECT_ROOT, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
                 # list if you haven't customized them:
+                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
