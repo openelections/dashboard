@@ -109,7 +109,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Project apps must precede
     'grappelli',
-    'tastypie',
+#    'tastypie',
     'django.contrib.admin',
     'dashboard.apps.hub',
 )

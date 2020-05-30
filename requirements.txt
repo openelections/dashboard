@@ -8,7 +8,6 @@ django-debug-toolbar==2.0
 django-extensions==1.5.9
 django-grappelli==2.13.1
 django-localflavor==1.2
-django-tastypie==0.14.2
 gunicorn==19.9.0
 h11==0.8.1
 httptools==0.0.13
