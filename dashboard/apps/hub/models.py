@@ -476,11 +476,11 @@ class BaseContact(models.Model):
         abstract = True
         ordering = ['last_name']
 
-class Contact(BaseContact):
-    org = models.ForeignKey("Organization", on_delete=models.PROTECT)
-
-    def __unicode__(self):
-        return '%s (%s)' % (self.last_name, self.org)
+#class Contact(BaseContact):
+#    org = models.ForeignKey("Organization", on_delete=models.PROTECT)
+#
+#    def __unicode__(self):
+#        return '%s (%s)' % (self.last_name, self.org)
 
 class VolunteerRole(models.Model):
     slug = models.SlugField(max_length=30, primary_key=True)
@@ -536,7 +536,7 @@ class Log(BaseLog):
     """Notes, docs and other bits from conversations with election contacts"""
     state = models.ForeignKey(State, on_delete=models.PROTECT)
     org = models.ForeignKey(Organization, on_delete=models.PROTECT, blank=True, null=True, help_text="If conversation took place with more than one person at an org")
-    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, blank=True, null=True)
+#    contact = models.ForeignKey(Contact, on_delete=models.PROTECT, blank=True, null=True)
     formal_request = models.BooleanField(default=False, help_text="True if this represents a formal FOIA request")
 
     class Meta:
