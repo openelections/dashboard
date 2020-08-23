@@ -1,5 +1,7 @@
 import sys
 from os.path import join
+import django_heroku
+import dj_database_url
 
 from dashboard.config.base.settings import *
 
@@ -10,16 +12,7 @@ ROOT_URLCONF = 'dashboard.config.prod.urls'
 WSGI_APPLICATION = 'dashboard.config.prod.wsgi.application'
 
 # Default to sqlite
-DATABASES = {
-    'default': {
-        'ENGINE':'django.db.backends.sqlite3',
-        'NAME': join(PROJECT_ROOT, 'dashboard.db'),
-        'USER':  '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
-}
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # If not using sqlite, move database settings to
 # 'local_settings.py' outside of version control
@@ -29,10 +22,8 @@ except ImportError:
     pass
 
 INSTALLED_APPS += (
-    #'debug_toolbar',
     'django_extensions',
-    'south',
-    #'test_utils',
+    'south'
 )
 
 # Test config tweaks/customizations
@@ -44,3 +35,5 @@ if 'test' in sys.argv:
     #)
     """
     SOUTH_TESTS_MIGRATE = False
+
+django_heroku.settings(locals())

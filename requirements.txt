@@ -9,3 +9,6 @@ ipython==0.13
 mimeparse==0.1.3
 psycopg2
 python-memcached
+django-heroku
+gunicorn
+dj_database_url
