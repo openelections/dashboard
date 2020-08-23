@@ -18,6 +18,9 @@ python-memcached = "*"
 Django = "==3.1"
 South = "==0.8.2"
 django-debug-toolbar = "*"
+django-heroku = "*"
+gunicorn = "*"
+dj_database_url = "*"
 
 [requires]
 python_version = "3.7"
