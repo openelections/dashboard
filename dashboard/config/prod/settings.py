@@ -14,6 +14,8 @@ WSGI_APPLICATION = 'dashboard.config.prod.wsgi.application'
 # Default to sqlite
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
+SECRET_KEY = ENV['SECRET_KEY']
+
 # If not using sqlite, move database settings to
 # 'local_settings.py' outside of version control
 try:
