@@ -97,6 +97,7 @@ INSTALLED_APPS = (
     'tastypie',
     'django.contrib.admin',
     'dashboard.apps.hub',
+    'django_extensions'
 )
 
 GRAPPELLI_ADMIN_TITLE = 'The OpenElections Project'
