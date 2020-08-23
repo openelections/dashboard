@@ -26,8 +26,7 @@ except ImportError:
     pass
 
 INSTALLED_APPS += (
-    'django_extensions',
-    'south'
+    'django_extensions'
 )
 
 # Test config tweaks/customizations
