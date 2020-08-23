@@ -12,7 +12,6 @@ WSGI_APPLICATION = 'dashboard.config.dev.wsgi.application'
 
 INSTALLED_APPS += (
     'debug_toolbar',
-    'django_extensions',
 )
 
 MIDDLEWARE += (
@@ -36,11 +35,3 @@ try:
     from dashboard.config.local_settings import *
 except ImportError:
     pass
-
-# Test config tweaks/customizations
-if 'test' in sys.argv:
-    DATABASES['default'] = {'ENGINE':'django.db.backends.sqlite3'}
-    #FIXTURE_DIRS = (
-    #    PROJECT_ROOT + '/foo/bar/fixtures',
-    #)
-    SOUTH_TESTS_MIGRATE = False
