@@ -14,10 +14,13 @@ ROOT_URLCONF = 'dashboard.config.prod.urls'
 
 WSGI_APPLICATION = 'dashboard.config.prod.wsgi.application'
 
-DATABASES = {}
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+    }
+}
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 SECRET_KEY = os.environ['SECRET_KEY']
-
 django_heroku.settings(locals())
