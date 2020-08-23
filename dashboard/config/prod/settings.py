@@ -21,7 +21,7 @@ DATABASES = {
     }
 }
 
-# If not using sqlite, move database settings to 
+# If not using sqlite, move database settings to
 # 'local_settings.py' outside of version control
 try:
     from dashboard.config.local_settings import *

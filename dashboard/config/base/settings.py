@@ -1,29 +1,8 @@
-import os
 from os.path import abspath, dirname, join
 
 PROJECT_ROOT = abspath(join(dirname(__file__), "..", ".."))
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-ALLOWED_HOSTS=['*']
-
-# load environment variables from .env
-dotenv_file = os.path.join(BASE_DIR, ".env")
-if os.path.isfile(dotenv_file):
-    dotenv.load_dotenv(dotenv_file)
-
-DATABASE_URL = "dashboard.db"
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': DATABASE_URL,
-    }
-}
-
-SECRET_KEY = 'rni%5*#+iyo0#yq32##a8n(4sib)o6#2*a5)4^00le0z*fdv3@'
-
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -56,10 +35,10 @@ MEDIA_URL = '/media/'
 # http://my.mediaserver.com/apps/static/project/
 STATIC_URL = '/static/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = '/var/www/dashboard/static'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'staticfiles'),
+    join(PROJECT_ROOT, 'static'),
 )
 
 STATICFILES_FINDERS = (
@@ -68,7 +47,6 @@ STATICFILES_FINDERS = (
 )
 
 MIDDLEWARE = (
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -77,24 +55,29 @@ MIDDLEWARE = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATE_LOADERS = (
+    ('django.template.loaders.cached.Loader', (
+        'django.template.loaders.filesystem.Loader',
+        'django.template.loaders.app_directories.Loader',
+    )),
+)
+
+TEMPLATE_DIRS = (
+    join(PROJECT_ROOT, 'templates'),
+)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(PROJECT_ROOT, 'templates')
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
-                # list if you haven't customized them:
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
+                'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.media',
+                'django.template.context_processors.request',
                 'django.template.context_processors.static',
-                'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -110,6 +93,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # Project apps must precede
     'grappelli',
+    'tastypie',
     'django.contrib.admin',
     'dashboard.apps.hub',
 )
