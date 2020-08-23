@@ -1,3 +1,4 @@
+import os
 import sys
 from os.path import join
 import django_heroku
@@ -15,7 +16,7 @@ DATABASES = {}
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
-SECRET_KEY = ENV['SECRET_KEY']
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # If not using sqlite, move database settings to
 # 'local_settings.py' outside of version control
