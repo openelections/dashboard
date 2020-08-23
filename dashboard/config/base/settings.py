@@ -1,6 +1,7 @@
 from os.path import abspath, dirname, join
 
 PROJECT_ROOT = abspath(join(dirname(__file__), "..", ".."))
+BASE_DIR = PROJECT_ROOT
 
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
